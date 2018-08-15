@@ -11,7 +11,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.entity.ContentType;
+//import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 import com.weixin.common.error.WxError;
@@ -49,11 +49,11 @@ public class ApacheMediaDownloadRequestExecutor extends BaseMediaDownloadRequest
          InputStream inputStream = InputStreamResponseHandler.INSTANCE.handleResponse(response)) {
       Header[] contentTypeHeader = response.getHeaders("Content-Type");
       if (contentTypeHeader != null && contentTypeHeader.length > 0) {
-        if (contentTypeHeader[0].getValue().startsWith(ContentType.APPLICATION_JSON.getMimeType())) {
-          // application/json; encoding=utf-8 下载媒体文件出错
-          String responseContent = Utf8ResponseHandler.INSTANCE.handleResponse(response);
-          throw new WxErrorException(WxError.fromJson(responseContent));
-        }
+//        if (contentTypeHeader[0].getValue().startsWith(ContentType.APPLICATION_JSON.getMimeType())) {
+//          // application/json; encoding=utf-8 下载媒体文件出错
+//          String responseContent = Utf8ResponseHandler.INSTANCE.handleResponse(response);
+//          throw new WxErrorException(WxError.fromJson(responseContent));
+//        }
       }
 
       String fileName = new HttpResponseProxy(response).getFileName();

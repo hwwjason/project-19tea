@@ -1,7 +1,7 @@
 package com.weixin.common.util.http.apache;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.annotation.NotThreadSafe;
+//import org.apache.http.annotation.NotThreadSafe;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
@@ -40,7 +40,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * @author kakotor
  */
-@NotThreadSafe
+//@NotThreadSafe
 public class DefaultApacheHttpClientBuilder implements ApacheHttpClientBuilder {
   protected final Logger log = LoggerFactory.getLogger(DefaultApacheHttpClientBuilder.class);
   private final AtomicBoolean prepared = new AtomicBoolean(false);

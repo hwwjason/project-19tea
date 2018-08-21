@@ -10,6 +10,8 @@ import com.sckj.enums.LoginStateEnum;
 import com.sckj.pojo.SckjUserList;
 import com.sckj.service.UserListService;
 import com.sckj.utils.AesEncodeUtil;
+import com.sckj.utils.ComDateUtils;
+import com.sckj.utils.DateTimeUtils;
 import com.sckj.utils.UUIDUtils;
 import com.weixin.miniapp.api.WxMaService;
 import com.weixin.miniapp.bean.WxMaPhoneNumberInfo;
@@ -24,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -110,19 +113,35 @@ public class UserListServiceImp  implements UserListService{
                     userList.setUnionid(userInfo.getUnionId());
 //                    userList.setW(userInfo.getWatermark());
 
+                    userList.setRegtime(DateTimeUtils.getCurrentDate());
+                    userList.setLastlogintime(DateTimeUtils.getCurrentDate());
+
                     userListMapper.insert(userList);
+                    wechatLoginInfo.setState(LoginStateEnum.SUCESS.toString());
                 }else{
                     //更新 头像 昵称
+                    boolean isSpeedLogin = false;
                     List<SckjUserList> userList = userListJpa.findByUserId(encryptOpenid);
                     if(userList.size()>0){
                         SckjUserList user = userList.get(0);
                         user.setSessionKey(session_key);//Ao+XJdoi5YvJrZvqEI1zmQ== Ao+XJdoi5YvJrZvqEI1zmQ== 8q9rxhum2iOLzTSdGTuJhA==
                         user.setNickname(userInfo.getNickName());
                         user.setOpenid(openid);
+                        user.setLastlogintime(DateTimeUtils.getCurrentDate());
+
                         userListJpa.saveAndFlush(user);
 //                        user.setHeadimg(userInfo.get);
+
+                        //是否已经极速登录过
+                        if(StringUtils.isNotEmpty(user.getTel())){
+                           isSpeedLogin =true;
+                        }
                     }
-                    wechatLoginInfo.setState(LoginStateEnum.SUCESS.toString());
+                    if ((isSpeedLogin)){
+                        wechatLoginInfo.setState(LoginStateEnum.SUCESS_SPEED.toString());
+                    }else {
+                        wechatLoginInfo.setState(LoginStateEnum.SUCESS.toString());
+                    }
                 }
             }else{
                 wechatLoginInfo.setState(LoginStateEnum.FAIL.toString());

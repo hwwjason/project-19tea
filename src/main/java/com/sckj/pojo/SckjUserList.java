@@ -258,7 +258,7 @@ public class SckjUserList {
      *
      * @mbg.generated
      */
-    @Column(name = "regtime",columnDefinition = "VARCHAR")
+    @Column(name = "regtime",columnDefinition = "TIMESTAMP")
     private Date regtime;
 
     /**
@@ -268,7 +268,7 @@ public class SckjUserList {
      *
      * @mbg.generated
      */
-    @Column(name = "lastlogintime",columnDefinition = "VARCHAR")
+    @Column(name = "lastlogintime",columnDefinition = "TIMESTAMP")
     private Date lastlogintime;
 
     /**

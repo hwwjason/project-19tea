@@ -11,7 +11,7 @@ import java.util.List;
 
 //@NoRepositoryBean
 @Repository
-public interface UserListJpa extends JpaRepository<SckjUserList,String>{
+public interface UserListJpa  extends JpaRepository<SckjUserList,String> {
 
     List<SckjUserList> findByUnionid(String unionid);
 

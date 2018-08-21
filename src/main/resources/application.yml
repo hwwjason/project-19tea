@@ -1,11 +1,9 @@
-
 server:
   port: 8081
-
 spring:
     datasource:
         name: test
-        url: jdbc:mysql://172.16.250.139:3306/sckj
+        url: jdbc:mysql://172.16.250.140:3306/sckj
         username: root
         password: root
         driver-class-name: com.mysql.jdbc.Driver

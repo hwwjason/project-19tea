@@ -1,12 +1,26 @@
-package com.sckj.dto;
+package com.sckj.common;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.sckj.enums.ResultStatusEnum;
 
 @JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class ResultData {
     private Object data;
-    private String status;
-    private String message;
+    private String status = ResultStatusEnum.SUCESS.toString();
+    private String message = "成功";
+
+    public ResultData(Object data, String status, String message) {
+        this.data = data;
+        this.status = status;
+        this.message = message;
+    }
+
+    public ResultData(Object data) {
+        this.data = data;
+    }
+
+    public ResultData() {
+    }
 
     public Object getData() {
         return data;

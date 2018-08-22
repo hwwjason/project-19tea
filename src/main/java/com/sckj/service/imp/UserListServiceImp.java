@@ -1,16 +1,18 @@
 package com.sckj.service.imp;
 
 import com.google.gson.Gson;
+import com.sckj.common.ResultData;
+import com.sckj.dto.SckjUserListDTO;
+import com.sckj.enums.ResultStatusEnum;
 import com.sckj.jpa.UserListJpa;
 import com.sckj.constant.MiniAppConstants;
-import com.sckj.dao.sckjUserListMapper;
+import com.sckj.dao.UserListDAO;
 import com.sckj.dto.OpenIdAndSessionKey;
 import com.sckj.dto.WechatLoginInfo;
 import com.sckj.enums.LoginStateEnum;
 import com.sckj.pojo.SckjUserList;
-import com.sckj.service.UserListService;
+import com.sckj.service.IUserListService;
 import com.sckj.utils.AesEncodeUtil;
-import com.sckj.utils.ComDateUtils;
 import com.sckj.utils.DateTimeUtils;
 import com.sckj.utils.UUIDUtils;
 import com.weixin.miniapp.api.WxMaService;
@@ -20,23 +22,25 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
-public class UserListServiceImp  implements UserListService{
+public class UserListServiceImp implements IUserListService {
 
     @Autowired
     private WxMaService wxService;
 
     @Autowired
-    private sckjUserListMapper userListMapper;
+    private UserListDAO userListMapper;
 
     @Autowired
     private UserListJpa userListJpa;
@@ -234,6 +238,31 @@ public class UserListServiceImp  implements UserListService{
             return true;
         }
         return false;
+    }
+
+    @Autowired
+    private UserListDAO userListDAO;
+
+    @RequestMapping("/login")
+    public ResultData getUserInfo()
+    {
+        ResultData resultData = new ResultData();
+
+        try{
+            resultData.setStatus(ResultStatusEnum.SUCESS.toString());
+            resultData.setMessage("获取用户成功");
+        }catch (Exception e){
+            resultData.setStatus(ResultStatusEnum.FAIL.toString());
+            resultData.setMessage("获取用户失败：" + e);
+
+        }
+        return resultData;
+
+    }
+
+    @Override
+    public Page<SckjUserListDTO> findUserListPage(SckjUserListDTO sckjUserListDTO, Pageable pageable) {
+       return userListDAO.findUserListPage(sckjUserListDTO,pageable);
     }
 
 

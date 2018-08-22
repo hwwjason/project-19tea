@@ -1,6 +1,7 @@
 package com.sckj.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.sckj.common.BaseModel;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

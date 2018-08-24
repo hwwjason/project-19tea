@@ -1,6 +1,10 @@
 package com.sckj.dao;
 
+import com.sckj.dto.ProductListDTO;
 import com.sckj.pojo.ProductListWithBLOBs;
+
+import java.util.List;
+import java.util.Map;
 
 public interface ProductListMapper {
     /**
@@ -18,4 +22,10 @@ public interface ProductListMapper {
      * @mbg.generated
      */
     int insertSelective(ProductListWithBLOBs record);
+
+    int deleteProductByIds(String[] ids);
+
+    List<ProductListDTO> getProductList(Map<String,Object> map);
+
+    ProductListWithBLOBs  getOne(String id);
 }

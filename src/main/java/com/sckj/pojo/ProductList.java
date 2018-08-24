@@ -271,7 +271,7 @@ public class ProductList {
      * This field corresponds to the database column sckj_product_list.IsFriend
      *
      * @mbg.generated
-     */@Column(name = "isfriend",columnDefinition = "VARCHAR")
+     */@Column(name = "IsFriend",columnDefinition = "VARCHAR")
     private String isfriend;
 
     /**

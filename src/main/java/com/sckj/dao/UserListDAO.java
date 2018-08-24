@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserListDAO {
 
@@ -67,4 +68,6 @@ public interface UserListDAO {
     int updateByPrimaryKey(SckjUserList record);
 
     List<SckjUserListDTO> selectUser();
+
+    List<SckjUserListDTO> getUserList(Map<String,Object> map);
 }

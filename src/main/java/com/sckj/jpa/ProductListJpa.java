@@ -1,6 +1,8 @@
 package com.sckj.jpa;
 
+import com.sckj.dto.ProductListDTO;
 import com.sckj.pojo.ProductList;
+import com.sckj.pojo.ProductListWithBLOBs;
 import com.sckj.pojo.SckjUserList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,6 +14,6 @@ import java.util.List;
 
 //@NoRepositoryBean
 @Repository
-public interface ProductListJpa extends JpaRepository<ProductList,String> {
+public interface ProductListJpa extends JpaRepository<ProductListWithBLOBs,String> {
 
 }

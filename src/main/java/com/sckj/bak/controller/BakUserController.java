@@ -3,6 +3,7 @@ package com.sckj.bak.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sckj.common.Query;
 import com.sckj.common.ResultData;
 import com.sckj.dao.UserListDAO;
 import com.sckj.dto.SckjUserListDTO;
@@ -54,11 +55,15 @@ public class BakUserController {
 
     }
 
-    @RequestMapping(value = "/getUserList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData getUserList(@RequestParam(value = "pageNum") int pageNum, @RequestParam(value = "pageSize") int pageSize, @RequestParam(value = "condition",required = false) Map<String,String> condition){
+    @RequestMapping(value = "/getUserilst", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData getUserList(@RequestBody Query query){
         ResultData resultData = new ResultData();
-        PageHelper.startPage(pageNum,pageSize);
-        List<SckjUserListDTO> sckjUserList = userListDAO.selectUser();
+        PageHelper.startPage(query.getPageNum(),query.getPageSize());
+        Map<String,Object> map = (Map<String, Object>) query.getCondition();
+        List<SckjUserListDTO> sckjUserList = userListDAO.getUserList(map);
+        for (SckjUserListDTO listDTO : sckjUserList) {
+            listDTO.setRawData(null);
+        }
         PageInfo<SckjUserListDTO> pageInfo = new PageInfo<SckjUserListDTO>(sckjUserList);
         resultData.setData(pageInfo);
         return resultData;

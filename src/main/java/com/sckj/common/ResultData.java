@@ -8,6 +8,7 @@ public class ResultData {
     private Object data;
     private String status = ResultStatusEnum.SUCESS.toString();
     private String message = "成功";
+    private String path;
 
     public ResultData(Object data, String status, String message) {
         this.data = data;
@@ -44,5 +45,13 @@ public class ResultData {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

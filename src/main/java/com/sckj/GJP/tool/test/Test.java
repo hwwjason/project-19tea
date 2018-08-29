@@ -11,6 +11,7 @@ import java.util.Map;
 import com.sckj.GJP.tool.entity.RsModel;
 import com.sckj.GJP.tool.util.AESUtil;
 import com.sckj.GJP.tool.util.HttpsClientUtil;
+import com.sckj.constant.GJPConstants;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -34,6 +35,12 @@ public class Test {
 	static String auth_code="yYvJPGsh7woXgl1mRUS9CRKD5dDdnCdn";
 	static String signKey="lezitiancheng";
 	static String algorithmstr="AES/CBC/PKCS7Padding";
+
+//	static String appkey= GJPConstants.APPKEY;
+//	static String secretStr=GJPConstants.APPSECRET;
+//	static String auth_code=GJPConstants.;
+//	static String signKey=GJPConstants.SIGNKEY;
+//	static String algorithmstr="AES/CBC/PKCS7Padding";
 
 
 	static String tokenUrl= "http://ca.mygjp.com:8002/api/token";

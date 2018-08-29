@@ -1,17 +1,30 @@
 package com.sckj.GJP.example;
 
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.junit.jupiter.api.Test;
 
 public class GJPTest {
-    public void test(){
-//        HttpRequest request = new HttpRequest();
 
+    @Test
+    public void getAuthCode() throws Exception{
 
-//        String path = request.getContextPath();
-//        String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+//        公司名称：TestMall
+//        用户名：test
+//        密码：grasp@101
+//        String CompanyName = "TestMall";
+//        String UserName = "TestMall";
+//        String PassWord = "grasp@101";
 //
-//        Config con = new Config();
-//        String  result=con.GetAuthCodeUrl(basePath + "GetToken.jsp?");                     //调用定义的方法
-//        String orderPath = basePath + "UploadesEshopSaleorders.jsp";
+//        String canShu = "";
+//        String result = HttpRequest.sendPost(Config.auth_code_url, canShu);
+//        System.out.println(result);
+//
+        GetToken getToken = new GetToken();
+        getToken.DoGetToken("");
+
+
+
     }
 }

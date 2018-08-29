@@ -2,12 +2,14 @@ package com.sckj.pojo;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
-//@Entity
-//@Table(name = "sckj_user_list")
-//@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
+@Entity
+@Table(name = "sckj_user_cart")
+@JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 public class UserCart {
     /**
      *
@@ -16,6 +18,7 @@ public class UserCart {
      *
      * @mbg.generated
      */
+    @Id
     private String id;
 
     /**
@@ -25,6 +28,7 @@ public class UserCart {
      *
      * @mbg.generated
      */
+    @Column(name = "userid",columnDefinition = "VARCHAR")
     private String userid;
 
     /**
@@ -34,6 +38,7 @@ public class UserCart {
      *
      * @mbg.generated
      */
+    @Column(name = "productid",columnDefinition = "VARCHAR")
     private String productid;
 
     /**
@@ -43,6 +48,7 @@ public class UserCart {
      *
      * @mbg.generated
      */
+    @Column(name = "specificationid",columnDefinition = "VARCHAR")
     private String specificationid;
 
     /**
@@ -52,6 +58,7 @@ public class UserCart {
      *
      * @mbg.generated
      */
+    @Column(name = "product_type",columnDefinition = "VARCHAR")
     private String productType;
 
     /**
@@ -61,6 +68,7 @@ public class UserCart {
      *
      * @mbg.generated
      */
+    @Column(name = "num",columnDefinition = "INTEGER")
     private Integer num;
 
     /**
@@ -70,6 +78,7 @@ public class UserCart {
      *
      * @mbg.generated
      */
+    @Column(name = "cart_type",columnDefinition = "VARCHAR")
     private String cartType;
 
     /**
@@ -79,6 +88,7 @@ public class UserCart {
      *
      * @mbg.generated
      */
+    @Column(name = "status",columnDefinition = "VARCHAR")
     private String status;
 
     /**

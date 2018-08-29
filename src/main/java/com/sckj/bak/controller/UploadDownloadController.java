@@ -3,6 +3,9 @@ package com.sckj.bak.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.sckj.common.ResultData;
 import com.sckj.enums.ResultStatusEnum;
+import com.sckj.utils.DateTimeUtils;
+import com.sckj.utils.FileUtils;
+import com.sckj.utils.UUIDUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,11 +14,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
- 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
- 
+import java.util.List;
+
 /**
  * Created by jack on 2017/10/30.
  */
@@ -23,45 +28,47 @@ import java.io.*;
 @RequestMapping("bak/image")
 public class UploadDownloadController {
     private static final Logger logger = LoggerFactory.getLogger(UploadDownloadController.class);
-    //@Value("${uploadDir}")
+    @Value("${uploadDir}")
     private String uploadDir;
  
     @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
     public ResultData uploadImage(@RequestParam(value = "file") MultipartFile file) throws RuntimeException {
-        ResultData resultData = new ResultData();
-        if (file.isEmpty()) {
-//            throw new BUsinessEx
-            resultData.setMessage("文件不能为空");
-            resultData.setStatus(ResultStatusEnum.FAIL.toString());
-            return resultData;
-        }
-        // 获取文件名
-        String fileName = file.getOriginalFilename();
-        logger.info("上传的文件名为：" + fileName);
-        // 获取文件的后缀名
-        String suffixName = fileName.substring(fileName.lastIndexOf("."));
-        logger.info("上传的后缀名为：" + suffixName);
-        // 文件上传后的路径
-        String filePath = uploadDir;
-        // 解决中文问题，liunx下中文路径，图片显示问题
-        // fileName = UUID.randomUUID() + suffixName;
-        File dest = new File(filePath + fileName);
-        // 检测是否存在目录
-        if (!dest.getParentFile().exists()) {
-            dest.getParentFile().mkdirs();
-        }
-        try {
-            file.transferTo(dest);
-            resultData.setMessage("文件"+fileName+"上传成功");
-            return resultData;
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        resultData.setMessage("文件上传失败");
-        resultData.setStatus(ResultStatusEnum.FAIL.toString());
-        return resultData;
+        return FileUtils.uploadImage(file);
+//        ResultData resultData = new ResultData();
+//        if (file.isEmpty()) {
+//            resultData.setMessage("文件不能为空");
+//            resultData.setStatus(ResultStatusEnum.FAIL.toString());
+//            return resultData;
+//        }
+//        // 获取文件名
+//        String fileName = file.getOriginalFilename();
+//        logger.info("上传的文件名为：" + fileName);
+//        // 获取文件的后缀名
+//        String suffixName = fileName.substring(fileName.lastIndexOf("."));
+//        logger.info("上传的后缀名为：" + suffixName);
+//        // 文件上传后的路径
+//        String filePath = uploadDir+"/";
+//        // 解决中文问题，liunx下中文路径，图片显示问题
+//        fileName = DateTimeUtils.getCurDate2()+"/"+DateTimeUtils.getCurTime2() + UUIDUtils.generate()+suffixName;
+//        File dest = new File(filePath + fileName);
+//        // 检测是否存在目录
+//        if (!dest.getParentFile().exists()) {
+//            dest.getParentFile().mkdirs();
+//        }
+//        try {
+//            file.transferTo(dest);
+//            resultData.setPath(fileName);
+//            resultData.setMessage("文件"+fileName+"上传成功");
+//            return resultData;
+//        } catch (IllegalStateException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        resultData.setPath(fileName);
+//        resultData.setMessage("文件上传失败");
+//        resultData.setStatus(ResultStatusEnum.FAIL.toString());
+//        return resultData;
     }
  
     //文件下载相关代码
@@ -114,6 +121,36 @@ public class UploadDownloadController {
             }
         }
         return null;
+    }
+
+    /**
+     * 多文件具体上传时间，主要是使用了MultipartHttpServletRequest和MultipartFile
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/batch/upload", method = RequestMethod.POST)
+    public String handleFileUpload(HttpServletRequest request) {
+        List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
+        MultipartFile file = null;
+        BufferedOutputStream stream = null;
+        for (int i = 0; i < files.size(); ++i) {
+            file = files.get(i);
+            if (!file.isEmpty()) {
+                try {
+                    byte[] bytes = file.getBytes();
+                    stream = new BufferedOutputStream(new FileOutputStream(new File(file.getOriginalFilename())));
+                    stream.write(bytes);
+                    stream.close();
+                } catch (Exception e) {
+                    stream = null;
+                    return "You failed to upload " + i + " => " + e.getMessage();
+                }
+            } else {
+                return "You failed to upload " + i + " because the file was empty.";
+            }
+        }
+        return "upload successful";
     }
  
  

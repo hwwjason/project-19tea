@@ -1,6 +1,8 @@
 package com.sckj.GJP.example;
 
 
+import com.sckj.constant.GJPConstants;
+
 public class Config {
 
 //	1，app key：68943923115886070418838901844741
@@ -24,22 +26,20 @@ public class Config {
 	public static String companyName = "TestMall";
 	public static String userName = "test";
 	public static String userpass = "grasp@101";
-	public static String appkey = "68943923115886070418838901844741";
+//	public static String appkey = "68943923115886070418838901844741";
+	public static String appkey = GJPConstants.APP_KEY;
 	public static String app_secret = "ONxYDyNaCoyTzsp83JoQ3YYuMPHxk3j7";
 	public static String sign_key = "lezitiancheng";
-//	public static String get_token_url = "http://ca.mygjp.com:8010/api/token";
 	public static String get_token_url = "http://ca.mygjp.com:8002/api/token";
 	public static String redirect_url =  "http://localhost:8081/GetToken.jsp";
-	public static String auth_code_url = String.format("%sappkey=%s&redirect_url=%s&keyword=test", "http://ca.mygjp.com:8001/account/login?",appkey,redirect_url);
+//	public static String login_code = "http://ca.mygjp.com:666/account/login?";
+	public static String login_code = GJPConstants.AUTH_CODE_URL;
+	public static String auth_code_url = String.format("%sappkey=%s&redirect_url=%s&keyword=test", login_code,appkey,redirect_url);
 	public static String shop_key = "e4994811-bbb8-44cd-86cb-328b263be7e0";
 	public static String token = "zK4f4hRxpwehi651mBPM3gkeQEqw2BH96SG32kOr";
 
 
-	public String GetAuthCodeUrl(String redirect_url)
-	{
-//		String ret = String.format("%sappkey=%s&redirect_url=%s&keyword=test", "http://ca.mygjp.com:8012/account/login?",appkey,redirect_url); ;
-
-		String ret = String.format("%sappkey=%s&redirect_url=%s&keyword=test", "http://ca.mygjp.com:8001/account/login?",appkey,redirect_url); ;
-		return ret;
+	public String GetAuthCodeUrl(String redirect_url) throws Exception {
+		return auth_code_url;
 	}
 }

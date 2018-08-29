@@ -20,14 +20,24 @@ public class DateTimeUtils {
         return date;
     }
 
+    public static String getCurTime2(){
+        return fmtDT2.format(new Date());
+    }
+
     /** 返回一个日期时间戳, 精确到秒yyyy-MM-dd HH:mm:ss */
     public static String getCurTime() {
         return fmtDT.format(new Date());
     }
 
+    public static String getCurDate2(){
+        return fmtDate2.format(new Date());
+    }
+
     public static String toString(Date date) {
         return fmtDT.format(date);
     }
+
+
 
     public static String getString(Date time,String timeStr){
         return StringUtils.isNotEmpty(timeStr)?timeStr:(time!=null?DateTimeUtils.toString(time):"");

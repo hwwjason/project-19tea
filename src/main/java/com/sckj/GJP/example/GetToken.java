@@ -1,5 +1,6 @@
 package com.sckj.GJP.example;
 
+import com.sckj.constant.GJPConstants;
 import net.sf.json.JSONObject;
 
 import java.net.URLEncoder;
@@ -11,7 +12,9 @@ import java.util.Map;
 public class GetToken {
 	public String DoGetToken(String param) throws Exception
 	{
-		String code = GetAuthCode(param);
+//		String code = GetAuthCode(param);
+		String code = GJPConstants.AUTH_CODE;
+
 
 		//获取p参数
 		JSONObject obj = new JSONObject();

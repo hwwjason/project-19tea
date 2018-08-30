@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>表格</title>
+    <link rel="stylesheet" href="../frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../frame/static/css/style.css">
+    <link rel="icon" href="../frame/static/image/code.png">
+    <link rel="stylesheet" href="../frame/font-awesome-4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="body">
+    <div class="layui-form layui-form-pane">
+        <div class="layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户类型</label>
+                    <div class="layui-input-inline" id="selectArea">
+                        <select name="userType" class="userType">
+                            <option value="">--请选择--</option>
+                            <option value="0"">普通用户</option>
+                            <option value="1">VIP1</option>
+                            <option value="2">VIP2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户ID</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="userId" placeholder="请输入商品ID" autocomplete="off" class="layui-input input_userId">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">用户手机号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="tel" placeholder="请输入用户手机号" autocomplete="off" class="layui-input input_tel">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-list" onclick="search()">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn">&#xe615</i>查询
+                    </button>
+                    <button class="layui-btn layuiadmin-btn-list" onclick="window.location.reload()">
+                        <i class="fa fa-refresh"></i> 刷新
+                    </button>
+                    <button class="layui-btn layuiadmin-btn-list" >
+                        <i class="fa fa-table"></i> 导出
+                    </button>
+                </div>
+            </div>
+        </div>
+        <table class="layui-table" id="vueDiv" >
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" lay-filter="checkall" id="checkall" name="checkall" lay-skin="primary" >
+                    </th>
+                    <th>用户UID</th>
+                    <th>用户昵称</th>
+                    <th>手机号</th>
+                    <th>头像</th>
+                    <th>注册时间</th>
+                    <th>最后登录时间</th>
+                    <th>用户状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody class="orderList">
+                <tr v-for="item in orderList" v-key="orderList">
+                    <td>
+                        <input type="checkbox" lay-filter="childCheck" name="" lay-skin="primary" >
+                    </td>
+                    <td>{{item.userId}}</td>
+                    <td>{{item.nickname}}</td>
+                    <td>{{item.tel}}</td>
+                    <td><img :src="item.headimg" width="50" height="50"></td>
+                    <td>{{item.regtimeStr}}</td>
+                    <td>{{item.lastlogintimeStr}}</td>
+                    <td>{{item.state}}</td>
+                    <td>
+                        <button class="layui-btn layui-btn-normal layui-btn-small" lay-event="edit">
+                            编辑
+                        </button>
+                        <button class="layui-btn layui-btn-danger layui-btn-small" lay-submit lay-filter="showDetail">详情</button>
+                        <a class="layui-btn layui-btn-small" lay-event="del">冻结</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="pagelist"></div>
+        <div class="alert-div" style="display: none;">11111</div>
+    </div>
+    <script type="text/javascript" src="../frame/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../frame/layui/layui.js"></script>
+    <script type="text/javascript" src="../frame/static/js/vue.min.js"></script>
+    <script type="text/javascript">
+    var orderList = "",
+        form = "",
+        laypage = "",
+        count = 0,
+        pageNum = 1,
+        pageSize = 10,
+        pagecurr = 1,
+        getListData = {
+            "pageNum": pageNum,
+            "pageSize": pageSize,
+            "condition": {
+                "userId": "",
+                "userType": "",
+                "tel": ""
+            }
+        };
+
+    var vm = new Vue({
+        el: "#vueDiv",
+        data: {
+            orderList:""
+        },
+        mounted: function() {
+            this.getList(getListData);
+        },
+        methods: {
+            layuiInit: function() {
+                layui.use(['form', 'layedit', 'laypage', 'jquery', 'laydate'], function() {
+                    laypage = layui.laypage;
+                    form = layui.form;
+                    laydate = layui.laydate;
+                    var $ = layui.jquery;
+                    // 监听checkbox选中事件，全选
+                    form.on('checkbox(checkall)', function(data) {
+                        ///data.elem.checked单选框是否选中
+                        $(".orderList input[type='checkbox']").each(function(index, el) {
+                            el.checked = data.elem.checked;
+                        });
+                        form.render('checkbox');
+                    });
+                    //单个checkbox选中事件
+                    form.on('checkbox(childCheck)', function(event) {
+                        var checkNum = 0;
+                        $(".orderList input[type='checkbox']").each(function(index, el) {
+                            if (el.checked == false) {
+                                checkNum++
+                                $("#checkall").prop("checked", false);
+                            }
+                        });
+                        if (checkNum == 0) {
+                            $("#checkall").prop("checked", true);
+                        }
+                        form.render('checkbox');
+                        /* Act on the event */
+                    });
+                    //时间范围
+                    laydate.render({
+                        elem: '#dateBegin',
+                        range: true
+                    });
+                    //分页
+                    laypage.render({
+                        elem: 'pagelist',
+                        count: count,
+                        limit: pageSize,
+                        layout: ['count', 'prev', 'page', 'next', 'refresh', 'skip'],
+                        jump: function(obj, first) {
+                            if (!first) {
+                                pagecurr = obj.curr
+                                $.ajax({
+                                    url: baseURL + "bak/user/getUserilst",
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    contentType: "application/json;charset=UTF-8",
+                                    data: JSON.stringify({ "pageNum": obj.curr, "pageSize": pageSize }),
+                                }).done(function(res) {
+                                    if (res.status == "1") {
+                                        orderList = res.data.list;
+                                        vm.orderList = orderList;
+                                        $(".orderList .childCheck").each(function(index, el) {
+                                            $(el).prop("checked", false)
+                                        });
+                                        $("#checkall").prop("checked", false);
+                                        setTimeout(function() {
+                                            form.render();
+                                        }, 0)
+                                    }
+                                }).fail(function() {
+                                    console.log("error");
+                                })
+                            }
+                        }
+                    });
+                    form.render();
+                })
+            },
+            getList: function(obj) {
+                var that = this;
+                $.ajax({
+                    url: baseURL + "bak/user/getUserilst",
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify(obj),
+                }).done(function(res) {
+                    if (res.status == "1") {
+                        orderList = res.data.list;
+                        that.orderList = orderList;
+                        count = res.data.total
+                        that.layuiInit();
+                    }
+                }).fail(function() {
+                    console.log("error");
+                })
+            },
+            watch: function() {
+                this.layuiInit();
+            }
+        }
+    })
+    //查询商品
+    function search() {
+        var userType = $(".userType").val();
+        var input_userId = $(".input_userId").val();
+        var input_tel = $(".input_tel").val();
+        getListData.condition.userType = userType;
+        getListData.condition.userId = input_userId;
+        getListData.condition.tel = input_tel;
+        vm.getList(getListData);
+    }
+    </script>
+</body>
+
+</html>

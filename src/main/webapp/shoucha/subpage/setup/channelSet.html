@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>组件配置</title>
+    <link rel="stylesheet" href="../../frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../frame/static/css/style.css">
+    <link rel="stylesheet" href="../../frame/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../frame/static/css/addProduct.css">
+    <style type="text/css">
+    .c-list {
+        width: 540px;
+        float: left;
+        height: 100%;
+    }
+
+    .layui-form-pane .layui-form-label {
+        border: none;
+    }
+
+    .layui-tab-item {
+        margin-top: 20px;
+    }
+
+    .peizhi {
+        float: left;
+        width: 900px;
+        position: relative;
+        border: 1px solid #ddd;
+        min-height: 680px;
+    }
+
+    .c-list li {
+        border-bottom: 1px solid #ddd;
+        line-height: 50px;
+        height: 50px;
+    }
+
+    .layui-elem-quote ul {
+        overflow: hidden;
+    }
+
+    .layui-elem-quote li {
+        float: left;
+        margin-right: 10px;
+    }
+
+    #ul2 {
+        width: 500px;
+    }
+
+    .ul2-li {
+        /*overflow: hidden;*/
+        position: relative;
+    }
+
+    .ul2-li:after {
+        content: "";
+        position: absolute;
+        background: url(../../frame/static/image/right_icon.png) no-repeat;
+        width: 30px;
+        height: 30px;
+        background-size: contain;
+        top: 10px;
+        right: -47px;
+    }
+
+    .no-after:after {
+        display: none;
+    }
+
+    .ul2-li text {
+        float: left;
+    }
+
+    .ul2-li .layui-btn {
+        margin-top: 10px;
+    }
+
+    .ul2-li .content-text {
+        width: 400px;
+    }
+
+    .addComponent {
+        position: absolute;
+        top: 0;
+        right: -100px;
+    }
+
+    .url-show,
+    .timeShow,
+    .banner-set,
+    .advertisement-set,
+    .border-set,
+    .product-switch-set,
+    .product-set {
+        display: none;
+    }
+    </style>
+</head>
+
+<body class="body">
+    <div id="vueDiv" class="layui-form layui-form-pane">
+        <div class="layui-elem-quote">
+            <div class="layui-inline">
+                <ul>
+                    <li>
+                        <button btnVal="频道长图" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event)">频道长图</button>
+                    </li>
+                    <li>
+                        <button btnVal="商品通栏" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event)">商品通栏</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label" style="background: none">频道名称</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" placeholder="请输入方案名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </div>
+        <div class="c-list">
+            <ul id="ul2" ondrop="drop(event)" ondragover="allowDrop(event)">
+                <li class="ul2-li no-after">
+                    <text class="content-text" ondblclick="modifyName(this)">频道长图</text>
+                    <text class="layui-btn layui-btn-small" onclick="set(this,'banner-set')">配置</text>
+                    <text class="layui-btn layui-btn-small layui-btn-danger">删除</text>
+                </li>
+                <li class="ul2-li no-after">
+                    <text class="content-text" ondblclick="modifyName(this)">商品通栏</text>
+                    <text class="layui-btn layui-btn-small" onclick="set(this,'product-set')">配置</text>
+                    <text class="layui-btn layui-btn-small layui-btn-danger">删除</text>
+                </li>
+            </ul>
+        </div>
+        <!-- banner设置开始 -->
+        <div class="layui-tab peizhi banner-set" lay-allowClose="true" lay-filter="banner">
+            <a class="layui-btn addComponent site-demo-active" lay-submit lay-filter="addComponent" data-type="tabAdd">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <ul class="layui-tab-title">
+                <li class="layui-this">banner1</li>
+                <li class="">banner2</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item  banner-content"  v-for="(item,index) in banner" v-key="banner" :class="index==0?'layui-show':''" :index="index">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">图片</label>
+                        <div class="layui-input-inline">
+                            <div class="addImg">
+                                <i class="fa fa-plus"></i>
+                            </div>
+                            <input type="file" class="input-file" name="username" onchange="preview(this)">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">跳转地址</label>
+                        <div class="layui-input-block">
+                            <input type="radio" lay-filter="urlType" name="bannerurlType" value="频道" title="频道">
+                            <input type="radio" lay-filter="urlType" name="bannerurlType" value="商品" title="商品" checked="">
+                            <input type="radio" lay-filter="urlType" name="bannerurlType" value="链接" title="链接">
+                        </div>
+                    </div>
+                    <div class="product-show">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">商品编号</label>
+                            <div class="layui-input-inline">
+                                <input name="121" class="layui-input" placeholder="请输入商品编号搜索">
+                            </div>
+                            <div class="layui-input-inline">
+                                <button class="layui-btn layuiadmin-btn-list">
+                                    匹配
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">商品标题</label>
+                                <div class="layui-input-inline">
+                                    <input name="" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="url-show">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-input-inline">
+                                    <input name="" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">排序</label>
+                            <div class="layui-input-inline">
+                                <input name="" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">时效</label>
+                        <div class="layui-input-block">
+                            <input type="radio" lay-filter="timeType" name="bannertimeType" value="永久" title="永久" checked="">
+                            <input type="radio" lay-filter="timeType" name="bannertimeType" value="时间配置" title="时间配置">
+                        </div>
+                    </div>
+                    <div class="timeShow">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">开始时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="dateBegin" placeholder="yyyy-MM-dd">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">结束时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="dateEnd" placeholder="yyyy-MM-dd">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-inline">
+                                <button class="layui-btn">保存</button>
+                                <button class="layui-btn">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- banner设置结束 -->
+
+        <!-- 商品通栏设置开始 -->
+        <div class="layui-tab peizhi product-set" lay-allowClose="true" lay-filter="product">
+            <a class="layui-btn addComponent site-product-active" lay-submit lay-filter="productComponent" data-type="productAdd">
+                <i class="fa fa-plus"></i> 添加
+            </a>
+            <ul class="layui-tab-title">
+                <li class="layui-this">商品1</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show product-content">
+                    <div class="product-show">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">商品编号</label>
+                            <div class="layui-input-inline">
+                                <input name="121" class="layui-input" placeholder="请输入商品编号搜索">
+                            </div>
+                            <div class="layui-input-inline">
+                                <button class="layui-btn layuiadmin-btn-list">
+                                    匹配
+                                </button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">商品名称</label>
+                                <div class="layui-input-inline">
+                                    <input name="" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="url-show">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label"></label>
+                                <div class="layui-input-inline">
+                                    <input name="" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">标签1</label>
+                            <div class="layui-input-inline">
+                                <input name="" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">标签2</label>
+                            <div class="layui-input-inline">
+                                <input name="" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">排序</label>
+                            <div class="layui-input-inline">
+                                <input name="" class="layui-input">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">时效</label>
+                        <div class="layui-input-block">
+                            <input type="radio" lay-filter="timeType" name="producttimeType" value="永久" title="永久" checked="">
+                            <input type="radio" lay-filter="timeType" name="producttimeType" value="时间配置" title="时间配置">
+                        </div>
+                    </div>
+                    <div class="timeShow">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">开始时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="dateBegin" placeholder="yyyy-MM-dd">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">结束时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" id="dateEnd" placeholder="yyyy-MM-dd">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-inline">
+                                <button class="layui-btn">保存</button>
+                                <button class="layui-btn">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 商品通栏设置结束 -->
+       
+    </div>
+    <script type="text/javascript" src="../../frame/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../../frame/layui/layui.js"></script>
+    <script type="text/javascript" src="../../frame/dragsort/jquery.dragsort.js"></script>
+    <script type="text/javascript" src="../../frame/static/js/vue.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        // $.post("", {}, function(res) {
+
+        // }, "json");
+        $(".c-list ul").dragsort({
+
+        });
+        var banner_vm = new Vue({
+            el:".banner-set",
+            data:{
+                banner:[1,2]
+            }
+        })
+    })
+    layui.use(['element', 'layer', 'form', 'laydate'], function() {
+        var form = layui.form;
+        var layer = layui.layer;
+        var laydate = layui.laydate;
+        var $ = layui.jquery,
+            element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
+
+        //触发事件
+        var bannerName = "";
+        var contentHtml = $(".banner-content").html();
+        var active = {
+            tabAdd: function(e) {
+                contentHtml = '<div class="layui-input-block">' +
+                    '<input type="radio" lay-filter="urlType" name="bannerurlType2" value="频道" title="频道">' +
+                    '<input type="radio" lay-filter="urlType" name="bannerurlType2" value="商品" title="商品" ' +
+                    'checked="">' +
+                    '<input type="radio" lay-filter="urlType" name="bannerurlType2" value="链接" title="链接">' +
+                    '</div>'
+                //新增一个Tab项
+                element.tabAdd('banner', {
+                    title: bannerName,
+                    content: contentHtml,
+                    id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
+                })
+                form.render();
+            }
+
+        };
+        var productName = "";
+        var productHtml = $(".product-content").html();
+        var productactive = {
+            productAdd: function(e) {
+                //新增一个Tab项
+                element.tabAdd('product', {
+                    title: productName,
+                    content: productHtml,
+                    id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
+                })
+            }
+        };
+        $('.site-demo-active').on('click', function() {
+            var length = $(".banner-set .layui-tab-title li").length + 1;
+            bannerName = "banner" + length;
+            var othis = $(this),
+                type = othis.data('type');
+            active[type] ? active[type].call(this, othis) : '';
+        });
+        $('.site-product-active').on('click', function() {
+            var length = $(".product-set .layui-tab-title li").length + 1;
+            productName = "商品" + length;
+            var othis = $(this),
+                type = othis.data('type');
+            productactive[type] ? productactive[type].call(this, othis) : '';
+        });
+        // 跳转地址类型切换
+        form.on('radio(urlType)', function(data) {
+            if (data.value == "商品") {
+                $(".product-show").show();
+                $(".url-show").hide();
+            } else {
+                $(".product-show").hide();
+                $(".url-show").show();
+            }
+        });
+        // 时效切换
+        form.on('radio(timeType)', function(data) {
+            if (data.value == "永久") {
+                $(".timeShow").hide();
+            } else {
+                $(".timeShow").show();
+            }
+        });
+        //时间范围
+        laydate.render({
+            elem: '#dateBegin',
+            type: 'datetime',
+            done: function(value, date, endDate) {
+                console.log(value); //得到日期生成的值，如：2017-08-18
+                console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+            }
+        });
+        laydate.render({
+            elem: '#dateEnd',
+            type: 'datetime',
+            done: function(value, date, endDate) {
+                console.log(value); //得到日期生成的值，如：2017-08-18
+                console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
+                console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+            }
+        });
+    });
+
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        var btnVal = ev.target.getAttribute("btnVal");
+        ev.dataTransfer.setData("Text", btnVal);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("Text");
+        var className = "";
+        var dataArr = ["频道长图", "商品通栏"];
+        if (dataArr.indexOf(data) == -1) {
+            return false;
+        }
+        if (data == "频道长图") {
+            className = "'banner-set'";
+        }
+        if (data == "商品通栏") {
+            className = "'product-set'";
+        }
+        var html = '<li class="ul2-li no-after"><text class="content-text" ondblclick="modifyName(this)">' + data + '</text><text class="layui-btn layui-btn-small" onclick="set(this,' + className + ')">配置</text><text class="layui-btn layui-btn-small layui-btn-danger">删除</text></li>'
+        var dropclass = ev.target.getAttribute("class");
+        if (dropclass != "ul2-li") {
+            $(ev.target).parent(".ul2-li").after(html);
+        } else {
+            $(ev.target).after(html)
+        }
+    }
+    //双击修改名称
+    function modifyName(argument) {
+        var that = $(argument);
+        layer.prompt({ title: '输入组件名称' }, function(pass, index) {
+            that.text(pass);
+            layer.close(index);
+        });
+    }
+
+    function preview(obj) {
+        var f = obj.files;
+        var str = "";
+        for (var i = 0; i < f.length; i++) {
+            var reader = new FileReader();
+            reader.readAsDataURL(f[i]);
+            reader.onload = function(e) {
+                str += "<img class='preview-img' src='" + e.target.result + "'/>";
+                str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
+                $(obj).parent().append(str);
+            }
+        }
+    }
+
+    function delimg(obj) {
+        $(obj).siblings(".preview-img").remove();
+        $(obj).siblings(".input-file").val("");
+        $(obj).remove();
+    }
+
+    function set(obj, className) {
+        $(obj).parent(".ul2-li").removeClass("no-after").siblings("li").addClass('no-after');
+        $(".peizhi").hide();
+        $("." + className).show();
+    }
+    </script>
+</body>
+
+</html>

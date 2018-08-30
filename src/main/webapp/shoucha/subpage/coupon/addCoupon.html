@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>添加优惠券</title>
+    <link rel="stylesheet" href="../../frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../frame/static/css/style.css">
+    <link rel="icon" href="../../frame/static/image/code.png">
+    <link rel="stylesheet" href="../../frame/font-awesome-4.7.0/css/font-awesome.min.css">
+    <style type="text/css">
+    .layui-form-pane .layui-form-label {
+        text-overflow: initial;
+    }
+
+    .effective-div,
+    .applyType-div,
+    .discount {
+        display: none;
+    }
+
+    .red-div {
+        color: red;
+        line-height: 38px;
+    }
+    </style>
+</head>
+
+<body class="body">
+    <div id="vueDiv">
+        <p class="layui-elem-quote">添加优惠券</p>
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">优惠券名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" placeholder="请输入优惠券名称" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">优惠券描述</label>
+                <div class="layui-input-block">
+                    <input type="text" name="title" placeholder="请输入优惠券描述" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">优惠类型</label>
+                <div class="layui-input-block">
+                    <input type="radio" lay-filter="couponType" name="couponType" value="满减" title="满减" checked="">
+                    <input type="radio" lay-filter="couponType" name="couponType" value="现金" title="现金">
+                    <input type="radio" lay-filter="couponType" name="couponType" value="折扣" title="折扣">
+                    <input type="radio" lay-filter="couponType" name="couponType" value="商品" title="商品">
+                </div>
+            </div>
+            <div class="showHide">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">满金额(元)</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" placeholder="请输入满金额" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">减金额(元)</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" placeholder="请输入减金额" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="discount">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">折扣</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" placeholder="请输入满金额" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">配置数量</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="title" placeholder="请输入配置数量" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">有效类型</label>
+                <div class="layui-input-block">
+                    <input type="radio" lay-filter="timeType" name="timeType" value="规定时间段" title="规定时间段" checked="">
+                    <input type="radio" lay-filter="timeType" name="timeType" value="领取后生效" title="领取后生效">
+                </div>
+            </div>
+            <div class="timeType-div">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">开始时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="beginTime" placeholder="请选择开始时间">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">结束时间</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="endTime" placeholder="请选择开始时间">
+                    </div>
+                </div>
+            </div>
+            <div class="effective-div">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">有效天数</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">适用类型</label>
+                <div class="layui-input-block">
+                    <input type="radio" lay-filter="applyType" name="applyType" value="全局" title="全局" checked="">
+                    <input type="radio" lay-filter="applyType" name="applyType" value="品类" title="品类">
+                    <input type="radio" lay-filter="applyType" name="applyType" value="商品" title="商品">
+                    <input type="radio" lay-filter="applyType" name="applyType" value="频道" title="频道">
+                </div>
+            </div>
+            <div class="applyType-div">
+                <div class="layui-form-item productType">
+                    <label class="layui-form-label">商品分类</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="like1[write]" lay-skin="primary" title="茉莉花茶" checked="">
+                        <input type="checkbox" name="like1[read]" lay-skin="primary" title="花草茶">
+                        <input type="checkbox" name="like1[game]" lay-skin="primary" title="功能茶">
+                        <input type="checkbox" name="like1[game]" lay-skin="primary" title="原叶茶">
+                    </div>
+                </div>
+                <div class="layui-form-item product">
+                    <label class="layui-form-label">商品</label>
+                    <div class="layui-input-block">
+                        <input type="text" class="layui-input" value="" placeholder="">
+                    </div>
+                </div>
+                <div class="layui-form-item channel">
+                    <label class="layui-form-label">频道</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="like1[write]" lay-skin="primary" title="新用户福利" checked="">
+                        <input type="checkbox" name="like1[read]" lay-skin="primary" title="激情世界杯">
+                        <input type="checkbox" name="like1[game]" lay-skin="primary" title="限量版商品">
+                        <input type="checkbox" name="like1[game]" lay-skin="primary" title="世界杯茉莉龙珠">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">跳转地址</label>
+                <div class="layui-input-block">
+                    <input type="text" class="layui-input" value="" placeholder="跳转地址留空则为默认跳转至首页">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">注：</label>
+                <div class="layui-input-block">
+                    <div class="red-div">跳转地址留空则为默认跳转至首页；配置数量为0时表示不限量； *</div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">&nbsp;</label>
+                <div class="layui-input-block">
+                    <button class="layui-btn layuiadmin-btn-list" onclick="window.history.go(-1)">
+                        <i class="layui-icon">&#xe65c;</i>返回
+                    </button>
+                    <button class="layui-btn layuiadmin-btn-list">
+                        <i class="fa fa-send"></i>&nbsp;&nbsp;提交
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript" src="../../frame/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../../frame/layui/layui.js"></script>
+    <script type="text/javascript" src="../../frame/static/js/vue.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        // $.post("", {}, function(res) {
+
+        // }, "json");
+    })
+    layui.use(['form', 'laydate'], function() {
+        var form = layui.form;
+        var laydate = layui.laydate;
+        // 优惠券类型切换
+        form.on('radio(couponType)', function(data) {
+            if (data.value == "满减" || data.value == "现金") {
+                $(".showHide").show();
+                $(".discount").hide();
+            } else if (data.value == "折扣") {
+                $(".discount").show();
+                $(".showHide").hide();
+            }
+        });
+        // 时间段切换
+        form.on('radio(timeType)', function(data) {
+            if (data.value == "规定时间段") {
+                $(".timeType-div").show();
+                $(".effective-div").hide();
+            } else {
+                $(".effective-div").show();
+                $(".timeType-div").hide();
+            }
+        });
+        // 适用类型切换
+        form.on('radio(applyType)', function(data) {
+            $(".applyType-div .layui-form-item").hide();
+            if (data.value == "全局") {
+                $(".applyType-div").hide();
+            } else {
+                $(".applyType-div").show();
+            }
+            if (data.value == "品类") {
+                $(".productType").show();
+            }
+            if (data.value == "商品") {
+                $(".product").show();
+            }
+            if (data.value == "频道") {
+                $(".channel").show();
+            }
+        });
+        laydate.render({
+            elem: '#beginTime', //指定元素
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#endTime', //指定元素
+            type: 'datetime'
+        });
+    });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>图片上传</title>
+    <link rel="stylesheet" href="../frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../frame/static/css/style.css">
+    <link rel="stylesheet" href="../frame/static/css/addProduct.css">
+    <link rel="icon" href="../frame/static/image/code.png">
+    <link rel="stylesheet" type="text/css" href="../frame/webuploader/webuploader.css" />
+    <link rel="stylesheet" type="text/css" href="../frame/webuploader/style.css" />
+    <link rel="stylesheet" href="../frame/font-awesome-4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="body">
+    <p class="layui-elem-quote">添加商品 &nbsp;&nbsp;
+        <button class="layui-btn layuiadmin-btn-list layui-btn-small" onclick="window.history.go(-1)">
+            <i class="layui-icon">&#xe65c;</i>返回
+        </button>
+    </p>
+    <form class="layui-form" action="https://192.168.0.179/bak/product/putProductToStorage" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品编号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="code" lay-verify="title" autocomplete="off" placeholder="请输入商品编号" class="layui-input">
+            </div>
+            <div class="layui-input-inline">
+                <span class="required-red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品标题</label>
+            <div class="layui-input-inline">
+                <input type="text" name="title" lay-verify="required" placeholder="请输入商品标题" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-inline">
+                <span class="required-red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品副标题</label>
+            <div class="layui-input-inline">
+                <input type="text" name="subtitle" lay-verify="required" placeholder="请输入商品副标题" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-inline">
+                <span class="required-red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">规格</label>
+            <div class="layui-input-inline">
+                <input type="text" name="specification" lay-verify="required" placeholder="请输入规格" autocomplete="off" class="layui-input">
+            </div>
+            <span class="required-red">*</span>
+            <label class="layui-form-label">产地</label>
+            <div class="layui-input-inline">
+                <input type="text" name="supplier" lay-verify="required" placeholder="请输入产地" autocomplete="off" class="layui-input">
+            </div>
+            <label class="layui-form-label">保质期</label>
+            <div class="layui-input-inline">
+                <input type="text" name="shelflife" lay-verify="required" placeholder="请输入保质期" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">售价</label>
+            <div class="layui-input-inline">
+                <input type="text" name="price" lay-verify="required" placeholder="请输入售价" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-inline">
+                <span class="required-red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">成本价</label>
+            <div class="layui-input-inline">
+                <input type="text" name="originalPrice" lay-verify="required" placeholder="请输入成本价" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-inline">
+                <span class="required-red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">库存</label>
+            <div class="layui-input-inline">
+                <input type="text" name="stock" lay-verify="required" placeholder="请输入库存" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-input-inline">
+                <span class="required-red">*</span>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">封面图</label>
+            <div class="layui-input-inline">
+                <div class="addImg">
+                    <i class="fa fa-plus"></i>
+                </div>
+                <input type="file" class="input-file" name="img" onchange="preview(this)">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品轮播图</label>
+            <div class="layui-input-block">
+                <div id="vueDiv" class="layui-form-pane">
+                    <div id="wrapper">
+                        <div id="container">
+                            <!--头部，相册选择和格式选择-->
+                            <div id="uploader">
+                                <div class="queueList">
+                                    <div id="dndArea" class="placeholder">
+                                        <div id="filePicker"></div>
+                                        <p style="margin-bottom: 10px;">或将照片拖到这里，单次最多可选300张</p>
+                                    </div>
+                                </div>
+                                <div class="statusBar" style="display:none;">
+                                    <div class="progress">
+                                        <span class="text">0%</span>
+                                        <span class="percentage"></span>
+                                    </div>
+                                    <div class="info"></div>
+                                    <div class="btns">
+                                        <div id="filePicker2"></div>
+                                        <div class="uploadBtn">开始上传</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">商品详情</label>
+            <div class="layui-input-block">
+                <script id="UEcontainer" name="introduce" type="text/plain" style="height: 500px;">
+                </script>
+            </div>
+        </div>
+        <!-- <div class="layui-form-item">
+            <label class="layui-form-label">商品参数</label>
+            <div class="layui-input-block para-div">
+                <div class="layui-btn layuiadmin-btn-list" onclick="addPara(this)">
+                    <i class="fa fa-plus"></i> 添加
+                </div>
+            </div>
+        </div> -->
+        <div class="layui-form-item">
+            <label class="layui-form-label">上架状态</label>
+            <div class="layui-input-block">
+                <input type="radio" name="IsShelves" value="上架" title="上架" checked="">
+                <input type="radio" name="IsShelves" value="下架" title="下架">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">&nbsp;</label>
+            <div class="layui-input-inline">
+                <button class="layui-btn layuiadmin-btn-list">提 交</button>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript" src="../frame/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../frame/webuploader/webuploader.js"></script>
+    <script type="text/javascript" src="../frame/webuploader/upload.js"></script>
+    <script type="text/javascript" src="../frame/dragsort/jquery.dragsort.js"></script>
+    <script type="text/javascript" src="../frame/layui/layui.js"></script>
+    <script type="text/javascript" src="../frame/static/js/vue.min.js"></script>
+    <script type="text/javascript" src="../frame/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="../frame/ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../frame/ueditor/lang/zh-cn/zh-cn.js"></script>
+</body>
+<script type="text/javascript">
+layui.use('form', function() {
+    var form = layui.form;
+    //监听提交
+    form.on('submit(formDemo)', function(data) {
+        layer.msg(JSON.stringify(data.field));
+        return false;
+    });
+});
+$(function() {
+    var ue = UE.getEditor('UEcontainer');
+    $("#uploader .filelist").dragsort({
+        dragSelector: "li",
+        dragEnd: function(ex) {
+            console.log(this)
+        }
+    });
+})
+
+function preview(obj) {
+    // $(obj).parent().find('.choose').remove();
+    // $(obj).parent().find('img').remove();
+    // $(obj).hide();
+    var f = obj.files;
+    var str = "";
+    for (var i = 0; i < f.length; i++) {
+        var reader = new FileReader();
+        reader.readAsDataURL(f[i]);
+        reader.onload = function(e) {
+            str += "<img class='preview-img' src='" + e.target.result + "'/>";
+            str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
+            $(obj).parent().append(str);
+        }
+    }
+}
+
+function delimg(obj) {
+    $(obj).remove();
+    $(".preview-img").remove();
+    $(".input-file").val("");
+}
+
+function addPara(obj) {
+    var html = '<div class="addPara-div">' +
+        '<div class="layui-input-inline">' +
+        '<input type="text" name="title" placeholder="参数名" class="layui-input"></div>' +
+        '<div class="layui-input-inline">' +
+        '<input type="text" name="title" placeholder="参数值" class="layui-input"></div>' +
+        '<div class="layui-input-inline"><a onclick="removePara(this)" class="layui-btn layuiadmin-btn-list">' +
+        '<i class="fa fa-remove"></i> 删除' +
+        '</a></div></div>';
+    $(obj).parent(".para-div").append(html)
+}
+
+function removePara(obj) {
+    $(obj).parents(".addPara-div").remove();
+}
+</script>
+
+</html>

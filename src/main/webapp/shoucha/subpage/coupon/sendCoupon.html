@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>发放优惠券</title>
+    <link rel="stylesheet" href="../../frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../frame/static/css/style.css">
+    <link rel="icon" href="../../frame/static/image/code.png">
+    <link rel="stylesheet" href="../../frame/font-awesome-4.7.0/css/font-awesome.min.css">
+    <style type="text/css">
+    .layui-form-pane .layui-form-label {
+        text-overflow: initial;
+    }
+    .showHide{
+        display: none;
+    }
+    </style>
+</head>
+
+<body class="body">
+    <div id="vueDiv">
+        <p class="layui-elem-quote">发放优惠券</p>
+        <form class="layui-form" action="">
+            <div class="layui-form-item">
+                <label class="layui-form-label">优惠券名</label>
+                <div class="layui-input-block">
+                    <label class="layui-input-inline" style="line-height: 38px;">冰炮水果茶测试</label>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">发放类型</label>
+                <div class="layui-input-block">
+                    <input type="radio" lay-filter="userType" name="userType" value="全用户" title="全用户" checked="">
+                    <input type="radio" lay-filter="userType" name="userType" value="选择用户" title="选择用户">
+                </div>
+            </div>
+            <div class="showHide">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">字段选择</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="ziduan" value="男" title="手机号码" checked="">
+                        <input type="radio" name="ziduan" value="女" title="用户ID">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">字符串</label>
+                    <div class="layui-input-block" style="width: 50%;">
+                        <textarea placeholder="请输入手机号码或用户ID，用逗号(“,”)分割" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">&nbsp;</label>
+                <div class="layui-input-block">
+                    <button class="layui-btn layuiadmin-btn-list" onclick="window.history.go(-1)">
+                        <i class="layui-icon">&#xe65c;</i>返回
+                    </button>
+                    <button class="layui-btn layuiadmin-btn-list">
+                        <i class="fa fa-send"></i>&nbsp;&nbsp;发券
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript" src="../../frame/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../../frame/layui/layui.js"></script>
+    <script type="text/javascript" src="../../frame/static/js/vue.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        // $.post("", {}, function(res) {
+
+        // }, "json");
+    })
+    layui.use(['form'], function() {
+        var form = layui.form;
+        form.on('radio(userType)',function(data){
+            if(data.value=="选择用户"){
+                $(".showHide").show();
+            }else{
+                $(".showHide").hide();
+            }
+        })
+    });
+    </script>
+</body>
+
+</html>

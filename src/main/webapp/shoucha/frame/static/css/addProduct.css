@@ -1,0 +1,50 @@
+.input-file{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 188px;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	z-index: 2;
+}
+.addImg{
+	position: relative;
+	z-index: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 188px;
+	border: 1px dashed #ddd;
+}
+.addImg i{
+	font-size: 30px;color: #ddd
+}
+.preview-img{
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 3;
+	width: 190px;
+	height: 190px;
+}
+.del-span{
+	position: absolute;
+	top: -10px;
+	right: -10px;
+	z-index: 4;
+	cursor: pointer;
+}
+.del-span i{
+	font-size: 24px;
+}
+#wrapper{
+	margin: 0!important;
+}
+.required-red{
+	line-height: 38px;
+	color: red;
+}
+.addPara-div{
+	overflow:hidden;
+	margin-top: 10px;
+}

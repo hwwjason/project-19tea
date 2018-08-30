@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>财务列表</title>
+    <link rel="stylesheet" href="../frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../frame/static/css/style.css">
+    <link rel="icon" href="../frame/static/image/code.png">
+    <link rel="stylesheet" href="../frame/font-awesome-4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="body">
+    <div id="vueDiv" class="layui-form layui-form-pane">
+        <div class="layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">来源</label>
+                    <div class="layui-input-inline">
+                        <select>
+                            <option>-请选择-</option>
+                            <option>普通订单</option>
+                            <option>普通订单退款</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">类型</label>
+                    <div class="layui-input-inline">
+                        <select>
+                            <option>-请选择-</option>
+                            <option>收入</option>
+                            <option>支出</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">支付方式</label>
+                    <div class="layui-input-inline">
+                        <select>
+                            <option>-请选择-</option>
+                            <option>微信</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">时间范围</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="dateBegin" placeholder="yyyy-MM-dd">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-list" lay-submit="" lay-filter="LAY-app-contlist-search">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn">&#xe615</i>
+                    </button>
+                    <button class="layui-btn layuiadmin-btn-list" onclick="window.location.reload()">
+                        <i class="fa fa-refresh"></i> 刷新
+                    </button>
+                    <a class="layui-btn layuiadmin-btn-list">
+                        <i class="fa fa-plus"></i> 导出
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" lay-filter="checkall" id="checkall" name="checkall" lay-skin="primary" checked>
+                    </th>
+                    <th>时间</th>
+                    <th>流水号</th>
+                    <th>来源</th>
+                    <th>类型</th>
+                    <th>支付方式</th>
+                    <th>金额(元)   </th>
+                    <th>描述</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody class="orderList">
+                <tr v-for="item in orderList" v-key="orderList">
+                    <td>
+                        <input type="checkbox" lay-filter="childCheck" name="" lay-skin="primary" checked>
+                    </td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.num}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.postage}}</td>
+                    <td>{{item.payprice}}</td>
+                    <td>{{item.vipprice}}</td>
+                    <td>{{item.vipprice}}</td>
+                    <td>
+                        <button class="layui-btn layui-btn-normal layui-btn-small" lay-event="edit">
+                            <i class="layui-icon">&#xe642;</i>详情
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="pagelist"></div>
+    </div>
+    <script type="text/javascript" src="../frame/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../frame/layui/layui.js"></script>
+    <script type="text/javascript" src="../frame/static/js/vue.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        // $.post("", {}, function(res) {
+
+        // }, "json");
+    })
+    var data = {
+        orderList: [{ id: 'xcx_chakarma_038', num: '冷泡水果茶（16袋装）', price: '/pages/product_detail/product_detail?id=P1529988351626', postage: 10, payprice: '亳州市', vipprice: '上架', coupon: '是', actualPrice: 110, state: 1, expressNo: 10000000, info: 'sasdadds' }, { id: 10086, num: 1, price: 100, postage: 10, payprice: 100, vipprice: 7, coupon: 10, actualPrice: 110, state: 1, expressNo: 10000000, info: 'sasdadds' }]
+    }
+    var vm = new Vue({
+        el: "#vueDiv",
+        data: data
+    })
+    layui.use(['form', 'layedit', 'laypage', 'jquery', 'laydate'], function() {
+        var laypage = layui.laypage;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var $ = layui.jquery;
+        // 监听checkbox选中事件，全选
+        form.on('checkbox(checkall)', function(data) {
+            ///data.elem.checked单选框是否选中
+            $(".orderList input[type='checkbox']").each(function(index, el) {
+                el.checked = data.elem.checked;
+            });
+            form.render('checkbox');
+        });
+        //单个checkbox选中事件
+        form.on('checkbox(childCheck)', function(event) {
+            var checkNum = 0;
+            $(".orderList input[type='checkbox']").each(function(index, el) {
+                if (el.checked == false) {
+                    checkNum++
+                    $("#checkall").prop("checked", false);
+                }
+            });
+            if (checkNum == 0) {
+                $("#checkall").prop("checked", true);
+            }
+            form.render('checkbox');
+            /* Act on the event */
+        });
+        //时间范围
+        laydate.render({
+            elem: '#dateBegin',
+            range: true
+        });
+        //执行一个laypage实例,分页
+        // laypage.render({
+        //     elem: 'pagelist', //注意，这里的 test1 是 ID，不用加 # 号
+        //     count: 500, //数据总数，从服务端得到
+        //     jump: function(obj, first) {
+        //         //obj包含了当前分页的所有参数，比如：
+        //         console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+        //         console.log(obj.limit); //得到每页显示的条数
+        //         //首次不执行
+        //         if (!first) {
+        //             //do something
+        //         }
+        //     }
+        // });
+        //分页
+        laypage.render({
+            elem: 'pagelist',
+            count: 1000,
+            layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip'],
+            jump: function(obj) {
+                console.log(obj)
+            }
+        });
+    });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>商品列表</title>
+    <link rel="stylesheet" href="../frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../frame/static/css/style.css">
+    <link rel="icon" href="../frame/static/image/code.png">
+    <link rel="stylesheet" href="../frame/font-awesome-4.7.0/css/font-awesome.min.css">
+</head>
+
+<body class="body">
+    <div id="vueDiv" class="layui-form layui-form-pane">
+        <p class="layui-elem-quote">
+            <a class="layui-btn layuiadmin-btn-list" href="../subpage/addProduct.html">
+                <i class="fa fa-plus"></i> 发布商品
+            </a>
+            <a class="layui-btn layuiadmin-btn-list" onclick="deleteProduct()">
+                <i class="fa fa-remove"></i> 删除
+            </a>
+            <button class="layui-btn layuiadmin-btn-list">
+                <i class="fa fa-file-text"></i> 上架
+            </button>
+            <button class="layui-btn layuiadmin-btn-list">
+                <i class="fa fa-file-text"></i> 下架
+            </button>
+            <button class="layui-btn layuiadmin-btn-list">
+                <i class="fa fa-file-text"></i> 同步库存
+            </button>
+        </p>
+        <div class="layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">上架状态</label>
+                    <div class="layui-input-inline">
+                        <select name="IsShelves" class="IsShelves">
+                            <option value="" selected="">全部</option>
+                            <option value="1">上架</option>
+                            <option value="0">下架</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">商品编码</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="code" placeholder="请输入商品编码" autocomplete="off" class="layui-input input_code">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">商品名称：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" placeholder="请输入商品名称" autocomplete="off" class="layui-input input_title">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-list" onclick="search()">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn">&#xe615</i>查询
+                    </button>
+                </div>
+            </div>
+        </div>
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" lay-filter="checkall" id="checkall" name="checkall" lay-skin="primary">
+                    </th>
+                    <th>商品编码</th>
+                    <th>商品名称</th>
+                    <th>商品小程序链接</th>
+                    <th>封面图</th>
+                    <th>库存</th>
+                    <th>销售量</th>
+                    <th>状态</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody class="orderList">
+                <tr v-for="item in orderList" v-key="orderList">
+                    <td>
+                        <input :productid="item.id" class="childCheck" type="checkbox" lay-filter="childCheck" name="" lay-skin="primary">
+                    </td>
+                    <td>{{item.code}}</td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.img}}</td>
+                    <td>{{item.img}}</td>
+                    <td>{{item.stock}}</td>
+                    <td>{{item.vipprice}}</td>
+                    <td>{{item.coupon}}</td>
+                    <td>{{item.addTimeStr}}</td>
+                    <td>
+                        <button class="layui-btn layui-btn-normal layui-btn-small" lay-event="edit">
+                            <i class="layui-icon">&#xe642;</i>编辑
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="pagelist"></div>
+    </div>
+    <script type="text/javascript" src="../frame/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../frame/layui/layui.js"></script>
+    <script type="text/javascript" src="../frame/static/js/vue.min.js"></script>
+    <script type="text/javascript">
+    var orderList = "",
+        form = "",
+        laypage = "",
+        count = 0,
+        pageNum = 1,
+        pageSize = 10,
+        pagecurr = 1,
+        getListData = {
+            "pageNum": pageNum,
+            "pageSize": pageSize,
+            "condition": {
+                "title": "",
+                "code": "",
+                "IsShelves": ""
+            }
+        };
+    var vm = new Vue({
+        el: "#vueDiv",
+        data: {
+            orderList: ""
+        },
+        mounted: function() {
+            this.getMakerList(getListData);
+        },
+        methods: {
+            layuiInit: function() {
+                layui.use(['form', 'layedit', 'laypage', 'jquery', 'laydate'], function() {
+                    laypage = layui.laypage;
+                    form = layui.form;
+                    var laydate = layui.laydate;
+                    var $ = layui.jquery;
+                    // 监听checkbox选中事件，全选
+                    form.on('checkbox(checkall)', function(data) {
+                        ///data.elem.checked单选框是否选中
+                        $(".orderList input[type='checkbox']").each(function(index, el) {
+                            el.checked = data.elem.checked;
+                        });
+                        form.render('checkbox');
+                    });
+                    //单个checkbox选中事件
+                    form.on('checkbox(childCheck)', function(event) {
+                        var checkNum = 0;
+                        $(".orderList input[type='checkbox']").each(function(index, el) {
+                            if (el.checked == false) {
+                                checkNum++
+                                $("#checkall").prop("checked", false);
+                            }
+                        });
+                        if (checkNum == 0) {
+                            $("#checkall").prop("checked", true);
+                        }
+                        form.render('checkbox');
+                        /* Act on the event */
+                    });
+                    //时间范围
+                    laydate.render({
+                        elem: '#dateBegin',
+                        range: true
+                    });
+                    //分页
+                    laypage.render({
+                        elem: 'pagelist',
+                        count: count,
+                        limit: pageSize,
+                        layout: ['count', 'prev', 'page', 'next', 'refresh', 'skip'],
+                        jump: function(obj, first) {
+                            if (!first) {
+                                pagecurr = obj.curr
+                                $.ajax({
+                                    url: baseURL + "bak/product/getProductList",
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    contentType: "application/json;charset=UTF-8",
+                                    data: JSON.stringify({ "pageNum": obj.curr, "pageSize": pageSize }),
+                                }).done(function(res) {
+                                    if (res.status == "1") {
+                                        orderList = res.data.list;
+                                        vm.orderList = orderList;
+                                        $(".orderList .childCheck").each(function(index, el) {
+                                            $(el).prop("checked", false)
+                                        });
+                                        $("#checkall").prop("checked", false);
+                                        setTimeout(function() {
+                                            form.render();
+                                        }, 0)
+                                    }
+                                }).fail(function() {
+                                    console.log("error");
+                                })
+                            }
+                        }
+                    });
+                    form.render();
+                })
+            },
+            getMakerList: function(obj) {
+                var that = this;
+                $.ajax({
+                    url: baseURL + "bak/product/getProductList",
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify(obj),
+                }).done(function(res) {
+                    if (res.status == "1") {
+                        orderList = res.data.list;
+                        that.orderList = orderList;
+                        count = res.data.total
+                        that.layuiInit();
+                    }
+                }).fail(function() {
+                    console.log("error");
+                })
+            },
+            watch: function() {
+                this.layuiInit();
+            }
+
+        }
+    })
+    // //删除商品
+    var checkId = [];
+
+    function deleteProduct(argument) {
+        $(".orderList .childCheck").each(function(index, el) {
+            var elchecked = $(el).prop("checked");
+            var productId = $(el).attr("productid");
+            if (elchecked == true) {
+                checkId.push(productId)
+            }
+        });
+        var url = baseURL + "bak/product/deleteProduct";
+        var data = checkId.toString();
+        $.post(url, { ids: data }, function(res) {
+            if (res.status == 1) {
+                //window.location.reload();
+                for (var i = 0; i < checkId.length; i++) {
+                    for (var j = 0; j < vm.orderList.length; j++) {
+                        if (checkId[i] == vm.orderList[j].id) {
+                            vm.orderList.splice(j, 1)
+                            count = count - 1;
+                        }
+                    }
+                }
+                laypage.render({
+                    elem: 'pagelist',
+                    count: count,
+                    limit: pageSize,
+                    curr: pagecurr,
+                    layout: ['count', 'prev', 'page', 'next', 'refresh', 'skip'],
+                    jump: function(obj, first) {
+                        if (!first) {
+                            $.ajax({
+                                url: baseURL + "bak/product/getProductList",
+                                type: 'POST',
+                                dataType: 'json',
+                                contentType: "application/json;charset=UTF-8",
+                                data: JSON.stringify({ "pageNum": obj.curr, "pageSize": pageSize }),
+                            }).done(function(res) {
+                                if (res.status == "1") {
+                                    orderList = res.data.list;
+                                    vm.orderList = orderList;
+                                    $(".orderList .childCheck").each(function(index, el) {
+                                        $(el).prop("checked", false)
+                                    });
+                                    $("#checkall").prop("checked", false);
+                                    setTimeout(function() {
+                                        form.render();
+                                    }, 0)
+                                }
+                            }).fail(function() {
+                                console.log("error");
+                            })
+                        }
+                    }
+                });
+                setTimeout(function() {
+                    $(".orderList .childCheck").each(function(index, el) {
+                        $(el).prop("checked", false)
+                    });
+                    form.render();
+                }, 0)
+                checkId = [];
+            }
+        }, "json")
+    }
+    //查询商品
+    function search() {
+        var IsShelves = $(".IsShelves").val();
+        var input_code = $(".input_code").val();
+        var input_title = $(".input_title").val();
+        getListData.condition.title = input_title;
+        getListData.condition.IsShelves = IsShelves;
+        getListData.condition.code = input_code;
+        vm.getMakerList(getListData);
+    }
+    </script>
+</body>
+
+</html>

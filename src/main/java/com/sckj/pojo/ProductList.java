@@ -679,7 +679,7 @@ public class ProductList {
      * @mbg.generated
      */
     public String getIsshelves() {
-        return isshelves;
+        return isshelves==null?"":isshelves;
     }
 
     /**

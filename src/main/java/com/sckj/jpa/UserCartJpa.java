@@ -12,5 +12,10 @@ import java.util.List;
 public interface UserCartJpa extends JpaRepository<UserCart,String> {
     UserCart findByUseridAndProductid(String userid,String productid);
 
+    UserCart findByUseridAndProductidAndCartType(String userid,String productid,String cartType);
+
+
     List<UserCart> findByUserid(String userid);
+
+    void deleteByUseridAndCartTypeAndProductidIn(String userid,String productid,List<String > priductId);
 }

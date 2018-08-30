@@ -1,6 +1,11 @@
 package com.sckj.dao;
 
+import com.sckj.dto.UserCartDTO;
 import com.sckj.pojo.UserCart;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
 
 public interface UserCartMapper {
     /**
@@ -18,4 +23,6 @@ public interface UserCartMapper {
      * @mbg.generated
      */
     int insertSelective(UserCart record);
+
+    List<UserCartDTO> getUserCartList(@Param("userid") String userid, @Param("cartType") String cartType);
 }

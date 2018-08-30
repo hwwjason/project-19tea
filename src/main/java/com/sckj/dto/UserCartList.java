@@ -1,18 +1,29 @@
 package com.sckj.dto;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class UserCartList {
-    private List<UserCartDTO> userCartDTOs;
-    private int totalNum;
-    private float totalSum;
+    private List<UserCartDTO> userCarts;
+    private List<UserCartDTO> userCartOuts;
 
-    public List<UserCartDTO> getUserCartDTOs() {
-        return userCartDTOs;
+    private int totalNum;
+    private BigDecimal totalSum;
+
+    public List<UserCartDTO> getUserCarts() {
+        return userCarts;
     }
 
-    public void setUserCartDTOs(List<UserCartDTO> userCartDTOs) {
-        this.userCartDTOs = userCartDTOs;
+    public void setUserCarts(List<UserCartDTO> userCarts) {
+        this.userCarts = userCarts;
+    }
+
+    public List<UserCartDTO> getUserCartOuts() {
+        return userCartOuts;
+    }
+
+    public void setUserCartOuts(List<UserCartDTO> userCartOuts) {
+        this.userCartOuts = userCartOuts;
     }
 
     public int getTotalNum() {
@@ -23,11 +34,11 @@ public class UserCartList {
         this.totalNum = totalNum;
     }
 
-    public float getTotalSum() {
+    public BigDecimal getTotalSum() {
         return totalSum;
     }
 
-    public void setTotalSum(float totalSum) {
+    public void setTotalSum(BigDecimal totalSum) {
         this.totalSum = totalSum;
     }
 }

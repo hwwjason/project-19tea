@@ -6,9 +6,10 @@ import java.math.BigDecimal;
 
 public class UserCartDTO extends UserCart {
     private BigDecimal sum;//总额
-    private String name;
-    private String imgUrl;
+    private String title;
+    private String IsShelves;//上架，下架
     private BigDecimal price;
+    private String img = "";
 
     public BigDecimal getSum() {
         return sum;
@@ -18,20 +19,20 @@ public class UserCartDTO extends UserCart {
         this.sum = sum;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getImgUrl() {
-        return imgUrl;
+    public String getImg() {
+        return img;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public BigDecimal getPrice() {
@@ -40,5 +41,13 @@ public class UserCartDTO extends UserCart {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getIsShelves() {
+        return IsShelves;
+    }
+
+    public void setIsShelves(String isShelves) {
+        IsShelves = isShelves;
     }
 }

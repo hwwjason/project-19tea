@@ -15,6 +15,13 @@
     <result column="cart_type" jdbcType="VARCHAR" property="cartType" />
     <result column="Status" jdbcType="CHAR" property="status" />
   </resultMap>
+  <resultMap id="ResultDTO" extends="BaseResultMap" type="com.sckj.dto.UserCartDTO">
+    <result column="sum" jdbcType="DECIMAL" property="sum" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="img" jdbcType="LONGVARCHAR" property="img" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="IsShelves" jdbcType="VARCHAR" property="IsShelves" />
+  </resultMap>
   <insert id="insert" parameterType="com.sckj.pojo.UserCart">
     <!--
       WARNING - @mbg.generated
@@ -86,4 +93,12 @@
       </if>
     </trim>
   </insert>
+
+  <select id="getUserCartList" resultMap="ResultDTO">
+    SELECT product.title,product.img,product.price,product.IsShelves,
+    cart.* from sckj_user_cart cart
+    LEFT JOIN sckj_product_list product on cart.productid = product.id
+    WHERE cart.userid = #{userid} and cart_type=#{cartType}
+  </select>
+
 </mapper>

@@ -18,4 +18,6 @@ public interface UserCartJpa extends JpaRepository<UserCart,String> {
     List<UserCart> findByUserid(String userid);
 
     void deleteByUseridAndCartTypeAndProductidIn(String userid,String productid,List<String > priductId);
+
+    void deleteByIdIn(List<String> ids);
 }

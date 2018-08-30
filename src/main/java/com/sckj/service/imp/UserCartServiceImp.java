@@ -49,12 +49,10 @@ public class UserCartServiceImp implements IUserCartService {
     }
 
     @Override
-    public UserCartList removeGoods(String productId, String userId, String cartType ) {
+    public UserCartList removeGoods( List<String> ids, String userId, String cartType ) {
         //查询用户是否已经收藏这个商品了
-        UserCart userCart =  userCartJpa.findByUseridAndProductidAndCartType(userId,productId,cartType);
-        if (userCart!=null){
-            userCartJpa.delete(userCart);
-        }
+//        userCartJpa.deleteByIdIn(ids);
+        userCartJpa.deleteInBatch(userCartJpa.findAllById(ids));
         return getUserList(userId,cartType);
     }
 
@@ -116,7 +114,7 @@ public class UserCartServiceImp implements IUserCartService {
                 UserCartOut.add(cartDTO);
             }else {
                 UserCart.add(cartDTO);
-                if(cartDTO.getPrice()!=null&&cartDTO.getStatus().equals("1")){
+                if(cartDTO.getPrice()!=null && cartDTO.getStatus().equals("1")){
                     int num = cartDTO.getNum();
                     BigDecimal bnum = new BigDecimal(num);
                     totalSum =  totalSum.add(cartDTO.getPrice().multiply(bnum));

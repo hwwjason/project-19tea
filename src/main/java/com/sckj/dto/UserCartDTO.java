@@ -3,6 +3,7 @@ package com.sckj.dto;
 import com.sckj.pojo.UserCart;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class UserCartDTO extends UserCart {
     private BigDecimal sum;//总额
@@ -10,6 +11,7 @@ public class UserCartDTO extends UserCart {
     private String IsShelves;//上架，下架
     private BigDecimal price;
     private String img = "";
+    private List<String> ids;
 
     public BigDecimal getSum() {
         return sum;
@@ -49,5 +51,13 @@ public class UserCartDTO extends UserCart {
 
     public void setIsShelves(String isShelves) {
         IsShelves = isShelves;
+    }
+
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
     }
 }

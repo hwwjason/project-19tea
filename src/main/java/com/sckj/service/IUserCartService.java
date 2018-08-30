@@ -21,12 +21,12 @@ public interface IUserCartService {
 
     /**
      * 删除商品
-     * @param productId
+     * @param ids
      * @param userId
      * @param cartType
      * @return
      */
-    UserCartList removeGoods(String productId, String userId ,  String cartType);
+    UserCartList removeGoods(List<String> ids, String userId ,  String cartType);
 
     /**
      * 获取购物车列表

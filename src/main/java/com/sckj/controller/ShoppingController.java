@@ -29,10 +29,9 @@ public class ShoppingController {
     }
 
     @RequestMapping(value = "/removeGoods", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData removeGoods(@RequestParam(value = "productId") String productId, @RequestParam(value = "userId") String userId,
-                                  @RequestParam(value = "cartType") String cartType){
+    public ResultData removeGoods(@RequestBody UserCartDTO userCartDTO){
         ResultData resultData = new ResultData();
-        resultData.setData(userCartService.removeGoods(productId,userId,cartType));
+        resultData.setData(userCartService.removeGoods(userCartDTO.getIds(),userCartDTO.getUserid(),userCartDTO.getCartType()));
         return resultData;
     }
 

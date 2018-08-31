@@ -44,6 +44,11 @@ public interface IUserCartService {
      */
     UserCartList emptyOutGoods(String userId ,  String cartType);
 
+    /**
+     * 修改购物车列表的状态，比如是否选中
+     * @param userCartDTO
+     * @return
+     */
     UserCartList updateProduct(  List<UserCartDTO> userCartDTO);
 
 }

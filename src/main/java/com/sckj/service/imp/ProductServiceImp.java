@@ -34,9 +34,10 @@ public class ProductServiceImp implements IProductService{
     @Override
     public void putProductToStorage(ProductListWithBLOBs productList) {
         productList.setId(UUIDUtils.generate());
-//        productList.setAddtime(DateTimeUtils.getCurrentDate());
-//        productList.setUpdatetime(DateTimeUtils.getCurrentDate());
-        productListJpa.saveAndFlush(productList);
+        productList.setAddtime(DateTimeUtils.getCurrentDate());
+        productList.setUpdatetime(DateTimeUtils.getCurrentDate());
+//        productListJpa.saveAndFlush(productList);
+        productListMapper.insertSelective(productList);
     }
 
     @Override

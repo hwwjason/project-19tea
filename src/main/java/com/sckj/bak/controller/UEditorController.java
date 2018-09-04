@@ -25,7 +25,7 @@ import java.util.UUID;
 //@RequestMapping("shoucha/frame/ueditor")
 public class UEditorController {
 
-    @RequestMapping(value={"/shoucha/frame/ueditor/ueditorConfig","/ueditorConfig"})
+    @RequestMapping("/shoucha/frame/ueditor/ueditorConfig")
     @ResponseBody
     public String ueditor(@RequestParam("action") String param,MultipartFile upfile,HttpServletRequest request) {
         Ueditor ueditor = new Ueditor();

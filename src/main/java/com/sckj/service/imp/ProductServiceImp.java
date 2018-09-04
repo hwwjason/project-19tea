@@ -9,6 +9,8 @@ import com.sckj.jpa.ProductListJpa;
 import com.sckj.pojo.ProductList;
 import com.sckj.service.IProductService;
 import com.sckj.utils.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +23,8 @@ import java.util.*;
 @Service
 public class ProductServiceImp implements IProductService{
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     private ProductListJpa productListJpa;
 
@@ -32,17 +36,19 @@ public class ProductServiceImp implements IProductService{
         productList.setId(UUIDUtils.generate());
         productList.setAddtime(DateTimeUtils.getCurrentDate());
         productList.setUpdatetime(DateTimeUtils.getCurrentDate());
-//        productListJpa.saveAndFlush(productList);
         productListMapper.insertSelective(productList);
     }
     @Override
     public void putProductToStorage(HttpServletRequest request) throws Exception {
-        ProductList productList = createProductList(request);
-
-        productList.setId(UUIDUtils.generate());
-        productList.setAddtime(DateTimeUtils.getCurrentDate());
-        productList.setUpdatetime(DateTimeUtils.getCurrentDate());
-        productListJpa.saveAndFlush(productList);
+        ProductList product = createProductList(request);
+        if(product.getId()!=null){//修改
+            updateProduct(product);
+        }else{//新增
+            product.setId(UUIDUtils.generate());
+            product.setAddtime(DateTimeUtils.getCurrentDate());
+            product.setUpdatetime(DateTimeUtils.getCurrentDate());
+            productListJpa.saveAndFlush(product);
+        }
     }
 
     private ProductList createProductList(HttpServletRequest request) throws Exception {
@@ -95,17 +101,26 @@ public class ProductServiceImp implements IProductService{
     }
 
     @Override
-    public void updateProduct(HttpServletRequest request) throws Exception {
-        ProductList product = createProductList(request);
-        if(product.getId()!=null){
-            ProductList  sourceProduct = productListJpa.getOne(product.getId());
+    public void updateProduct(ProductList product) throws Exception {
+        if(product.getId()!=null){//修改
+            ProductList  sourceProduct = productListMapper.getOne(product.getId());
+            if(sourceProduct==null){
+
+                return;
+            }
             product.setId(null);
             BeanUtils.copyPropertiesWithoutNull(sourceProduct,product);
             sourceProduct.setUpdatetime(DateTimeUtils.getCurrentDate());
             //更新对象
             productListJpa.saveAndFlush(sourceProduct);
         }
+    }
 
+    @Override
+    public void updateProducts(List<ProductList> products) throws Exception {
+        for (ProductList product : products) {
+            updateProduct(product);
+        }
     }
 
     @Override

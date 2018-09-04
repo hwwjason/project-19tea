@@ -33,8 +33,6 @@ public class BakProductController {
         for (int i=0;i<99;i++){
             ProductList productList = new ProductList();
             productList.setId(UUIDUtils.generate());
-//            productList.setTitle("标题"+i);
-//            productList.setCode("编码"+i);
             productService.putProductToStorage(productList);
         }
         return resultData;
@@ -55,9 +53,16 @@ public class BakProductController {
     }
 
     @RequestMapping(value = "/updateProduct", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    ResultData updateProduct(HttpServletRequest request) throws Exception{
+    ResultData updateProduct(@RequestBody ProductList product) throws Exception{
         ResultData resultData = new ResultData();
-        productService.updateProduct(request);
+        productService.updateProduct(product);
+        return resultData;
+    }
+
+    @RequestMapping(value = "/updateProducts", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    ResultData updateProducts(@RequestBody List<ProductList> products) throws Exception{
+        ResultData resultData = new ResultData();
+        productService.updateProducts(products);
         return resultData;
     }
 

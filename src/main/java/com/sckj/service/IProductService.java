@@ -29,7 +29,14 @@ public interface IProductService {
     * 更新商品状态
     * @param
     */
-   void updateProduct(HttpServletRequest request) throws Exception;
+   void updateProduct(ProductList product) throws Exception;
+
+   /**
+    * 批量更新
+    * @param products
+    * @throws Exception
+    */
+   void updateProducts(List<ProductList> products) throws Exception;
 
    /**
     * 获取商品列表

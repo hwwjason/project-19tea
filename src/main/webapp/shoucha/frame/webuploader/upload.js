@@ -377,7 +377,7 @@
                 //上传失败
             }else{
                 //商品发布需要的img地址
-                var append_img = '<input name="specification[]" type="hidden" class="list1SortOrder" value='+data.path+'>';
+                var append_img = '<input name="slideImg[]" type="hidden" class="list1SortOrder" value='+data.path+'>';
                 var $li = $('#'+file.id);
                 $li.append(append_img);
             }

@@ -22,10 +22,10 @@
             <a class="layui-btn layuiadmin-btn-list" onclick="deleteProduct()">
                 <i class="fa fa-remove"></i> 删除
             </a>
-            <button class="layui-btn layuiadmin-btn-list">
+            <button class="layui-btn layuiadmin-btn-list" onclick="updateState(1)">
                 <i class="fa fa-file-text"></i> 上架
             </button>
-            <button class="layui-btn layuiadmin-btn-list">
+            <button class="layui-btn layuiadmin-btn-list" onclick="updateState(0)">
                 <i class="fa fa-file-text"></i> 下架
             </button>
             <button class="layui-btn layuiadmin-btn-list">
@@ -47,7 +47,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">商品编码</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="code" placeholder="请输入商品编码" autocomplete="off" class="layui-input input_code">
+                        <input type="text" lay-verify="code" name="code" placeholder="请输入商品编码" autocomplete="off" class="layui-input input_code">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -87,16 +87,16 @@
                     </td>
                     <td>{{item.code}}</td>
                     <td>{{item.title}}</td>
-                    <td>{{item.img}}</td>
-                    <td>{{item.img}}</td>
+                    <td>{{item.miniProUrl}}</td>
+                    <td><img :src="item.img"></td>
                     <td>{{item.stock}}</td>
                     <td>{{item.vipprice}}</td>
-                    <td>{{item.coupon}}</td>
+                    <td>{{item.isshelves==1?"上架":"下架"}}</td>
                     <td>{{item.addTimeStr}}</td>
                     <td>
-                        <button class="layui-btn layui-btn-normal layui-btn-small" lay-event="edit">
+                        <a :href="'../subpage/addProduct.html?id='+item.id" class="layui-btn layui-btn-normal layui-btn-small" lay-event="edit">
                             <i class="layui-icon">&#xe642;</i>编辑
-                        </button>
+                        </a>
                     </td>
                 </tr>
             </tbody>
@@ -199,7 +199,9 @@
                             }
                         }
                     });
-                    form.render();
+                    setTimeout(function() {
+                        form.render();
+                    }, 0)
                 })
             },
             getMakerList: function(obj) {
@@ -302,6 +304,63 @@
         getListData.condition.IsShelves = IsShelves;
         getListData.condition.code = input_code;
         vm.getMakerList(getListData);
+    }
+    //上下架
+    function updateState(state) {
+        var checkarr = []
+        if (state == 1) {
+            //上架
+            $(".orderList .childCheck").each(function(index, el) {
+                var elchecked = $(el).prop("checked");
+                var productId = $(el).attr("productid");
+                if (elchecked == true) {
+                    var obj = {
+                        id: productId,
+                        IsShelves: 1
+                    }
+                    checkarr.push(obj)
+                }
+            });
+            $.ajax({
+                url: baseURL + "bak/product/updateProducts",
+                type: 'POST',
+                dataType: 'json',
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify(checkarr),
+            }).done(function(res) {
+                if (res.status == "1") {
+                    
+                }
+            }).fail(function() {
+                console.log("error");
+            })
+        } else {
+            //下架
+            $(".orderList .childCheck").each(function(index, el) {
+                var elchecked = $(el).prop("checked");
+                var productId = $(el).attr("productid");
+                if (elchecked == true) {
+                    var obj = {
+                        id: productId,
+                        IsShelves: 0
+                    }
+                    checkarr.push(obj)
+                }
+            });
+            $.ajax({
+                url: baseURL + "bak/product/updateProducts",
+                type: 'POST',
+                dataType: 'json',
+                contentType: "application/json;charset=UTF-8",
+                data: JSON.stringify(checkarr),
+            }).done(function(res) {
+                if (res.status == "1") {
+                    
+                }
+            }).fail(function() {
+                console.log("error");
+            })
+        }
     }
     </script>
 </body>

@@ -32,9 +32,9 @@ public class UEditorController {
         if(param!=null&&param.equals("config")){
             //return PublicMsg.UEDITOR_CONFIG;
             String rootPath = "src/main/resources/static";
-            if(request.getRequestURI().equals("/shoucha/frame/ueditor/ueditorConfig")){
+//            if(request.getRequestURI().equals("/shoucha/frame/ueditor/ueditorConfig")){
                 rootPath = "src/main/webapp";
-            }
+//            }
 
             String exec = new ActionEnter(request, rootPath).exec();
             return exec;

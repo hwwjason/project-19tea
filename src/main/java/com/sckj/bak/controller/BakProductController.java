@@ -41,7 +41,7 @@ public class BakProductController {
     }
 
     @RequestMapping(value = "/putProductToStorage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    ResultData putProductToStorage(HttpServletRequest request) throws IOException, ServletException {
+    ResultData putProductToStorage(HttpServletRequest request) throws Exception {
         ResultData resultData = new ResultData();
         productService.putProductToStorage(request);
 //        Collection<Part> list = request.getParts();

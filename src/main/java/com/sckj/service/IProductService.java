@@ -21,7 +21,7 @@ public interface IProductService {
     * 商品入库
     * @param
     */
-   void putProductToStorage(HttpServletRequest request) throws IOException, ServletException;
+   void putProductToStorage(HttpServletRequest request) throws Exception;
 
    void deleteProduct(String[] ids);
 

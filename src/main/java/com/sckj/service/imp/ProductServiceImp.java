@@ -19,6 +19,8 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +43,8 @@ public class ProductServiceImp implements IProductService{
         productListMapper.insertSelective(productList);
     }
     @Override
-    public void putProductToStorage(HttpServletRequest request) throws IOException, ServletException {
-        ProductList productList = new ProductList();
+    public void putProductToStorage(HttpServletRequest request) throws Exception {
+
 
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         //上传图片
@@ -50,34 +52,30 @@ public class ProductServiceImp implements IProductService{
         MultipartFile multipartFile = (MultipartFile) map.get("img");
         ResultData resultDataFile = FileUtils.uploadImage(multipartFile,request);
         String imgFilePath = resultDataFile.getPath();
-        productList.setImg(imgFilePath);
+
         //上传其他属性
         Map requestMap = multipartRequest.getParameterMap();
-
+        Map<String,Object> hashMap = new HashMap<>();
         Iterator iterator = requestMap.entrySet().iterator();
         while (iterator.hasNext()){
             Map.Entry entry = (Map.Entry) iterator.next();
             String key = (String) entry.getKey();
             Object value = entry.getValue();
-            String valueStr ="";
-            for (Object string : (Object[])value) {
-                System.out.println(string);
-                valueStr = (String) string;
-            }
-
-            if(value!=null){
-                try {
-                    RefelectUtils.setValue(productList,key,valueStr);
-                } catch (NoSuchMethodException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
+            Object object = new Object();
+            for (Object obj : (Object[])value) {
+                if("stock".equals(key)){//INTEGER
+                    object = Integer.valueOf((String) obj);
+                }else if("price".equals(key)||"originalPrice".equals(key)){//BigDecimal
+                    object = new BigDecimal((String) obj);
+                }else{
+                    object = obj;
                 }
             }
+            hashMap.put(key,object);
         }
+        ProductList productList = (ProductList) JsonUtils.mapToObject(hashMap,ProductList.class);
 
+        productList.setImg(imgFilePath);
         productList.setId(UUIDUtils.generate());
         productList.setAddtime(DateTimeUtils.getCurrentDate());
         productList.setUpdatetime(DateTimeUtils.getCurrentDate());

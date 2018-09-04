@@ -3,6 +3,8 @@ package com.sckj.utils;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Map;
 
 public class RefelectUtils {
@@ -17,6 +19,27 @@ public class RefelectUtils {
                     Method setMethod = obj.getClass().getMethod("set" + name, new Class[]{String.class});
                     setMethod.invoke(obj, new Object[]{value});
                 }
+            }else if(type.equals("class java.math.BigDecimal")){
+                String name = StringUtils.toUpperCaseFirstOne(field[j].getName()); //获取属性的名字
+                if (field[j].getName().equals(methodName) && value != null) {//等于所给属性的值
+                    Method setMethod = obj.getClass().getMethod("set" + name, new Class[]{BigDecimal.class});
+                    setMethod.invoke(obj, new Object[]{value});
+                }
+            }else if(type.equals("class java.lang.Integer")){
+                String name = StringUtils.toUpperCaseFirstOne(field[j].getName()); //获取属性的名字
+                if (field[j].getName().equals(methodName) && value != null) {//等于所给属性的值
+                    Method setMethod = obj.getClass().getMethod("set" + name, new Class[]{Integer.class});
+                    setMethod.invoke(obj, new Object[]{value});
+                }
+            }else if(type.equals("class java.util.Date")){
+                String name = StringUtils.toUpperCaseFirstOne(field[j].getName()); //获取属性的名字
+                if (field[j].getName().equals(methodName) && value != null) {//等于所给属性的值
+                    Method setMethod = obj.getClass().getMethod("set" + name, new Class[]{Date.class});
+                    setMethod.invoke(obj, new Object[]{value});
+                }
+            }
+            else{
+                System.out.println(type+"类型未处理");
             }
         }
 

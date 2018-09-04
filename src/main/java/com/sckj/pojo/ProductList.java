@@ -1149,7 +1149,7 @@ public class ProductList {
      * @mbg.generated
      */
     public void setImg(String img) {
-        this.img = img == null ? null : img.trim();
+        this.img = img ;
     }
 
     /**

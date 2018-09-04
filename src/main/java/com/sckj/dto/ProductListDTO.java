@@ -22,6 +22,7 @@ public class ProductListDTO extends ProductList {
 
     private String miniProUrl;//小程序连接
 
+    private List<String> slideImgs;
 
     public List<Sort.Order> getOrders() {
         return orders;
@@ -61,5 +62,13 @@ public class ProductListDTO extends ProductList {
 
     public void setMiniProUrl(String miniProUrl) {
         this.miniProUrl = miniProUrl;
+    }
+
+    public List<String> getSlideImgs() {
+        return slideImgs;
+    }
+
+    public void setSlideImgs(List<String> slideImgs) {
+        this.slideImgs = slideImgs;
     }
 }

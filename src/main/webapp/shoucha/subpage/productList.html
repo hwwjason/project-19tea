@@ -37,7 +37,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">上架状态</label>
                     <div class="layui-input-inline">
-                        <select name="IsShelves" class="IsShelves">
+                        <select name="isshelves" class="isshelves">
                             <option value="" selected="">全部</option>
                             <option value="1">上架</option>
                             <option value="0">下架</option>
@@ -120,7 +120,7 @@
             "condition": {
                 "title": "",
                 "code": "",
-                "IsShelves": ""
+                "isshelves": ""
             }
         };
     var vm = new Vue({
@@ -297,11 +297,11 @@
     }
     //查询商品
     function search() {
-        var IsShelves = $(".IsShelves").val();
+        var isshelves = $(".isshelves").val();
         var input_code = $(".input_code").val();
         var input_title = $(".input_title").val();
         getListData.condition.title = input_title;
-        getListData.condition.IsShelves = IsShelves;
+        getListData.condition.isshelves = isshelves;
         getListData.condition.code = input_code;
         vm.getMakerList(getListData);
     }
@@ -320,7 +320,7 @@
             if (elchecked == true) {
                 var obj = {
                     id: productId,
-                    IsShelves: newstate
+                    isshelves: newstate
                 }
                 checkarr.push(obj)
             }

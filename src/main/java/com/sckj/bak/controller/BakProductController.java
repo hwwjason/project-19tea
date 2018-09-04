@@ -86,4 +86,11 @@ public class BakProductController {
         return resultData;
     }
 
+    @RequestMapping(value = "/synchronousStock", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    ResultData synchronousStock(@RequestBody List<ProductList> products) throws Exception{
+        ResultData resultData = new ResultData();
+        productService.synchronousStock(products);
+        return resultData;
+    }
+
 }

@@ -41,7 +41,7 @@ public class ProductServiceImp implements IProductService{
     @Override
     public void putProductToStorage(HttpServletRequest request) throws Exception {
         ProductList product = createProductList(request);
-        if(product.getId()!=null){//修改
+        if(StringUtils.isEmpty(product.getId())){//修改
             updateProduct(product);
         }else{//新增
             product.setId(UUIDUtils.generate());
@@ -68,6 +68,19 @@ public class ProductServiceImp implements IProductService{
             String key = (String) entry.getKey();
             Object value = entry.getValue();
             Object object = new Object();
+             if ("slideImg[]".equals(key)){
+                 String objstr = "";
+                 Object[] objArr = (Object[])value;
+                 for (Object o : objArr) {
+                     if(StringUtils.isEmpty(String.valueOf(objstr))){
+                         objstr = (String)o;
+                     }else{
+                         objstr = objstr +"," +  (String)o;
+                     }
+                 }
+                 hashMap.put("slideImg",objstr);
+                 continue;
+            }
             for (Object obj : (Object[])value) {
                 if(obj==null) continue;
                 if("stock".equals(key)){//INTEGER
@@ -127,11 +140,26 @@ public class ProductServiceImp implements IProductService{
     public List<ProductListDTO> getProductList(Map<String,Object> map) {
         List<ProductListDTO> productLists = productListMapper.getProductList(map);
         for (ProductListDTO productList : productLists) {
-            if(StringUtils.isEmpty(productList.getIsshelves())){
-                productList.setIsshelves(ProductShelvesEnum.PutShelf.toString());
-            }
+            setDtoProperties(productList);
         }
         return productLists;
+    }
+
+    private void setDtoProperties(ProductListDTO productList ){
+        if(StringUtils.isEmpty(productList.getIsshelves())){
+            productList.setIsshelves(ProductShelvesEnum.PutShelf.toString());
+        }
+        String slideImg = productList.getSlideImg();
+        List<String> slideImgs = new ArrayList<>();
+        if(StringUtils.isNotEmpty(slideImg)){
+            String[] slideImgStrs =slideImg.split(",");
+            for (String img : slideImgStrs) {
+                slideImgs.add(img);
+            }
+        }else if(productList.getImg()==null){
+            productList.setImg("");
+        }
+        productList.setSlideImgs(slideImgs);
     }
 
     public ProductList getProductById(String id){
@@ -139,6 +167,14 @@ public class ProductServiceImp implements IProductService{
     }
 
     public ProductListDTO getProductDTOById(String id){
-        return productListMapper.getOneDTO(id);
+        ProductList productList = productListMapper.getOne(id);
+        ProductListDTO productListDTO = new ProductListDTO();
+        BeanUtils.copyProperties(productListDTO,productList);
+        setDtoProperties(productListDTO);
+        return productListDTO;
+    }
+
+    public List<ProductList>  synchronousStock(List<ProductList> products){
+        return null;
     }
 }

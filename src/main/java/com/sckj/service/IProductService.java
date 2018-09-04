@@ -50,7 +50,19 @@ public interface IProductService {
     */
    ProductList getProductById(String id);
 
+   /**
+    * 获取商品
+    * @param id
+    * @return
+    */
    ProductListDTO getProductDTOById(String id);
+
+   /**
+    * 同步库存
+    * @param products
+    * @return
+    */
+   List<ProductList> synchronousStock(List<ProductList> products);
 
 
 }

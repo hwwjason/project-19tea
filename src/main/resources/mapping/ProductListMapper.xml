@@ -40,13 +40,12 @@
     <result column="IsSynGjp" jdbcType="CHAR" property="issyngjp" />
     <result column="stocktime" jdbcType="TIMESTAMP" property="stocktime" />
     <result column="img" jdbcType="LONGVARCHAR" property="img" />
-    <result column="slide_img" jdbcType="LONGVARCHAR" property="img" />
+    <result column="slide_img" jdbcType="LONGVARCHAR" property="slideImg" />
     <result column="introduce" jdbcType="LONGVARCHAR" property="introduce" />
   </resultMap>
 
   <resultMap extends="BaseResultMap" id="ResultMapDTO" type="com.sckj.dto.ProductListDTO">
-    <result column="img" jdbcType="LONGVARCHAR" property="img" />
-    <result column="introduce" jdbcType="LONGVARCHAR" property="introduce" />
+
   </resultMap>
 
 

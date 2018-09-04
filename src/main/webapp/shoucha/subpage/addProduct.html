@@ -22,7 +22,7 @@
             <i class="layui-icon">&#xe65c;</i>返回
         </button>
     </p>
-    <form class="layui-form" action="http://192.168.0.187:8090/bak/product/putProductToStorage" method="post" enctype="multipart/form-data">
+    <form class="layui-form" action="https://192.168.0.179/bak/product/putProductToStorage" method="post" enctype="multipart/form-data">
         <div class="productForm">
             <div class="layui-form-item">
                 <input type="hidden" name="id" :value="productInfo.id">
@@ -156,8 +156,8 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">上架状态</label>
                 <div class="layui-input-block">
-                    <input type="radio" name="IsShelves" value="上架" title="上架" checked="">
-                    <input type="radio" name="IsShelves" value="下架" title="下架">
+                    <input type="radio" name="isshelves" value="1" title="上架" checked="">
+                    <input type="radio" name="isshelves" value="0" title="下架">
                 </div>
             </div>
         </div>

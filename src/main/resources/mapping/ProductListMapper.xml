@@ -39,13 +39,12 @@
     <result column="Status" jdbcType="CHAR" property="status" />
     <result column="IsSynGjp" jdbcType="CHAR" property="issyngjp" />
     <result column="stocktime" jdbcType="TIMESTAMP" property="stocktime" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.sckj.pojo.ProductListWithBLOBs">
     <result column="img" jdbcType="LONGVARCHAR" property="img" />
+    <result column="slide_img" jdbcType="LONGVARCHAR" property="slideImg" />
     <result column="introduce" jdbcType="LONGVARCHAR" property="introduce" />
   </resultMap>
 
-  <resultMap extends="ResultMapWithBLOBs" id="ResultMapDTO" type="com.sckj.dto.ProductListDTO">
+  <resultMap extends="BaseResultMap" id="ResultMapDTO" type="com.sckj.dto.ProductListDTO">
     <result column="img" jdbcType="LONGVARCHAR" property="img" />
     <result column="introduce" jdbcType="LONGVARCHAR" property="introduce" />
   </resultMap>
@@ -59,7 +58,7 @@
     -->
     img, introduce
   </sql>
-  <insert id="insert" parameterType="com.sckj.pojo.ProductListWithBLOBs">
+  <insert id="insert" parameterType="com.sckj.pojo.ProductList">
     insert into sckj_product_list (id, code, numid, 
       title, subtitle, specification, 
       original_price, price, member_price, 
@@ -70,7 +69,7 @@
       product_groupbyid, IsRecommend, IsSpecial, 
       IsHot, IsNew, IsEarnShare, Commission, 
       IsFriend, falseSaleNum, Status, 
-      IsSynGjp, stocktime, img, 
+      IsSynGjp, stocktime, img, slide_img
       introduce)
     values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, #{numid,jdbcType=VARCHAR}, 
       #{title,jdbcType=VARCHAR}, #{subtitle,jdbcType=VARCHAR}, #{specification,jdbcType=VARCHAR}, 
@@ -82,10 +81,10 @@
       #{productGroupbyid,jdbcType=VARCHAR}, #{isrecommend,jdbcType=CHAR}, #{isspecial,jdbcType=CHAR}, 
       #{ishot,jdbcType=CHAR}, #{isnew,jdbcType=CHAR}, #{isearnshare,jdbcType=CHAR}, #{commission,jdbcType=DECIMAL}, 
       #{isfriend,jdbcType=CHAR}, #{falsesalenum,jdbcType=INTEGER}, #{status,jdbcType=CHAR}, 
-      #{issyngjp,jdbcType=CHAR}, #{stocktime,jdbcType=TIMESTAMP}, #{img,jdbcType=LONGVARCHAR}, 
+      #{issyngjp,jdbcType=CHAR}, #{stocktime,jdbcType=TIMESTAMP}, #{img,jdbcType=LONGVARCHAR},  #{slideImg,jdbcType=LONGVARCHAR},
       #{introduce,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.sckj.pojo.ProductListWithBLOBs">
+  <insert id="insertSelective" parameterType="com.sckj.pojo.ProductList">
     insert into sckj_product_list
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -189,6 +188,9 @@
       </if>
       <if test="img != null">
         img,
+      </if>
+      <if test="slideImg != null">
+        slide_img,
       </if>
       <if test="introduce != null">
         introduce,
@@ -297,12 +299,15 @@
       <if test="img != null">
         #{img,jdbcType=LONGVARCHAR},
       </if>
+      <if test="slideImg != null">
+        #{slideImg,jdbcType=LONGVARCHAR},
+      </if>
       <if test="introduce != null">
         #{introduce,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <update id="update"  parameterType="com.sckj.pojo.ProductListWithBLOBs">
+  <update id="update"  parameterType="com.sckj.pojo.ProductList">
     UPDATE sckj_product_list
     SET
       <if test="code != null">
@@ -404,6 +409,9 @@
       <if test="img != null">
         #{img,jdbcType=LONGVARCHAR},
       </if>
+    <if test="slideImg != null">
+      #{slideImg,jdbcType=LONGVARCHAR},
+    </if>
       <if test="introduce != null">
         #{introduce,jdbcType=LONGVARCHAR},
       </if>
@@ -434,7 +442,7 @@
     </if>
   </delete>
 
-  <select id="getOne" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  <select id="getOne" parameterType="java.lang.String" resultMap="BaseResultMap">
     select * from sckj_product_list WHERE  id =#{id}
   </select>
 

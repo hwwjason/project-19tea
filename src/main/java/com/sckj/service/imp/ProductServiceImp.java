@@ -1,24 +1,25 @@
 package com.sckj.service.imp;
 
+import com.sckj.common.ResultData;
 import com.sckj.dao.ProductListMapper;
 import com.sckj.dto.ProductListDTO;
 import com.sckj.jpa.ProductListJpa;
 import com.sckj.pojo.ProductList;
-import com.sckj.pojo.ProductListWithBLOBs;
 import com.sckj.service.IProductService;
-import com.sckj.service.IShoppingService;
-import com.sckj.utils.DateTimeUtils;
-import com.sckj.utils.StringUtils;
-import com.sckj.utils.UUIDUtils;
+import com.sckj.utils.*;
 import org.apache.commons.lang3.ArrayUtils;
-import org.apache.http.client.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import java.lang.reflect.Array;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -32,11 +33,54 @@ public class ProductServiceImp implements IProductService{
     private ProductListMapper productListMapper;
 
     @Override
-    public void putProductToStorage(ProductListWithBLOBs productList) {
+    public void putProductToStorage(ProductList productList) {
         productList.setId(UUIDUtils.generate());
         productList.setAddtime(DateTimeUtils.getCurrentDate());
         productList.setUpdatetime(DateTimeUtils.getCurrentDate());
 //        productListJpa.saveAndFlush(productList);
+        productListMapper.insertSelective(productList);
+    }
+    @Override
+    public void putProductToStorage(HttpServletRequest request) throws IOException, ServletException {
+        ProductList productList = new ProductList();
+
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        //上传图片
+        Map map =multipartRequest.getFileMap();
+        MultipartFile multipartFile = (MultipartFile) map.get("img");
+        ResultData resultDataFile = FileUtils.uploadImage(multipartFile,request);
+        String imgFilePath = resultDataFile.getPath();
+        productList.setImg(imgFilePath);
+        //上传其他属性
+        Map requestMap = multipartRequest.getParameterMap();
+
+        Iterator iterator = requestMap.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry entry = (Map.Entry) iterator.next();
+            String key = (String) entry.getKey();
+            Object value = entry.getValue();
+            String valueStr ="";
+            for (Object string : (Object[])value) {
+                System.out.println(string);
+                valueStr = (String) string;
+            }
+
+            if(value!=null){
+                try {
+                    RefelectUtils.setValue(productList,key,valueStr);
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        productList.setId(UUIDUtils.generate());
+        productList.setAddtime(DateTimeUtils.getCurrentDate());
+        productList.setUpdatetime(DateTimeUtils.getCurrentDate());
         productListMapper.insertSelective(productList);
     }
 
@@ -49,9 +93,9 @@ public class ProductServiceImp implements IProductService{
     }
 
     @Override
-    public void updateProduct(ProductListWithBLOBs productList) throws Exception {
+    public void updateProduct(ProductList productList) throws Exception {
         if(productList.getId()!=null){
-            ProductListWithBLOBs  sorceProduct = productListJpa.getOne(productList.getId());
+            ProductList  sorceProduct = productListJpa.getOne(productList.getId());
             Field[] field1 = productList.getClass().getDeclaredFields(); //获取实体类的所有属性，返回Field数组
             ProductList temp = new ProductList();
             Field[] fieldTemp = temp.getClass().getDeclaredFields();

@@ -1,14 +1,13 @@
 package com.sckj.dto;
 
 import com.sckj.pojo.ProductList;
-import com.sckj.pojo.ProductListWithBLOBs;
 import com.sckj.utils.DateTimeUtils;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
 import java.util.List;
 
-public class ProductListDTO extends ProductListWithBLOBs {
+public class ProductListDTO extends ProductList {
     /**
      * 排序
      */
@@ -17,6 +16,9 @@ public class ProductListDTO extends ProductListWithBLOBs {
     private String updateTimeStr;
 
     private String addTimeStr;
+
+    private MultipartFile imgFile;
+
 
     public List<Sort.Order> getOrders() {
         return orders;
@@ -41,4 +43,13 @@ public class ProductListDTO extends ProductListWithBLOBs {
     public void setAddTimeStr(String addTimeStr) {
         this.addTimeStr = DateTimeUtils.getString(getAddtime(),addTimeStr);
     }
+
+    public MultipartFile getImgFile() {
+        return imgFile;
+    }
+
+    public void setImgFile(MultipartFile imgFile) {
+        this.imgFile = imgFile;
+    }
+
 }

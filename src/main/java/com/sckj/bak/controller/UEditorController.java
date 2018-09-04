@@ -70,7 +70,7 @@ public class UEditorController {
         Ueditor ueditor = new Ueditor();
 //        Users user = UserUtils.getUser(request) ;
         String path = request.getSession().getServletContext()
-                .getRealPath("ueditor/jsp/upload/image");
+                .getRealPath("./image");
         String ct = file.getContentType() ;
         String fileType = "";
         if (ct.indexOf("/")>0) {

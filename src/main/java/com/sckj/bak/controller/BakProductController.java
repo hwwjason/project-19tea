@@ -5,18 +5,20 @@ import com.github.pagehelper.PageInfo;
 import com.sckj.common.Query;
 import com.sckj.common.ResultData;
 import com.sckj.dto.ProductListDTO;
-import com.sckj.dto.SckjUserListDTO;
 import com.sckj.pojo.ProductList;
-import com.sckj.pojo.ProductListWithBLOBs;
 import com.sckj.service.IProductService;
-import com.sckj.utils.JsonUtils;
 import com.sckj.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+
+//import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/bak/product")
@@ -29,7 +31,7 @@ public class BakProductController {
     ResultData updateProduct() throws Exception{
         ResultData resultData = new ResultData();
         for (int i=0;i<99;i++){
-            ProductListWithBLOBs productList = new ProductListWithBLOBs();
+            ProductList productList = new ProductList();
             productList.setId(UUIDUtils.generate());
 //            productList.setTitle("标题"+i);
 //            productList.setCode("编码"+i);
@@ -39,9 +41,11 @@ public class BakProductController {
     }
 
     @RequestMapping(value = "/putProductToStorage", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    ResultData putProductToStorage(ProductListWithBLOBs productList){
+    ResultData putProductToStorage(HttpServletRequest request) throws IOException, ServletException {
         ResultData resultData = new ResultData();
-        productService.putProductToStorage(productList);
+        productService.putProductToStorage(request);
+//        Collection<Part> list = request.getParts();
+//        List<Part> lists= new ArrayList<>(list);
         return resultData;
     }
 
@@ -53,7 +57,7 @@ public class BakProductController {
     }
 
     @RequestMapping(value = "/updateProduct", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    ResultData updateProduct(@RequestBody ProductListWithBLOBs productList) throws Exception{
+    ResultData updateProduct(@RequestBody ProductList productList) throws Exception{
         ResultData resultData = new ResultData();
         productService.updateProduct(productList);
         return resultData;

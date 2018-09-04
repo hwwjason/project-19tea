@@ -2,17 +2,26 @@ package com.sckj.service;
 
 import com.sckj.dto.ProductListDTO;
 import com.sckj.pojo.ProductList;
-import com.sckj.pojo.ProductListWithBLOBs;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 public interface IProductService {
+
    /**
     * 商品入库
     * @param productList
     */
-   void putProductToStorage(ProductListWithBLOBs productList);
+   void putProductToStorage(ProductList productList);
+
+   /**
+    * 商品入库
+    * @param
+    */
+   void putProductToStorage(HttpServletRequest request) throws IOException, ServletException;
 
    void deleteProduct(String[] ids);
 
@@ -20,7 +29,7 @@ public interface IProductService {
     * 更新商品状态
     * @param productList
     */
-   void updateProduct(ProductListWithBLOBs productList) throws Exception;
+   void updateProduct(ProductList productList) throws Exception;
 
    /**
     * 获取商品列表

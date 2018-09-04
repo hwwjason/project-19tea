@@ -10,7 +10,7 @@ import com.sckj.exception.BusinessException;
 import com.sckj.jpa.ProductListJpa;
 import com.sckj.jpa.UserCartJpa;
 import com.sckj.jpa.UserListJpa;
-import com.sckj.pojo.ProductListWithBLOBs;
+import com.sckj.pojo.ProductList;
 import com.sckj.pojo.SckjUserList;
 import com.sckj.pojo.UserCart;
 import com.sckj.service.IUserCartService;
@@ -51,8 +51,8 @@ public class UserCartServiceImp implements IUserCartService {
         //查询商品是否已经存在
         List<String> ids = new ArrayList<>();
         ids.add(productId);
-        ProductListWithBLOBs productListWithBLOBs = productListMapper.getOne(productId);
-        if(productListWithBLOBs==null){
+        ProductList productList = productListMapper.getOne(productId);
+        if(productList==null){
             throw new BusinessException("商品已被删除，无法加入购物车");
         }
 

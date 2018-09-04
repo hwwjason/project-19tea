@@ -32,8 +32,8 @@ public class UploadDownloadController {
     private String uploadDir;
  
     @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
-    public ResultData uploadImage(@RequestParam(value = "file") MultipartFile file) throws RuntimeException {
-        return FileUtils.uploadImage(file);
+    public ResultData uploadImage(@RequestParam(value = "file") MultipartFile file,HttpServletRequest request) throws RuntimeException {
+        return FileUtils.uploadImage(file,request);
 //        ResultData resultData = new ResultData();
 //        if (file.isEmpty()) {
 //            resultData.setMessage("文件不能为空");

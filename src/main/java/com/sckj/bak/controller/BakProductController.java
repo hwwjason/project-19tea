@@ -78,4 +78,12 @@ public class BakProductController {
         return resultData;
     }
 
+    @RequestMapping(value = "/getProductById", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData getProductById(@RequestParam("id") String id){
+        ResultData resultData = new ResultData();
+        ProductListDTO productList = productService.getProductDTOById(id);
+        resultData.setData(productList);
+        return resultData;
+    }
+
 }

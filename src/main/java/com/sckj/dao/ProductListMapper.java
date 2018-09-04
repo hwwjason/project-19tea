@@ -28,4 +28,6 @@ public interface ProductListMapper {
     List<ProductListDTO> getProductList(Map<String,Object> map);
 
     ProductList  getOne(String id);
+
+    ProductListDTO  getOneDTO(String id);
 }

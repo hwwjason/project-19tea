@@ -133,4 +133,12 @@ public class ProductServiceImp implements IProductService{
         }
         return productLists;
     }
+
+    public ProductList getProductById(String id){
+        return productListMapper.getOne(id);
+    }
+
+    public ProductListDTO getProductDTOById(String id){
+        return productListMapper.getOneDTO(id);
+    }
 }

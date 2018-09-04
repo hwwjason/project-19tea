@@ -446,4 +446,8 @@
     select * from sckj_product_list WHERE  id =#{id}
   </select>
 
+  <select id="getOneDTO" parameterType="java.lang.String" resultMap="ResultMapDTO">
+    select * from sckj_product_list WHERE  id =#{id}
+  </select>
+
 </mapper>

@@ -44,5 +44,13 @@ public interface IProductService {
     */
    List<ProductListDTO> getProductList(Map<String,Object> productListMap);
 
+   /**
+    * 获取商品
+    * @return
+    */
+   ProductList getProductById(String id);
+
+   ProductListDTO getProductDTOById(String id);
+
 
 }

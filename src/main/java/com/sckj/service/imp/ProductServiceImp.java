@@ -63,10 +63,21 @@ public class ProductServiceImp implements IProductService{
             Object value = entry.getValue();
             Object object = new Object();
             for (Object obj : (Object[])value) {
+                if(obj==null) continue;
                 if("stock".equals(key)){//INTEGER
-                    object = Integer.valueOf((String) obj);
+                    String str = (String)obj;
+                    if(StringUtils.isNotEmpty(str)){
+                        object = Integer.valueOf((String) obj);
+                    }else {
+                        object = Integer.valueOf("0");
+                    }
                 }else if("price".equals(key)||"originalPrice".equals(key)){//BigDecimal
-                    object = new BigDecimal((String) obj);
+                    String str = (String)obj;
+                    if(StringUtils.isNotEmpty(str)){
+                        object = new BigDecimal(str);
+                    }else {
+                        object = new BigDecimal(0);;
+                    }
                 }else{
                     object = obj;
                 }

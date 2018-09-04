@@ -4,6 +4,7 @@ package com.sckj.bak.controller;
 import com.alibaba.fastjson.JSON;
 import com.baidu.ueditor.ActionEnter;
 import com.sckj.dto.Ueditor;
+import com.sckj.utils.DateTimeUtils;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,12 +66,9 @@ public class UEditorController {
         return ueditor;
     }
 
-    public String uploadImg(MultipartFile file,
-                            HttpServletRequest request) throws IOException {
+    public String uploadImg(MultipartFile file, HttpServletRequest request) throws IOException {
         Ueditor ueditor = new Ueditor();
-//        Users user = UserUtils.getUser(request) ;
-        String path = request.getSession().getServletContext()
-                .getRealPath("./image");
+        String path = request.getSession().getServletContext().getRealPath("./image")+ "/"+ DateTimeUtils.getCurDate2();
         String ct = file.getContentType() ;
         String fileType = "";
         if (ct.indexOf("/")>0) {
@@ -95,7 +93,7 @@ public class UEditorController {
         ueditor.setState("SUCCESS");
         ueditor.setTitle(fileName);
         ueditor.setOriginal(fileName);
-        ueditor.setUrl("/ueditor/jsp/upload/image"+File.separator+fileName);
+        ueditor.setUrl("/image/"+DateTimeUtils.getCurDate2()+File.separator+fileName);
         System.out.println( JSON.toJSONString(ueditor));
         return JSON.toJSONString(ueditor);
     }

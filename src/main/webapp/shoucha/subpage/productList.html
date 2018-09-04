@@ -307,60 +307,44 @@
     }
     //上下架
     function updateState(state) {
-        var checkarr = []
+        var checkarr = [];
+        var newstate = 0;
         if (state == 1) {
-            //上架
-            $(".orderList .childCheck").each(function(index, el) {
-                var elchecked = $(el).prop("checked");
-                var productId = $(el).attr("productid");
-                if (elchecked == true) {
-                    var obj = {
-                        id: productId,
-                        IsShelves: 1
-                    }
-                    checkarr.push(obj)
-                }
-            });
-            $.ajax({
-                url: baseURL + "bak/product/updateProducts",
-                type: 'POST',
-                dataType: 'json',
-                contentType: "application/json;charset=UTF-8",
-                data: JSON.stringify(checkarr),
-            }).done(function(res) {
-                if (res.status == "1") {
-                    
-                }
-            }).fail(function() {
-                console.log("error");
-            })
+            newstate = 1;
         } else {
-            //下架
-            $(".orderList .childCheck").each(function(index, el) {
-                var elchecked = $(el).prop("checked");
-                var productId = $(el).attr("productid");
-                if (elchecked == true) {
-                    var obj = {
-                        id: productId,
-                        IsShelves: 0
-                    }
-                    checkarr.push(obj)
-                }
-            });
-            $.ajax({
-                url: baseURL + "bak/product/updateProducts",
-                type: 'POST',
-                dataType: 'json',
-                contentType: "application/json;charset=UTF-8",
-                data: JSON.stringify(checkarr),
-            }).done(function(res) {
-                if (res.status == "1") {
-                    
-                }
-            }).fail(function() {
-                console.log("error");
-            })
+            newstate = 0;
         }
+        $(".orderList .childCheck").each(function(index, el) {
+            var elchecked = $(el).prop("checked");
+            var productId = $(el).attr("productid");
+            if (elchecked == true) {
+                var obj = {
+                    id: productId,
+                    IsShelves: newstate
+                }
+                checkarr.push(obj)
+            }
+        });
+        $.ajax({
+            url: baseURL + "bak/product/updateProducts",
+            type: 'POST',
+            dataType: 'json',
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(checkarr),
+        }).done(function(res) {
+            if (res.status == "1") {
+                var listdata = vm.orderList;
+                for (var i = 0; i < listdata.length; i++) {
+                    for (var j = 0; j < checkarr.length; j++) {
+                        if (listdata[i].id == checkarr[j].id) {
+                            listdata[i].isshelves = newstate;
+                        }
+                    }
+                }
+            }
+        }).fail(function() {
+            console.log("error");
+        })
     }
     </script>
 </body>

@@ -191,7 +191,9 @@
                             }
                         }
                     });
-                    form.render();
+                    setTimeout(function() {
+                        form.render();
+                    }, 0)
                 })
             },
             getList: function(obj) {

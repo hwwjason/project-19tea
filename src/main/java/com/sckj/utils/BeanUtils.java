@@ -3,7 +3,7 @@
 // (powered by Fernflower decompiler)
 //
 
-package com.sckj.common;
+package com.sckj.utils;
 
 import com.alibaba.fastjson.JSONArray;
 import java.beans.BeanInfo;
@@ -169,6 +169,53 @@ public class BeanUtils {
                     String propertyName = propertyDescriptor.getName();
                     if (destPropertyMap.containsKey(propertyName)) {
                         Object[] args = new Object[]{propertyDescriptor.getReadMethod().invoke(orig)};
+                        ((Method)destPropertyMap.get(propertyName)).invoke(dest, args);
+                    }
+                }
+            } catch (IntrospectionException var13) {
+                var13.printStackTrace();
+            } catch (InvocationTargetException var14) {
+                var14.printStackTrace();
+            } catch (IllegalAccessException var15) {
+                var15.printStackTrace();
+            }
+
+        }
+    }
+
+
+    public static void copyPropertiesWithoutNull(Object dest, Object orig) {
+        if (orig != null && dest != null) {
+            try {
+                BeanInfo origInfo = Introspector.getBeanInfo(orig.getClass());
+                PropertyDescriptor[] origPropertyDescriptors = origInfo.getPropertyDescriptors();
+                BeanInfo destInfo = Introspector.getBeanInfo(dest.getClass());
+                PropertyDescriptor[] destPropertyDescriptors = destInfo.getPropertyDescriptors();
+                Map<String, Method> destPropertyMap = new HashMap();
+                PropertyDescriptor[] var7 = destPropertyDescriptors;
+                int var8 = destPropertyDescriptors.length;
+
+                int var9;
+                PropertyDescriptor propertyDescriptor;
+                for(var9 = 0; var9 < var8; ++var9) {
+                    propertyDescriptor = var7[var9];
+                    Method writeMethod = propertyDescriptor.getWriteMethod();
+                    if (writeMethod != null && propertyDescriptor.getReadMethod() != null) {
+                        destPropertyMap.put(propertyDescriptor.getName(), writeMethod);
+                    }
+                }
+
+                var7 = origPropertyDescriptors;
+                var8 = origPropertyDescriptors.length;
+
+                for(var9 = 0; var9 < var8; ++var9) {
+                    propertyDescriptor = var7[var9];
+                    String propertyName = propertyDescriptor.getName();
+                    if (destPropertyMap.containsKey(propertyName)) {
+                        Object[] args = new Object[]{propertyDescriptor.getReadMethod().invoke(orig)};
+                        if(args.length<=0 || args[0]==null){
+                            continue;
+                        }
                         ((Method)destPropertyMap.get(propertyName)).invoke(dest, args);
                     }
                 }

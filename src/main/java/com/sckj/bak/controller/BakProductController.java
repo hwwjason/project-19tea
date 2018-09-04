@@ -44,8 +44,6 @@ public class BakProductController {
     ResultData putProductToStorage(HttpServletRequest request) throws Exception {
         ResultData resultData = new ResultData();
         productService.putProductToStorage(request);
-//        Collection<Part> list = request.getParts();
-//        List<Part> lists= new ArrayList<>(list);
         return resultData;
     }
 
@@ -57,9 +55,9 @@ public class BakProductController {
     }
 
     @RequestMapping(value = "/updateProduct", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    ResultData updateProduct(@RequestBody ProductList productList) throws Exception{
+    ResultData updateProduct(HttpServletRequest request) throws Exception{
         ResultData resultData = new ResultData();
-        productService.updateProduct(productList);
+        productService.updateProduct(request);
         return resultData;
     }
 

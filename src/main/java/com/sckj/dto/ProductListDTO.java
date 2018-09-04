@@ -1,5 +1,6 @@
 package com.sckj.dto;
 
+import com.sckj.constant.MiniAppConstants;
 import com.sckj.pojo.ProductList;
 import com.sckj.utils.DateTimeUtils;
 import org.springframework.data.domain.Sort;
@@ -18,6 +19,8 @@ public class ProductListDTO extends ProductList {
     private String addTimeStr;
 
     private MultipartFile imgFile;
+
+    private String miniProUrl;//小程序连接
 
 
     public List<Sort.Order> getOrders() {
@@ -52,4 +55,11 @@ public class ProductListDTO extends ProductList {
         this.imgFile = imgFile;
     }
 
+    public String getMiniProUrl() {
+        return miniProUrl==null? MiniAppConstants.MiniAppUrlPre+getId():miniProUrl;
+    }
+
+    public void setMiniProUrl(String miniProUrl) {
+        this.miniProUrl = miniProUrl;
+    }
 }

@@ -40,7 +40,7 @@
     <result column="IsSynGjp" jdbcType="CHAR" property="issyngjp" />
     <result column="stocktime" jdbcType="TIMESTAMP" property="stocktime" />
     <result column="img" jdbcType="LONGVARCHAR" property="img" />
-    <result column="slide_img" jdbcType="LONGVARCHAR" property="slideImg" />
+    <result column="slide_img" jdbcType="LONGVARCHAR" property="img" />
     <result column="introduce" jdbcType="LONGVARCHAR" property="introduce" />
   </resultMap>
 
@@ -426,8 +426,8 @@
       <if test="null != title and  '' neq title">
         and  UPPER(product.title) LIKE CONCAT('%',UPPER (#{title}),'%')
       </if>
-      <if test="null != isshelves and  '' neq isshelves">
-        and  UPPER(product.IsShelves) LIKE CONCAT('%',UPPER (#{isshelves}),'%')
+      <if test="null != IsShelves and  '' neq IsShelves">
+        and  UPPER(product.IsShelves) LIKE CONCAT('%',UPPER (#{IsShelves}),'%')
       </if>
     </where>
     ORDER BY product.addtime DESC

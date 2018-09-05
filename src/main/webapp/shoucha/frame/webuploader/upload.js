@@ -212,6 +212,7 @@
                             //编辑状态
                             console.log(GetRequest().slideImg)
                             var slideimg = GetRequest().slideImg.split(",");
+                            console.log(slideimg)
                             var jsonLen = slideimg.length;
                             if (jsonLen != 0) {
                                 fileCount = jsonLen;
@@ -219,12 +220,11 @@
                                 $statusBar.show();
                                 //显示在页面上  
                                 $.each(slideimg, function(i, n) {
-
                                     var obj = {},
                                         statusMap = {},
                                         file_id = 'WU_FILE_' + i;
                                     obj.id = file_id;
-                                    obj.filename = n.filename;
+                                    obj.filename = n;
                                     obj.getStatus = function() {
                                         return '';
                                     };
@@ -261,6 +261,7 @@
                 });
 
             function editFile(file) {
+                console.log(file)
                 var $li = $('<li id="' + file.id + '" class="ui-state-default">' +
                         '<p class="title"></p>' +
                         '<p class="imgWrap"></p>' +

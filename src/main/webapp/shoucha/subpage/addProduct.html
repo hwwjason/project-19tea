@@ -242,7 +242,9 @@ layui.use('form', function() {
     }
     //fromSb();
 });
+var fileList = [];
 $(function() {
+    var $list = $('#uploader .fileList');
     var ue = UE.getEditor('UEcontainer');
     $("#uploader .filelist").dragsort({
         dragSelector: "li",
@@ -252,7 +254,6 @@ $(function() {
     });
     //编辑状态
     if (GetRequest().id != undefined) {
-        console.log(GetRequest().id)
         var idobj = {
             id: GetRequest().id
         };

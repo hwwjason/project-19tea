@@ -1,8 +1,13 @@
 package com.sckj.utils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
 
 
 public class HttpUtils {
@@ -25,5 +30,35 @@ public class HttpUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 获取本机所有IP
+     */
+    public static String getEn0() {
+        String en0 = "";
+        Enumeration netInterfaces;
+        try {
+            netInterfaces = NetworkInterface.getNetworkInterfaces();
+            InetAddress ip = null;
+            while (netInterfaces.hasMoreElements()) {
+                NetworkInterface ni = (NetworkInterface) netInterfaces.nextElement();
+                if(!"en0".equals(ni.getName())){
+                    continue;
+                }
+                Enumeration nii = ni.getInetAddresses();
+                while (nii.hasMoreElements()) {
+                    ip = (InetAddress) nii.nextElement();
+                    if (ip.getHostAddress().indexOf(":") == -1) {
+                        en0 = ip.getHostAddress();
+                        break;
+                    }
+                }
+                break;
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return en0;
     }
 }

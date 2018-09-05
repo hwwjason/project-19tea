@@ -94,7 +94,7 @@
                     <td>{{item.isshelves==1?"上架":"下架"}}</td>
                     <td>{{item.addTimeStr}}</td>
                     <td>
-                        <a :href="'../subpage/addProduct.html?id='+item.id" class="layui-btn layui-btn-normal layui-btn-small" lay-event="edit">
+                        <a :href="'../subpage/addProduct.html?id='+item.id+'&slideImg='+item.slideImg" class="layui-btn layui-btn-normal layui-btn-small" lay-event="edit">
                             <i class="layui-icon">&#xe642;</i>编辑
                         </a>
                     </td>
@@ -108,6 +108,7 @@
     <script type="text/javascript" src="../frame/static/js/vue.min.js"></script>
     <script type="text/javascript">
     var orderList = "",
+        layer = "",
         form = "",
         laypage = "",
         count = 0,
@@ -133,9 +134,10 @@
         },
         methods: {
             layuiInit: function() {
-                layui.use(['form', 'layedit', 'laypage', 'jquery', 'laydate'], function() {
+                layui.use(['form', 'layedit', 'laypage', 'jquery', 'laydate', 'layer'], function() {
                     laypage = layui.laypage;
                     form = layui.form;
+                    layer = layui.layer;
                     var laydate = layui.laydate;
                     var $ = layui.jquery;
                     // 监听checkbox选中事件，全选
@@ -240,60 +242,68 @@
                 checkId.push(productId)
             }
         });
-        var url = baseURL + "bak/product/deleteProduct";
-        var data = checkId.toString();
-        $.post(url, { ids: data }, function(res) {
-            if (res.status == 1) {
-                //window.location.reload();
-                for (var i = 0; i < checkId.length; i++) {
-                    for (var j = 0; j < vm.orderList.length; j++) {
-                        if (checkId[i] == vm.orderList[j].id) {
-                            vm.orderList.splice(j, 1)
-                            count = count - 1;
+        layer.confirm('确定删除？', {
+            btn: ['确定', '取消'] //按钮
+        }, function(index) {
+            layer.close(index);
+            var url = baseURL + "bak/product/deleteProduct";
+            var data = checkId.toString();
+            $.post(url, { ids: data }, function(res) {
+                if (res.status == 1) {
+                    //window.location.reload();
+                    for (var i = 0; i < checkId.length; i++) {
+                        for (var j = 0; j < vm.orderList.length; j++) {
+                            if (checkId[i] == vm.orderList[j].id) {
+                                vm.orderList.splice(j, 1)
+                                count = count - 1;
+                            }
                         }
                     }
-                }
-                laypage.render({
-                    elem: 'pagelist',
-                    count: count,
-                    limit: pageSize,
-                    curr: pagecurr,
-                    layout: ['count', 'prev', 'page', 'next', 'refresh', 'skip'],
-                    jump: function(obj, first) {
-                        if (!first) {
-                            $.ajax({
-                                url: baseURL + "bak/product/getProductList",
-                                type: 'POST',
-                                dataType: 'json',
-                                contentType: "application/json;charset=UTF-8",
-                                data: JSON.stringify({ "pageNum": obj.curr, "pageSize": pageSize }),
-                            }).done(function(res) {
-                                if (res.status == "1") {
-                                    orderList = res.data.list;
-                                    vm.orderList = orderList;
-                                    $(".orderList .childCheck").each(function(index, el) {
-                                        $(el).prop("checked", false)
-                                    });
-                                    $("#checkall").prop("checked", false);
-                                    setTimeout(function() {
-                                        form.render();
-                                    }, 0)
-                                }
-                            }).fail(function() {
-                                console.log("error");
-                            })
+                    laypage.render({
+                        elem: 'pagelist',
+                        count: count,
+                        limit: pageSize,
+                        curr: pagecurr,
+                        layout: ['count', 'prev', 'page', 'next', 'refresh', 'skip'],
+                        jump: function(obj, first) {
+                            if (!first) {
+                                $.ajax({
+                                    url: baseURL + "bak/product/getProductList",
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    contentType: "application/json;charset=UTF-8",
+                                    data: JSON.stringify({ "pageNum": obj.curr, "pageSize": pageSize }),
+                                }).done(function(res) {
+                                    if (res.status == "1") {
+                                        orderList = res.data.list;
+                                        vm.orderList = orderList;
+                                        $(".orderList .childCheck").each(function(index, el) {
+                                            $(el).prop("checked", false)
+                                        });
+                                        $("#checkall").prop("checked", false);
+                                        setTimeout(function() {
+                                            form.render();
+                                        }, 0)
+                                    }
+                                }).fail(function() {
+                                    console.log("error");
+                                })
+                            }
                         }
-                    }
-                });
-                setTimeout(function() {
-                    $(".orderList .childCheck").each(function(index, el) {
-                        $(el).prop("checked", false)
                     });
-                    form.render();
-                }, 0)
-                checkId = [];
-            }
-        }, "json")
+                    setTimeout(function() {
+                        $(".orderList .childCheck").each(function(index, el) {
+                            $(el).prop("checked", false)
+                        });
+                        form.render();
+                    }, 0)
+                    checkId = [];
+                }
+            }, "json")
+        }, function() {
+            console.log("取消")
+        });
+
     }
     //查询商品
     function search() {
@@ -341,6 +351,7 @@
                         }
                     }
                 }
+                layer.msg("修改成功")
             }
         }).fail(function() {
             console.log("error");

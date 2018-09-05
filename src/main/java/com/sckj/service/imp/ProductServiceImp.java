@@ -41,7 +41,7 @@ public class ProductServiceImp implements IProductService{
     @Override
     public void putProductToStorage(HttpServletRequest request) throws Exception {
         ProductList product = createProductList(request);
-        if(StringUtils.isEmpty(product.getId())){//修改
+        if(StringUtils.isNotEmpty(product.getId())){//修改
             updateProduct(product);
         }else{//新增
             product.setId(UUIDUtils.generate());

@@ -425,8 +425,8 @@
       <if test="null != title and  '' neq title">
         and  UPPER(product.title) LIKE CONCAT('%',UPPER (#{title}),'%')
       </if>
-      <if test="null != IsShelves and  '' neq IsShelves">
-        and  UPPER(product.IsShelves) LIKE CONCAT('%',UPPER (#{IsShelves}),'%')
+      <if test="null != isshelves and  '' neq isshelves">
+        and  UPPER(product.IsShelves) LIKE CONCAT('%',UPPER (#{isshelves}),'%')
       </if>
     </where>
     ORDER BY product.addtime DESC

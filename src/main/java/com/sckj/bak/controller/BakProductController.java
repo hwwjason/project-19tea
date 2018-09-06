@@ -4,17 +4,15 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sckj.common.Query;
 import com.sckj.common.ResultData;
-import com.sckj.dto.ProductListDTO;
-import com.sckj.pojo.ProductList;
+import com.sckj.model.dto.ProductListDTO;
+import com.sckj.model.ProductList;
 import com.sckj.service.IProductService;
 import com.sckj.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 

@@ -11,7 +11,7 @@ public class IndexController {
     @RequestMapping("/")
     public String index()  {
 //        return "shoucha/index.html";
-        return "index.html";
+        return "index.jsp";
     }
 
 }

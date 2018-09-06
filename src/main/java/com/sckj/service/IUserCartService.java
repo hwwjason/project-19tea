@@ -1,9 +1,7 @@
 package com.sckj.service;
 
-import com.sckj.common.ResultData;
-import com.sckj.dto.UserCartDTO;
-import com.sckj.dto.UserCartList;
-import org.springframework.web.bind.annotation.RequestParam;
+import com.sckj.model.dto.UserCartDTO;
+import com.sckj.model.dto.UserCartList;
 
 import java.util.List;
 

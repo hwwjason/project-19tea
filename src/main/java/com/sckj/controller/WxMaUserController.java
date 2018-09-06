@@ -1,7 +1,7 @@
 package com.sckj.controller;
 
 import com.sckj.common.ResultData;
-import com.sckj.dto.WechatLoginInfo;
+import com.sckj.model.dto.WechatLoginInfo;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.service.IUserListService;
 import com.sckj.service.imp.UserListServiceImp;

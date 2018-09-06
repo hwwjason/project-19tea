@@ -43,6 +43,12 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>2.3.28</version>
+		</dependency>
+
 		<!--thymeleaf模板-->
 		<!--<dependency>-->
 			<!--<groupId>org.springframework.boot</groupId>-->

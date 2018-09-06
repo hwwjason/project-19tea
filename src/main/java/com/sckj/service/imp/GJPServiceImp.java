@@ -1,10 +1,6 @@
 package com.sckj.service.imp;
 
-import com.sckj.pojo.ProductList;
 import com.sckj.service.IGJPService;
-import com.sckj.utils.StringUtils;
-import com.sckj.utils.UUIDUtils;
-import org.apache.http.protocol.HttpContext;
 
 public class GJPServiceImp implements IGJPService {
 

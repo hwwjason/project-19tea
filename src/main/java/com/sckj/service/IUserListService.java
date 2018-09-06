@@ -1,7 +1,7 @@
 package com.sckj.service;
 
-import com.sckj.dto.SckjUserListDTO;
-import com.sckj.dto.WechatLoginInfo;
+import com.sckj.model.dto.SckjUserListDTO;
+import com.sckj.model.dto.WechatLoginInfo;
 import com.weixin.miniapp.bean.WxMaPhoneNumberInfo;
 import com.weixin.miniapp.bean.WxMaUserInfo;
 import org.springframework.data.domain.Page;

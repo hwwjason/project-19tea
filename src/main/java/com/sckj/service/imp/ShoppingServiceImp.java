@@ -1,10 +1,7 @@
 package com.sckj.service.imp;
 
-import com.sckj.pojo.ProductList;
 import com.sckj.service.IShoppingService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ShoppingServiceImp implements IShoppingService{

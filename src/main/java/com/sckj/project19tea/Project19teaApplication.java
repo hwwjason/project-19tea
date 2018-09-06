@@ -15,10 +15,10 @@ import java.util.Properties;
 
 //@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 @SpringBootApplication//(exclude={DataSourceAutoConfiguration.class,HibernateJpaAutoConfiguration.class})
-@MapperScan(basePackages = {"com.sckj.dao"})
+@MapperScan(basePackages = {"com.sckj.repository.mybatis"})
 @ComponentScan(basePackages = {"com.*"})
-@EntityScan(basePackages = {"com.sckj.pojo"})
-@EnableJpaRepositories(basePackages = {"com.sckj.jpa"})
+@EntityScan(basePackages = {"com.sckj.model"})
+@EnableJpaRepositories(basePackages = {"com.sckj.repository"})
 public class Project19teaApplication
 		//extends SpringBootServletInitializer
 {

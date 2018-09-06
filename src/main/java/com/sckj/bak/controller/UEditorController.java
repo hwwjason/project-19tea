@@ -3,7 +3,7 @@ package com.sckj.bak.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.baidu.ueditor.ActionEnter;
-import com.sckj.dto.Ueditor;
+import com.sckj.model.dto.Ueditor;
 import com.sckj.utils.DateTimeUtils;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;

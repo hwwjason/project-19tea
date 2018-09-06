@@ -1,6 +1,6 @@
 package com.sckj.service.imp;
 
-import com.sckj.dao.UserInfoDAO;
+import com.sckj.repository.mybatis.UserInfoDAO;
 import com.sckj.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

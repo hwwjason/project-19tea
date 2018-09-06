@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sckj.repository.mybatis.ProductSonOrderDAO">
+
+    <resultMap id="ProductSonOrderDTOResultMap" type="com.sckj.model.dto.ProductSonOrderDTO">
+        <result column="id" jdbcType="VARCHAR" property="id" />
+        <result column="product_orderid" jdbcType="VARCHAR" property="productOrderid" />
+        <result column="express_status" jdbcType="CHAR" property="expressStatus" />
+        <result column="deliver_time" jdbcType="TIMESTAMP" property="deliverTime" />
+        <result column="receipt_time" jdbcType="TIMESTAMP" property="receiptTime" />
+        <result column="productid" jdbcType="VARCHAR" property="productid" />
+        <result column="product_type" jdbcType="CHAR" property="productType" />
+        <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+        <result column="coupon_price" jdbcType="DECIMAL" property="couponPrice" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="buynum" jdbcType="INTEGER" property="buynum" />
+        <result column="status" jdbcType="CHAR" property="status" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="snapshot" jdbcType="LONGVARCHAR" property="snapshot" />
+    </resultMap>
+
+    <sql id="findDtoSql">
+        select * from (
+        select * from  sckj_product_son_order temp
+        ) t
+    </sql>
+
+    <select id="findDTOById" parameterType="String" resultMap="ProductSonOrderDTOResultMap">
+        <include refid="findDtoSql"></include>
+        <where>
+            and t.id = #{id}
+        </where>
+    </select>
+
+    <select id="findProductSonOrderPage" parameterType="com.sckj.model.dto.ProductSonOrderDTO" resultMap="ProductSonOrderDTOResultMap">
+        <include refid="findDtoSql" />
+        <where>
+
+        </where>
+    </select>
+
+</mapper>

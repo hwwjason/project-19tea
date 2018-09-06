@@ -1,11 +1,9 @@
 package com.sckj.service;
 
-import com.sckj.dto.ProductListDTO;
-import com.sckj.pojo.ProductList;
+import com.sckj.model.dto.ProductListDTO;
+import com.sckj.model.ProductList;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 

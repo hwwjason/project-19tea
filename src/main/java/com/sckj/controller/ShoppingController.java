@@ -2,7 +2,7 @@ package com.sckj.controller;
 
 import com.sckj.common.ResultData;
 import com.sckj.constant.MessageConstants;
-import com.sckj.dto.UserCartDTO;
+import com.sckj.model.dto.UserCartDTO;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
 import com.sckj.service.IUserCartService;

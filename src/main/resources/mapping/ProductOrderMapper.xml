@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sckj.repository.mybatis.ProductOrderDAO">
+
+    <resultMap id="ProductOrderDTOResultMap" type="com.sckj.model.dto.ProductOrderDTO">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="buyuser_id" jdbcType="VARCHAR" property="buyuserId" />
+        <result column="buyuser_tel" jdbcType="VARCHAR" property="buyuserTel" />
+        <result column="payuser" jdbcType="VARCHAR" property="payuser" />
+        <result column="express_price" jdbcType="DECIMAL" property="expressPrice" />
+        <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+        <result column="vip_price" jdbcType="DECIMAL" property="vipPrice" />
+        <result column="coupon_price" jdbcType="DECIMAL" property="couponPrice" />
+        <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
+        <result column="pay_method" jdbcType="CHAR" property="payMethod" />
+        <result column="isapp" jdbcType="CHAR" property="isapp" />
+        <result column="order_status" jdbcType="CHAR" property="orderStatus" />
+        <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+        <result column="payremind" jdbcType="CHAR" property="payremind" />
+        <result column="paytime" jdbcType="TIMESTAMP" property="paytime" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="signer" jdbcType="VARCHAR" property="signer" />
+        <result column="signer_tel" jdbcType="VARCHAR" property="signerTel" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="area" jdbcType="VARCHAR" property="area" />
+        <result column="address" jdbcType="VARCHAR" property="address" />
+        <result column="user_remark" jdbcType="VARCHAR" property="userRemark" />
+        <result column="shareuid" jdbcType="VARCHAR" property="shareuid" />
+        <result column="refundstatus" jdbcType="CHAR" property="refundstatus" />
+        <result column="refund_id" jdbcType="VARCHAR" property="refundId" />
+        <result column="refund_express" jdbcType="VARCHAR" property="refundExpress" />
+        <result column="refund_time" jdbcType="TIMESTAMP" property="refundTime" />
+        <result column="confirm_time" jdbcType="TIMESTAMP" property="confirmTime" />
+        <result column="prepay_id" jdbcType="VARCHAR" property="prepayId" />
+        <result column="Status" jdbcType="CHAR" property="status" />
+        <result column="express_name" jdbcType="VARCHAR" property="expressName" />
+        <result column="express_code" jdbcType="VARCHAR" property="expressCode" />
+        <result column="express_orderid" jdbcType="VARCHAR" property="expressOrderid" />
+        <result column="m_refundtime" jdbcType="TIMESTAMP" property="mRefundtime" />
+        <result column="is_syn_gjp" jdbcType="CHAR" property="isSynGjp" />
+        <result column="syn_gjp_time" jdbcType="TIMESTAMP" property="synGjpTime" />
+        <result column="refundreason" jdbcType="LONGVARCHAR" property="refundreason" />
+        <result column="refund_remark" jdbcType="LONGVARCHAR" property="refundRemark" />
+    </resultMap>
+
+    <sql id="findDtoSql">
+        select * from (
+        select * from  sckj_product_order temp
+        ) t
+    </sql>
+
+    <select id="findDTOById" parameterType="String" resultMap="ProductOrderDTOResultMap">
+        <include refid="findDtoSql"></include>
+        <where>
+            and t.id = #{id}
+        </where>
+    </select>
+
+    <select id="findProductOrderPage" parameterType="com.sckj.model.dto.ProductOrderDTO" resultMap="ProductOrderDTOResultMap">
+        <include refid="findDtoSql" />
+        <where>
+
+        </where>
+    </select>
+
+</mapper>

@@ -327,378 +327,204 @@ public class ProductOrder {
     private Date synGjpTime;
 
 
-
-
     public String getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-
-
     public String getBuyuserId() {
-        return this.buyuserId;
+        return buyuserId;
     }
 
     public void setBuyuserId(String buyuserId) {
         this.buyuserId = buyuserId;
     }
 
-
-
     public String getBuyuserTel() {
-        return this.buyuserTel;
+        return buyuserTel;
     }
 
     public void setBuyuserTel(String buyuserTel) {
         this.buyuserTel = buyuserTel;
     }
 
-
-
     public String getPayuser() {
-        return this.payuser;
+        return payuser;
     }
 
     public void setPayuser(String payuser) {
         this.payuser = payuser;
     }
 
-
-
-
     public BigDecimal getExpressPrice() {
-    return this.expressPrice;
+        return expressPrice;
     }
 
     public void setExpressPrice(BigDecimal expressPrice) {
-    this.expressPrice = expressPrice;
+        this.expressPrice = expressPrice;
     }
 
-
-
     public BigDecimal getProductPrice() {
-    return this.productPrice;
+        return productPrice;
     }
 
     public void setProductPrice(BigDecimal productPrice) {
-    this.productPrice = productPrice;
+        this.productPrice = productPrice;
     }
 
-
-
     public BigDecimal getVipPrice() {
-    return this.vipPrice;
+        return vipPrice;
     }
 
     public void setVipPrice(BigDecimal vipPrice) {
-    this.vipPrice = vipPrice;
+        this.vipPrice = vipPrice;
     }
 
-
-
     public BigDecimal getCouponPrice() {
-    return this.couponPrice;
+        return couponPrice;
     }
 
     public void setCouponPrice(BigDecimal couponPrice) {
-    this.couponPrice = couponPrice;
+        this.couponPrice = couponPrice;
     }
 
-
-
     public BigDecimal getTotalPrice() {
-    return this.totalPrice;
+        return totalPrice;
     }
 
     public void setTotalPrice(BigDecimal totalPrice) {
-    this.totalPrice = totalPrice;
+        this.totalPrice = totalPrice;
     }
 
-
     public String getPayMethod() {
-        return this.payMethod;
+        return payMethod;
     }
 
     public void setPayMethod(String payMethod) {
         this.payMethod = payMethod;
     }
 
-
-
     public String getIsapp() {
-        return this.isapp;
+        return isapp;
     }
 
     public void setIsapp(String isapp) {
         this.isapp = isapp;
     }
 
-
-
     public String getOrderStatus() {
-        return this.orderStatus;
+        return orderStatus;
     }
 
     public void setOrderStatus(String orderStatus) {
         this.orderStatus = orderStatus;
     }
 
-
-
     public Date getCreatetime() {
-        return this.createtime;
+        return createtime;
     }
 
     public void setCreatetime(Date createtime) {
         this.createtime = createtime;
     }
 
-
-
     public String getPayremind() {
-        return this.payremind;
+        return payremind;
     }
 
     public void setPayremind(String payremind) {
         this.payremind = payremind;
     }
 
-
-
     public Date getPaytime() {
-        return this.paytime;
+        return paytime;
     }
 
     public void setPaytime(Date paytime) {
         this.paytime = paytime;
     }
 
-
-
     public String getRemark() {
-        return this.remark;
+        return remark;
     }
 
     public void setRemark(String remark) {
         this.remark = remark;
     }
 
-
-
     public String getSigner() {
-        return this.signer;
+        return signer;
     }
 
     public void setSigner(String signer) {
         this.signer = signer;
     }
 
-
-
     public String getSignerTel() {
-        return this.signerTel;
+        return signerTel;
     }
 
     public void setSignerTel(String signerTel) {
         this.signerTel = signerTel;
     }
 
-
-
     public String getProvince() {
-        return this.province;
+        return province;
     }
 
     public void setProvince(String province) {
         this.province = province;
     }
 
-
-
     public String getCity() {
-        return this.city;
+        return city;
     }
 
     public void setCity(String city) {
         this.city = city;
     }
 
-
-
     public String getArea() {
-        return this.area;
+        return area;
     }
 
     public void setArea(String area) {
         this.area = area;
     }
 
-
-
     public String getAddress() {
-        return this.address;
+        return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
     }
 
-
-
     public String getUserRemark() {
-        return this.userRemark;
+        return userRemark;
     }
 
     public void setUserRemark(String userRemark) {
         this.userRemark = userRemark;
     }
 
-
-
     public String getShareuid() {
-        return this.shareuid;
+        return shareuid;
     }
 
     public void setShareuid(String shareuid) {
         this.shareuid = shareuid;
     }
 
-
-
     public String getRefundstatus() {
-        return this.refundstatus;
+        return refundstatus;
     }
 
     public void setRefundstatus(String refundstatus) {
         this.refundstatus = refundstatus;
-    }
-
-
-
-
-
-    public String getRefundId() {
-        return this.refundId;
-    }
-
-    public void setRefundId(String refundId) {
-        this.refundId = refundId;
-    }
-
-
-
-    public String getRefundExpress() {
-        return this.refundExpress;
-    }
-
-    public void setRefundExpress(String refundExpress) {
-        this.refundExpress = refundExpress;
-    }
-
-
-
-
-
-    public Date getRefundTime() {
-        return this.refundTime;
-    }
-
-    public void setRefundTime(Date refundTime) {
-        this.refundTime = refundTime;
-    }
-
-
-
-    public Date getConfirmTime() {
-        return this.confirmTime;
-    }
-
-    public void setConfirmTime(Date confirmTime) {
-        this.confirmTime = confirmTime;
-    }
-
-
-
-    public String getPrepayId() {
-        return this.prepayId;
-    }
-
-    public void setPrepayId(String prepayId) {
-        this.prepayId = prepayId;
-    }
-
-
-
-    public String getStatus() {
-        return this.status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-
-
-    public String getExpressName() {
-        return this.expressName;
-    }
-
-    public void setExpressName(String expressName) {
-        this.expressName = expressName;
-    }
-
-
-
-    public String getExpressCode() {
-        return this.expressCode;
-    }
-
-    public void setExpressCode(String expressCode) {
-        this.expressCode = expressCode;
-    }
-
-
-
-    public String getExpressOrderid() {
-        return this.expressOrderid;
-    }
-
-    public void setExpressOrderid(String expressOrderid) {
-        this.expressOrderid = expressOrderid;
-    }
-
-
-
-    public Date getMRefundtime() {
-        return this.mRefundtime;
-    }
-
-    public void setMRefundtime(Date mRefundtime) {
-        this.mRefundtime = mRefundtime;
-    }
-
-
-
-    public String getIsSynGjp() {
-        return this.isSynGjp;
-    }
-
-    public void setIsSynGjp(String isSynGjp) {
-        this.isSynGjp = isSynGjp;
-    }
-
-
-
-    public Date getSynGjpTime() {
-        return this.synGjpTime;
-    }
-
-    public void setSynGjpTime(Date synGjpTime) {
-        this.synGjpTime = synGjpTime;
     }
 
     public String getRefundreason() {
@@ -709,6 +535,22 @@ public class ProductOrder {
         this.refundreason = refundreason;
     }
 
+    public String getRefundId() {
+        return refundId;
+    }
+
+    public void setRefundId(String refundId) {
+        this.refundId = refundId;
+    }
+
+    public String getRefundExpress() {
+        return refundExpress;
+    }
+
+    public void setRefundExpress(String refundExpress) {
+        this.refundExpress = refundExpress;
+    }
+
     public String getRefundRemark() {
         return refundRemark;
     }
@@ -717,11 +559,83 @@ public class ProductOrder {
         this.refundRemark = refundRemark;
     }
 
+    public Date getRefundTime() {
+        return refundTime;
+    }
+
+    public void setRefundTime(Date refundTime) {
+        this.refundTime = refundTime;
+    }
+
+    public Date getConfirmTime() {
+        return confirmTime;
+    }
+
+    public void setConfirmTime(Date confirmTime) {
+        this.confirmTime = confirmTime;
+    }
+
+    public String getPrepayId() {
+        return prepayId;
+    }
+
+    public void setPrepayId(String prepayId) {
+        this.prepayId = prepayId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getExpressName() {
+        return expressName;
+    }
+
+    public void setExpressName(String expressName) {
+        this.expressName = expressName;
+    }
+
+    public String getExpressCode() {
+        return expressCode;
+    }
+
+    public void setExpressCode(String expressCode) {
+        this.expressCode = expressCode;
+    }
+
+    public String getExpressOrderid() {
+        return expressOrderid;
+    }
+
+    public void setExpressOrderid(String expressOrderid) {
+        this.expressOrderid = expressOrderid;
+    }
+
     public Date getmRefundtime() {
         return mRefundtime;
     }
 
     public void setmRefundtime(Date mRefundtime) {
         this.mRefundtime = mRefundtime;
+    }
+
+    public String getIsSynGjp() {
+        return isSynGjp;
+    }
+
+    public void setIsSynGjp(String isSynGjp) {
+        this.isSynGjp = isSynGjp;
+    }
+
+    public Date getSynGjpTime() {
+        return synGjpTime;
+    }
+
+    public void setSynGjpTime(Date synGjpTime) {
+        this.synGjpTime = synGjpTime;
     }
 }

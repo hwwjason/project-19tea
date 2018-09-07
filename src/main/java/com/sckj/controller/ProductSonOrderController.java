@@ -44,7 +44,7 @@ public class ProductSonOrderController {
     * 描述:创建订单子表
     * @param productSonOrderDTO  订单子表DTO
     */
-    @RequestMapping(value = "", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData create(@RequestBody ProductSonOrderDTO productSonOrderDTO) throws Exception {
         try {
             ResultData resultData = new ResultData();

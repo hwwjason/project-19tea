@@ -1,5 +1,6 @@
 package com.sckj.service.imp;
 
+import com.sckj.enums.OrderEnums.OrderStatusEnums;
 import com.sckj.model.ProductList;
 import com.sckj.model.ProductOrder;
 import com.sckj.model.ProductSonOrder;
@@ -16,6 +17,7 @@ import com.sckj.service.IProductOrderService;
 import com.sckj.service.IUserCartService;
 import com.sckj.utils.BeanUtils;
 import com.sckj.utils.DateTimeUtils;
+import com.sckj.utils.JsonUtils;
 import com.sckj.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -123,21 +126,29 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         //保存子订单
         UserCartList userCartList = userCartService.getUserCart(productOrderDTO.getBuyuserId(),productOrderDTO.getCartType());
         List<UserCartDTO> userCarts = userCartList.getUserCarts();
-        List<String> productIds = userCarts.stream().filter(e->"1".equals(e.getStatus())).map(e->e.getProductid()).collect(Collectors.toList());
-        List<ProductSonOrder> productSonOrders = new ArrayList<>();
 
-        for (String productId: productIds) {
-            ProductSonOrder sonOrder = new ProductSonOrder();
-            sonOrder.setProductOrderid(productOrder.getId());
+        Map<String,UserCartDTO> productMap = userCarts.stream().filter(e->"1".equals(e.getStatus())).collect(Collectors.toMap(UserCartDTO::getProductid,UserCartDTO->UserCartDTO));
+
+        List<ProductSonOrder> productSonOrders = new ArrayList<>();
+        for(Map.Entry<String,UserCartDTO> entry :productMap.entrySet()){
+            String productId = entry.getKey();
+            UserCartDTO userCartDTO = entry.getValue();
             ProductList productList = productListMapper.getOne(productId);
-            //String json =  JsonUtils.object2Json(productList);
-            //sonOrder.setSnapshot(json);
+            String json =  JsonUtils.object2Json(productList);
+            ProductSonOrder sonOrder = new ProductSonOrder();
             sonOrder.setId(UUIDUtils.generate());
+            sonOrder.setProductOrderid(productOrder.getId());
+            sonOrder.setProductid(productId);
+            sonOrder.setProductPrice(productList.getPrice());
+//            sonOrder.setSnapshot(json); //保存会报错待解决
+            sonOrder.setExpressStatus(OrderStatusEnums.NO_PAY.toString());//!!!
+            sonOrder.setPrice(productList.getOriginalPrice());
+            sonOrder.setBuynum(userCartDTO.getNum());
             sonOrder.setCreateTime(DateTimeUtils.getCurrentDate());
             productSonOrders.add(sonOrder);
         }
+
         productSonOrderRepository.saveAll(productSonOrders);
-        userCartService.deleteByIds(productIds);
         return this.findDTOById(productOrder.getId());
     }
 

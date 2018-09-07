@@ -94,7 +94,7 @@ public class FileUtils {
 
     public static ResultData uploadImage(MultipartFile file,HttpServletRequest request) throws RuntimeException {
         ResultData resultData = new ResultData();
-        if (file.isEmpty()) {
+        if (file==null || file.isEmpty()) {
             resultData.setMessage("文件不能为空");
             resultData.setStatus(ResultStatusEnum.FAIL.toString());
             return resultData;

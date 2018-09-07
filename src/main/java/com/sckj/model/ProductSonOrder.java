@@ -43,7 +43,7 @@ public class ProductSonOrder {
     /**
      *商品快照
      */
-    @Column(name = "snapshot",columnDefinition = "VARCHAR")
+    @Column(name = "snapshot",columnDefinition = "TEXT")
     private String snapshot;
 
 

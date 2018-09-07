@@ -4,7 +4,6 @@ import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
 import com.sckj.service.IProductOrderService;
-import com.sckj.model.ProductOrder;
 import com.sckj.model.dto.ProductOrderDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
 import com.sckj.common.ResultData;
+
+import java.util.List;
 
 /**
 * 描述：订单列表控制层
@@ -36,6 +37,25 @@ public class ProductOrderController {
         try{
             ResultData resultData = new ResultData();
             ProductOrderDTO productOrderDTO = productOrderService.findDTOById(id);
+            resultData.setData(productOrderDTO);
+            return resultData;
+        }catch (BusinessException e){
+            throw e;
+        } catch (Exception e){
+            logger.error("Error", e);
+            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+        }
+    }
+
+    /**
+     * 描述：根据用户id 查询
+     * @param productOrderDTO  订单列表id
+     */
+    @RequestMapping(value = "/findProductOrder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData findProductOrder(@RequestBody ProductOrderDTO productOrderDTO)throws Exception {
+        try{
+            ResultData resultData = new ResultData();
+            List<ProductOrderDTO> productOrderDTOList = productOrderService.findProductOrder(productOrderDTO);
             resultData.setData(productOrderDTO);
             return resultData;
         }catch (BusinessException e){
@@ -86,7 +106,7 @@ public class ProductOrderController {
     * 描述：更新订单列表
     *
     */
-    @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData updateProductOrder(@RequestBody ProductOrderDTO productOrderDTO) throws Exception {
         try {
             ResultData resultData = new ResultData();

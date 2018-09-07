@@ -93,6 +93,13 @@ public class UserCartServiceImp implements IUserCartService {
     }
 
     @Override
+    public void deleteByIds( List<String> ids) {
+        //查询用户是否已经收藏这个商品了
+//        userCartJpa.deleteByIdIn(ids);
+        userCartJpa.deleteInBatch(userCartJpa.findAllById(ids));
+    }
+
+    @Override
     public UserCartList emptyOutGoods(String userId, String cartType ) {
         List<UserCartDTO> userCartDTO = userCartMapper.getUserCartList(userId,cartType);
         List<UserCart> outGoods = new ArrayList<>();

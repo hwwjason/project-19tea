@@ -1,8 +1,10 @@
 package com.sckj.service;
-import com.sckj.model.ProductOrder;
+
 import com.sckj.model.dto.ProductOrderDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
 * 描述：订单列表 服务实现层接口
@@ -16,6 +18,10 @@ public interface IProductOrderService  {
     * @param id
     */
     ProductOrderDTO findDTOById(String id)throws Exception;
+
+    List<ProductOrderDTO> findProductOrder(ProductOrderDTO productOrderDTO)throws Exception;
+
+    List<ProductOrderDTO> findProductOrderByUserID(String userId) throws Exception;
 
     void deleteById(String id)throws Exception;
 

@@ -127,12 +127,23 @@ public class ProductSonOrder {
     private String remark;
 
 
-
     /**
      *
      */
     @Column(name = "create_time",columnDefinition = "TIMESTAMP")
     private Date createTime;
+
+    @Column(name = "code",columnDefinition = "VARCHAR")
+    private String code;
+
+    @Column(name = "title",columnDefinition = "VARCHAR")
+    private String title;
+
+    @Column(name = "img",columnDefinition = "VARCHAR")
+    private String img;
+
+    @Column(name = "specification",columnDefinition = "VARCHAR")
+    private String specification;
 
 
     public String getId() {
@@ -253,5 +264,37 @@ public class ProductSonOrder {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getSpecification() {
+        return specification;
+    }
+
+    public void setSpecification(String specification) {
+        this.specification = specification;
     }
 }

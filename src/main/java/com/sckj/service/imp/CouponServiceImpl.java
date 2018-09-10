@@ -43,6 +43,11 @@ public class CouponServiceImpl implements ICouponService {
     }
 
     @Override
+    public void deleteByIds(List<String> ids) throws Exception {
+        couponRepository.deleteByIdIn(ids);
+    }
+
+    @Override
     public CouponDTO createCoupon(CouponDTO couponDTO) throws Exception {
         Coupon coupon = new Coupon();
         BeanUtils.copyProperties(coupon,couponDTO);

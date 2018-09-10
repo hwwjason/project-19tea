@@ -88,6 +88,24 @@ public class CouponController {
     }
 
     /**
+     * 描述：删除购物券列表
+     * @param ids 购物券列表ids
+     */
+    @RequestMapping(value = "/deleteByIds", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData deleteByIds(@RequestParam List<String> ids) throws Exception {
+        try {
+            ResultData resultData = new ResultData();
+            couponService.deleteByIds(ids);
+            return resultData;
+        }catch (BusinessException e){
+            throw e;
+        } catch (Exception e){
+            logger.error("Error 删除失败", e);
+            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+        }
+    }
+
+    /**
     * 描述：更新购物券列表
     *
     */

@@ -1,10 +1,13 @@
 package com.sckj.enums.OrderEnums;
 
+/**
+ * 优惠券类型
+ */
 public enum CouponTypeEnums {
     FULL_REDUCE("0","满减"),
-    WAITE_DELIVER("1","现金"),
-    DELIVERED("2","折扣"),
-    TAKED("3","商品");
+    CASH("1","现金"),
+    DISCOUNT("2","折扣"),
+    PRODUCT("3","商品");
     private  final String code;
     private final String name;
 

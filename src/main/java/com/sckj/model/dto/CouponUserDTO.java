@@ -17,8 +17,9 @@ public class CouponUserDTO extends CouponUser{
 
     private String title;
 
+    private String isOptimal;//0 否，1是  //最理想的
 
-    //coupon
+    ///////////////////////////////////////////////coupon
     /**
      * FULL_REDUCE("0","满减"),WAITE_DELIVER("1","现金"),DELIVERED("2","折扣"),TAKED("3","商品");
      */
@@ -110,6 +111,8 @@ public class CouponUserDTO extends CouponUser{
      *商品名称
      */
     private String productname;
+
+    ///////////////////////////////////////////////coupon
 
     public String getTitle() {
         return title;
@@ -247,5 +250,13 @@ public class CouponUserDTO extends CouponUser{
 
     public void setProductname(String productname) {
         this.productname = productname;
+    }
+
+    public String getIsOptimal() {
+        return isOptimal;
+    }
+
+    public void setIsOptimal(String isOptimal) {
+        this.isOptimal = isOptimal;
     }
 }

@@ -22,6 +22,8 @@ public interface ICouponService  {
 
     void deleteById(String id)throws Exception;
 
+    void deleteByIds(List<String> ids)throws Exception;
+
     CouponDTO createCoupon(CouponDTO couponDTO) throws Exception;
 
     CouponDTO updateCoupon(CouponDTO couponDTO) throws Exception;

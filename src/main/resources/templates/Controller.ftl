@@ -86,7 +86,7 @@ public class ${table_name}Controller {
     * 描述：更新${table_annotation}
     *
     */
-    @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData update${table_name}(@RequestBody ${table_name}DTO ${table_name?uncap_first}DTO) throws Exception {
         try {
             ResultData resultData = new ResultData();

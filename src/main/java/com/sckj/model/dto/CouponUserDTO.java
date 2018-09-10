@@ -1,5 +1,6 @@
 package com.sckj.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sckj.model.CouponUser;
 
 import javax.persistence.Column;
@@ -48,6 +49,7 @@ public class CouponUserDTO extends CouponUser{
     /**
      *
      */
+    @JsonFormat
     private Date starttime;
 
 

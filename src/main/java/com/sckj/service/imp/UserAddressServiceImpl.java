@@ -1,4 +1,5 @@
 package com.sckj.service.imp;
+import com.sckj.exception.BusinessException;
 import com.sckj.model.UserAddress;
 import com.sckj.repository.UserAddressRepository;
 import com.sckj.service.IUserAddressService;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.sckj.model.dto.UserAddressDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
 * 描述：用户地址 服务实现层
@@ -50,10 +53,17 @@ public class UserAddressServiceImpl implements IUserAddressService {
 
     @Override
     public UserAddressDTO updateUserAddress(UserAddressDTO userAddressDTO)throws Exception {
-        UserAddress userAddress = new UserAddress();
-        BeanUtils.copyPropertiesWithoutNull(userAddress,userAddressDTO);
-        userAddress = userAddressRepository.saveAndFlush(userAddress);
-        return this.findDTOById(userAddress.getId());
+        List<UserAddress> userAddressList = userAddressRepository.findByUserid(userAddressDTO.getUserid());
+        UserAddress userAddress = null;
+        if(userAddressList!=null && userAddressList.size()>0){
+            userAddress = userAddressList.get(0);
+        }
+        if(userAddress!=null){
+            BeanUtils.copyPropertiesWithoutNull(userAddress,userAddressDTO);
+            userAddress = userAddressRepository.saveAndFlush(userAddress);
+            return this.findDTOById(userAddress.getId());
+        }
+       throw new BusinessException("更新失败，找不到用户地址");
     }
 
     /**

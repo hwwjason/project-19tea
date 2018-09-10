@@ -86,7 +86,7 @@ public class UserAddressController {
     * 描述：更新用户地址
     *
     */
-    @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData updateUserAddress(@RequestBody UserAddressDTO userAddressDTO) throws Exception {
         try {
             ResultData resultData = new ResultData();

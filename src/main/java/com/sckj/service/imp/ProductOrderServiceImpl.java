@@ -206,13 +206,15 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         BigDecimal realReduceMoney = new BigDecimal(0);//优惠金额
         String bigReduceMoneyId = "";
         for (CouponUserDTO coupon : couponUsers) {
-            if(StringUtils.isEmpty(couponId) || !coupon.getId().equals(couponId)){
-                continue;
+            if(StringUtils.isNotEmpty(couponId) ){
+                if(!coupon.getId().equals(couponId)){
+                    continue;
+                }
             }
             String couponType = coupon.getCouponType();
             BigDecimal reduceMoney = new BigDecimal(0);
             if(CouponTypeEnums.FULL_REDUCE.toString().equals(couponType)){
-                if(coupon.getFullMoney().compareTo(productPrice)>0){
+                if(coupon.getFullMoney().compareTo(productPrice)<0){
                     reduceMoney = coupon.getReduceMoney();
                     if(productPrice.compareTo(reduceMoney)>0){
                         couponUsersCanUser.add(coupon);

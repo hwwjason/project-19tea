@@ -1,4 +1,4 @@
-package ${package_name}}.model.dto;
+package ${package_name}.model.dto;
 
 import ${package_name}.model.${table_name};
 

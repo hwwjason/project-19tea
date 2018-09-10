@@ -1,6 +1,7 @@
 package com.sckj.service.imp;
 
 import com.sckj.enums.OrderEnums.OrderStatusEnums;
+import com.sckj.model.CouponUser;
 import com.sckj.model.ProductList;
 import com.sckj.model.ProductOrder;
 import com.sckj.model.ProductSonOrder;
@@ -8,6 +9,7 @@ import com.sckj.model.dto.ProductOrderDTO;
 import com.sckj.model.dto.ProductSonOrderDTO;
 import com.sckj.model.dto.UserCartDTO;
 import com.sckj.model.dto.UserCartList;
+import com.sckj.repository.CouponUserRepository;
 import com.sckj.repository.ProductListJpa;
 import com.sckj.repository.ProductOrderRepository;
 import com.sckj.repository.ProductSonOrderRepository;
@@ -55,7 +57,8 @@ public class ProductOrderServiceImpl implements IProductOrderService {
     @Autowired
     private IUserCartService userCartService;
 
-
+    @Autowired
+    private CouponUserRepository couponUserRepository;
 
     @Override
     public ProductOrderDTO findDTOById(String id) throws Exception {
@@ -149,7 +152,10 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         }
 
         productSonOrderRepository.saveAll(productSonOrders);
-        return this.findDTOById(productOrder.getId());
+        ProductOrderDTO pDto =this.findDTOById(productOrder.getId());
+        //List<CouponUser> couponUsers = couponUserRepository.findByUseid(productOrderDTO.getBuyuserId());
+        //pDto.setCouponUsers(couponUsers);
+        return pDto;
     }
 
     @Override

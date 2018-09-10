@@ -1,5 +1,6 @@
 package com.sckj.model.dto;
 
+import com.sckj.model.CouponUser;
 import com.sckj.model.ProductOrder;
 import com.sckj.model.ProductSonOrder;
 
@@ -14,6 +15,8 @@ public class ProductOrderDTO extends ProductOrder{
     private List<ProductSonOrderDTO> productSonOrderDTO;
 
     private List<ProductSonOrder> productSonOrder;
+
+    private List<CouponUser> couponUsers;
 
     private String cartType;
 
@@ -51,5 +54,11 @@ public class ProductOrderDTO extends ProductOrder{
         this.couponId = couponId;
     }
 
+    public List<CouponUser> getCouponUsers() {
+        return couponUsers;
+    }
 
+    public void setCouponUsers(List<CouponUser> couponUsers) {
+        this.couponUsers = couponUsers;
+    }
 }

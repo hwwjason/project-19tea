@@ -1,11 +1,11 @@
-package ${package_name}.controller;
+package com.sckj.controller;
 
 import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
-import ${package_name}.service.I${table_name}Service;
-import ${package_name}.model.${table_name};
-import ${package_name}.model.dto.${table_name}DTO;
+import com.sckj.service.ICouponService;
+import com.sckj.model.Coupon;
+import com.sckj.model.dto.CouponDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,29 +14,29 @@ import org.springframework.http.MediaType;
 import com.sckj.common.ResultData;
 
 /**
-* 描述：${table_annotation}控制层
-* @author ${author}
-* @date ${date}
+* 描述：购物券列表控制层
+* @author hww
+* @date 2018/09/07
 */
 @RestController
-@RequestMapping("/bak/${table_name?uncap_first}")
-public class ${table_name}Controller {
+@RequestMapping("/bak/coupon")
+public class CouponController {
 
-    private static final Logger logger = LoggerFactory.getLogger(${table_name}Controller.class);
+    private static final Logger logger = LoggerFactory.getLogger(CouponController.class);
 
     @Autowired
-    private I${table_name}Service ${table_name?uncap_first}Service;
+    private ICouponService couponService;
 
     /**
     * 描述：根据Id 查询
-    * @param id  ${table_annotation}id
+    * @param id  购物券列表id
     */
     @RequestMapping(value = "/findById", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData findById(@RequestParam String id)throws Exception {
         try{
             ResultData resultData = new ResultData();
-            ${table_name}DTO ${table_name?uncap_first}DTO = ${table_name?uncap_first}Service.findDTOById(id);
-            resultData.setData(${table_name?uncap_first}DTO);
+            CouponDTO couponDTO = couponService.findDTOById(id);
+            resultData.setData(couponDTO);
             return resultData;
         }catch (BusinessException e){
             throw e;
@@ -47,14 +47,14 @@ public class ${table_name}Controller {
     }
 
     /**
-    * 描述:创建${table_annotation}
-    * @param ${table_name?uncap_first}DTO  ${table_annotation}DTO
+    * 描述:创建购物券列表
+    * @param couponDTO  购物券列表DTO
     */
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData create(@RequestBody ${table_name}DTO ${table_name?uncap_first}DTO) throws Exception {
+    public ResultData create(@RequestBody CouponDTO couponDTO) throws Exception {
         try {
             ResultData resultData = new ResultData();
-            resultData.setData(${table_name?uncap_first}Service.create${table_name}(${table_name?uncap_first}DTO));
+            resultData.setData(couponService.createCoupon(couponDTO));
             return resultData;
         }catch (BusinessException e){
             throw e;
@@ -65,14 +65,14 @@ public class ${table_name}Controller {
     }
 
     /**
-    * 描述：删除${table_annotation}
-    * @param id ${table_annotation}id
+    * 描述：删除购物券列表
+    * @param id 购物券列表id
     */
     @RequestMapping(value = "/deleteById", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData deleteById(@RequestParam String id) throws Exception {
         try {
             ResultData resultData = new ResultData();
-            ${table_name?uncap_first}Service.deleteById(id);
+            couponService.deleteById(id);
             return resultData;
         }catch (BusinessException e){
             throw e;
@@ -83,14 +83,14 @@ public class ${table_name}Controller {
     }
 
     /**
-    * 描述：更新${table_annotation}
+    * 描述：更新购物券列表
     *
     */
     @RequestMapping(value = "/update", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData update${table_name}(@RequestBody ${table_name}DTO ${table_name?uncap_first}DTO) throws Exception {
+    public ResultData updateCoupon(@RequestBody CouponDTO couponDTO) throws Exception {
         try {
             ResultData resultData = new ResultData();
-            resultData.setData(${table_name?uncap_first}Service.update${table_name}(${table_name?uncap_first}DTO));
+            resultData.setData(couponService.updateCoupon(couponDTO));
             return resultData;
         }catch (BusinessException e){
             throw e;

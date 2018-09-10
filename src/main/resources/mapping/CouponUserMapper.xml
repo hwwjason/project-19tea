@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sckj.repository.mybatis.CouponUserDAO">
+
+    <resultMap id="CouponUserDTOResultMap" type="com.sckj.model.dto.CouponUserDTO">
+        <id column="id" jdbcType="VARCHAR" property="id" />
+        <result column="couponid" jdbcType="VARCHAR" property="couponid" />
+        <result column="product_orderid" jdbcType="VARCHAR" property="productOrderid" />
+        <result column="userid" jdbcType="VARCHAR" property="userid" />
+        <result column="tel" jdbcType="VARCHAR" property="tel" />
+        <result column="realstarttime" jdbcType="TIMESTAMP" property="realstarttime" />
+        <result column="realendtime" jdbcType="TIMESTAMP" property="realendtime" />
+        <result column="receivetime" jdbcType="TIMESTAMP" property="receivetime" />
+        <result column="isuse" jdbcType="CHAR" property="isuse" />
+        <result column="status" jdbcType="CHAR" property="status" />
+        <result column="Isremind" jdbcType="CHAR" property="isremind" />
+        <result column="usertime" jdbcType="TIMESTAMP" property="usertime" />
+    </resultMap>
+
+    <sql id="findDtoSql">
+        select * from (
+        select * from  sckj_coupon_user temp
+        ) t
+    </sql>
+
+    <select id="findDTOById" parameterType="String" resultMap="CouponUserDTOResultMap">
+        <include refid="findDtoSql"></include>
+        <where>
+            and t.id = #{id}
+        </where>
+    </select>
+
+    <select id="findCouponUserPage" parameterType="com.sckj.model.dto.CouponUserDTO" resultMap="CouponUserDTOResultMap">
+        <include refid="findDtoSql" />
+        <where>
+
+        </where>
+    </select>
+
+</mapper>

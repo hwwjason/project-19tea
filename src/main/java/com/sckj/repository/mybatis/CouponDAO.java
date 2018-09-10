@@ -1,9 +1,14 @@
 package com.sckj.repository.mybatis;
 
 import com.sckj.model.dto.CouponDTO;
+import com.sckj.model.dto.ProductListDTO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * 描述：订单列表DAO 层
  * @author hww
@@ -20,5 +25,7 @@ public interface CouponDAO {
     * @param couponDTO  订单列表DTO
     */
     Page<CouponDTO> findCouponPage(CouponDTO couponDTO, Pageable page);
+
+    List<CouponDTO> getCouponList(Map<String,Object> map);
 
 }

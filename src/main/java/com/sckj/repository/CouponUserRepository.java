@@ -12,6 +12,7 @@ import java.util.List;
 public interface CouponUserRepository extends JpaRepository<CouponUser, String> {
 
     //根据用户id，获取优惠券
-    //List<CouponUser> findByUseid(String userId);
+
+    List<CouponUser> findByUserid(String userId);
 
 }

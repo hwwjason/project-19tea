@@ -4,6 +4,9 @@ import com.sckj.model.dto.CouponDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+import java.util.Map;
+
 /**
 * 描述：订单列表 服务实现层接口
 * @author hww
@@ -24,5 +27,7 @@ public interface ICouponService  {
     CouponDTO updateCoupon(CouponDTO couponDTO) throws Exception;
 
     Page<CouponDTO> findCouponPage(CouponDTO couponDTO, Pageable page) throws Exception;
+
+    List<CouponDTO> getProductList(Map<String,Object> productListMap);
 
 }

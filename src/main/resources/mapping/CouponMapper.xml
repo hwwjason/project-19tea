@@ -46,4 +46,20 @@
         </where>
     </select>
 
+    <select id="getCouponList" parameterType="java.util.Map" resultMap="CouponDTOResultMap">
+        select * from sckj_coupon as coupon
+        <where>
+            <if test="null != couponType and  '' neq couponType">
+                and  UPPER(coupon.coupon_type) LIKE CONCAT('%',UPPER (#{couponType}),'%')
+            </if>
+            <if test="null != title and  '' neq title">
+                and  UPPER(coupon.title) LIKE CONCAT('%',UPPER (#{title}),'%')
+            </if>
+            <if test="null != id and  '' neq id">
+                and  UPPER(coupon.id) LIKE CONCAT('%',UPPER (#{id}),'%')
+            </if>
+        </where>
+        ORDER BY coupon.createtime DESC
+    </select>
+
 </mapper>

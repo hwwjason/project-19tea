@@ -1,17 +1,22 @@
 package com.sckj.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.sckj.common.Query;
+import com.sckj.common.ResultData;
 import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
-import com.sckj.service.ICouponService;
-import com.sckj.model.Coupon;
 import com.sckj.model.dto.CouponDTO;
+import com.sckj.service.ICouponService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
-import com.sckj.common.ResultData;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
 
 /**
 * 描述：购物券列表控制层
@@ -98,6 +103,17 @@ public class CouponController {
             logger.error("Error 更新失败", e);
             return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
         }
+    }
+
+    @RequestMapping(value = "/getCouponList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData getProductList(@RequestBody Query query){
+        ResultData resultData = new ResultData();
+        PageHelper.startPage(query.getPageNum(),query.getPageSize());
+        Map<String,Object> map = (Map<String, Object>) query.getCondition();
+        List<CouponDTO> sckjUserList = couponService.getProductList(map);
+        PageInfo<CouponDTO> pageInfo = new PageInfo<CouponDTO>(sckjUserList);
+        resultData.setData(pageInfo);
+        return resultData;
     }
 
 }

@@ -153,7 +153,7 @@ public class ProductOrderServiceImpl implements IProductOrderService {
 
         productSonOrderRepository.saveAll(productSonOrders);
         ProductOrderDTO pDto =this.findDTOById(productOrder.getId());
-        //List<CouponUser> couponUsers = couponUserRepository.findByUseid(productOrderDTO.getBuyuserId());
+        List<CouponUser> couponUsers = couponUserRepository.findByUserid(productOrderDTO.getBuyuserId());
         //pDto.setCouponUsers(couponUsers);
         return pDto;
     }

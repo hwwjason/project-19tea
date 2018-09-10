@@ -1,5 +1,6 @@
 package com.sckj.service.imp;
 import com.sckj.model.Coupon;
+import com.sckj.model.dto.ProductListDTO;
 import com.sckj.repository.CouponRepository;
 import com.sckj.service.ICouponService;
 import com.sckj.repository.mybatis.CouponDAO;
@@ -12,6 +13,9 @@ import com.sckj.model.dto.CouponDTO;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+import java.util.Map;
 
 /**
 * 描述：订单列表 服务实现层
@@ -65,6 +69,12 @@ public class CouponServiceImpl implements ICouponService {
     @Override
     public Page<CouponDTO> findCouponPage(CouponDTO couponDTO, Pageable page) throws Exception{
         return couponDAO.findCouponPage(couponDTO,page);
+    }
+
+    @Override
+    public List<CouponDTO> getProductList(Map<String,Object> map) {
+        List<CouponDTO> productLists = couponDAO.getCouponList(map);
+        return productLists;
     }
 
 }

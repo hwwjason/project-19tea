@@ -156,15 +156,6 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         ProductOrderDTO pDto =this.findDTOById(productOrder.getId());
         List<CouponUserDTO> couponUsers = couponUserDAO.getCouponUserByUserId(productOrderDTO.getBuyuserId());
         List<UserAddress> userAddresss = userAddressRepository.findByUserid(productOrderDTO.getBuyuserId());
-        List<UserAddress> userAddressesDef = userAddresss.stream().filter(e->"1".equals(e.getIsdefault())).collect(Collectors.toList());
-        UserAddress userAddressDef = null;
-        if(userAddressesDef!=null && userAddressesDef.size()>0){
-            userAddressDef = userAddressesDef.get(0);
-            pDto.setAddress(userAddressDef.getAddress());
-            pDto.setCity(userAddressDef.getCity());
-            pDto.setProvince(userAddressDef.getProvince());
-            pDto.setArea(userAddressDef.getArea());
-        }
         pDto.setCouponUserDTO(couponUsers);
         pDto.setUserAddresss(userAddresss);
 

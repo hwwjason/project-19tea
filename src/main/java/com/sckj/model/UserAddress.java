@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 * @date 2018/09/10
 */
 @Entity
-@Table(name="sckj_user_address")
+@Table(name="sckj_user_address",uniqueConstraints = @UniqueConstraint(columnNames = {"userid" }))
 @JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
 public class UserAddress {

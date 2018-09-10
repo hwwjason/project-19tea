@@ -44,8 +44,6 @@ public class UserAddressServiceImpl implements IUserAddressService {
     public UserAddressDTO createUserAddress(UserAddressDTO userAddressDTO) throws Exception {
         UserAddress userAddress = new UserAddress();
         BeanUtils.copyProperties(userAddress,userAddressDTO);
-        //userAddress.setStatus(StatusEnum.ENABLE.toString());
-//        userAddress.setCreatetime(DateTimeUtils.getCurrentDate());
         userAddress.setId(UUIDUtils.generate());
         userAddress = userAddressRepository.saveAndFlush(userAddress);
         return this.findDTOById(userAddress.getId());
@@ -57,13 +55,19 @@ public class UserAddressServiceImpl implements IUserAddressService {
         UserAddress userAddress = null;
         if(userAddressList!=null && userAddressList.size()>0){
             userAddress = userAddressList.get(0);
-        }
-        if(userAddress!=null){
-            BeanUtils.copyPropertiesWithoutNull(userAddress,userAddressDTO);
+            if(userAddress!=null){
+                BeanUtils.copyPropertiesWithoutNull(userAddress,userAddressDTO);
+                userAddress = userAddressRepository.saveAndFlush(userAddress);
+                return this.findDTOById(userAddress.getId());
+            }
+            throw new BusinessException("更新失败");
+        }else{
+            userAddress = new UserAddress();
+            BeanUtils.copyProperties(userAddress,userAddressDTO);
+            userAddress.setId(UUIDUtils.generate());
             userAddress = userAddressRepository.saveAndFlush(userAddress);
             return this.findDTOById(userAddress.getId());
         }
-       throw new BusinessException("更新失败，找不到用户地址");
     }
 
     /**

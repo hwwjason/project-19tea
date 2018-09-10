@@ -15,7 +15,28 @@
         <result column="status" jdbcType="CHAR" property="status" />
         <result column="Isremind" jdbcType="CHAR" property="isremind" />
         <result column="usertime" jdbcType="TIMESTAMP" property="usertime" />
+
+        <result column="title" jdbcType="VARCHAR" property="title" />
+        <result column="coupon_type" jdbcType="CHAR" property="couponType" />
+        <result column="full_money" jdbcType="DECIMAL" property="fullMoney" />
+        <result column="reduce_money" jdbcType="DECIMAL" property="reduceMoney" />
+        <result column="stock" jdbcType="INTEGER" property="stock" />
+        <result column="give" jdbcType="INTEGER" property="give" />
+        <result column="time_type" jdbcType="CHAR" property="timeType" />
+        <result column="days" jdbcType="INTEGER" property="days" />
+        <result column="starttime" jdbcType="TIMESTAMP" property="starttime" />
+        <result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
+        <result column="scores" jdbcType="DECIMAL" property="scores" />
+        <result column="status" jdbcType="CHAR" property="status" />
+        <result column="discount" jdbcType="DECIMAL" property="discount" />
+        <result column="url" jdbcType="VARCHAR" property="url" />
+        <result column="apply_type" jdbcType="CHAR" property="applyType" />
+        <result column="productid" jdbcType="VARCHAR" property="productid" />
+        <result column="productname" jdbcType="VARCHAR" property="productname" />
+        <result column="describes" jdbcType="LONGVARCHAR" property="describes" />
+        <result column="jump_type" jdbcType="CHAR" property="jumpType" />
     </resultMap>
+
 
     <sql id="findDtoSql">
         select * from (
@@ -35,6 +56,29 @@
         <where>
 
         </where>
+    </select>
+
+    <select id="getCouponUserByUserId" parameterType="java.lang.String" resultMap="CouponUserDTOResultMap">
+        SELECT cu.*,
+        c.coupon_type as couponType,
+        c.full_money as fullMoney,
+        c.reduce_money as reduceMoney,
+        c.time_type as timeType,
+        c.days,
+        c.starttime,
+        c.endtime,
+        c.describes,
+        c.scores,
+        c.status,
+        c.discount,
+        c.url,
+        c.apply_type as applyType,
+        c.jump_type as jumpType,
+        c.productid,
+        c.productname
+         from sckj_coupon_user cu
+        left JOIN sckj_coupon c on c.id = cu.couponid
+        WHERE cu.userid = #{userid}
     </select>
 
 </mapper>

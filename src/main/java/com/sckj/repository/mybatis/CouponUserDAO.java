@@ -4,6 +4,9 @@ import com.sckj.model.dto.CouponUserDTO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
 /**
  * 描述：优惠券用户表DAO 层
  * @author hww
@@ -20,5 +23,7 @@ public interface CouponUserDAO {
     * @param couponUserDTO  优惠券用户表DTO
     */
     Page<CouponUserDTO> findCouponUserPage(CouponUserDTO couponUserDTO, Pageable page);
+
+    List<CouponUserDTO> getCouponUserByUserId(@Param("userid") String userid);
 
 }

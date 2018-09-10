@@ -24,6 +24,7 @@
         <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
         <result column="img" jdbcType="LONGVARCHAR" property="img" />
         <result column="describes" jdbcType="LONGVARCHAR" property="describes" />
+        <result column="jump_type" jdbcType="CHAR" property="jumpType" />
     </resultMap>
 
     <sql id="findDtoSql">

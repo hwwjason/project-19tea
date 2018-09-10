@@ -161,8 +161,8 @@ public class Coupon {
     /**
      *适用类型(0，商品，1，首页，2，频道)
      */
-//    @Column(name = "jump_type",columnDefinition = "VARCHAR")
-//    private String jumpType;
+    @Column(name = "jump_type",columnDefinition = "VARCHAR")
+    private String jumpType;
 
 
 
@@ -351,5 +351,13 @@ public class Coupon {
 
     public void setCreatetime(Date createtime) {
         this.createtime = createtime;
+    }
+
+    public String getJumpType() {
+        return jumpType;
+    }
+
+    public void setJumpType(String jumpType) {
+        this.jumpType = jumpType;
     }
 }

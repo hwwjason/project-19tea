@@ -3,6 +3,7 @@ package com.sckj.model.dto;
 import com.sckj.model.CouponUser;
 import com.sckj.model.ProductOrder;
 import com.sckj.model.ProductSonOrder;
+import com.sckj.model.UserAddress;
 
 import java.util.List;
 
@@ -17,6 +18,11 @@ public class ProductOrderDTO extends ProductOrder{
     private List<ProductSonOrder> productSonOrder;
 
     private List<CouponUser> couponUsers;
+
+    private List<CouponUserDTO> couponUserDTO;
+
+
+    private List<UserAddress> userAddresss;
 
     private String cartType;
 
@@ -60,5 +66,21 @@ public class ProductOrderDTO extends ProductOrder{
 
     public void setCouponUsers(List<CouponUser> couponUsers) {
         this.couponUsers = couponUsers;
+    }
+
+    public List<UserAddress> getUserAddresss() {
+        return userAddresss;
+    }
+
+    public void setUserAddresss(List<UserAddress> userAddresss) {
+        this.userAddresss = userAddresss;
+    }
+
+    public List<CouponUserDTO> getCouponUserDTO() {
+        return couponUserDTO;
+    }
+
+    public void setCouponUserDTO(List<CouponUserDTO> couponUserDTO) {
+        this.couponUserDTO = couponUserDTO;
     }
 }

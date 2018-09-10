@@ -1,18 +1,10 @@
 package com.sckj.service.imp;
 
 import com.sckj.enums.OrderEnums.OrderStatusEnums;
-import com.sckj.model.CouponUser;
-import com.sckj.model.ProductList;
-import com.sckj.model.ProductOrder;
-import com.sckj.model.ProductSonOrder;
-import com.sckj.model.dto.ProductOrderDTO;
-import com.sckj.model.dto.ProductSonOrderDTO;
-import com.sckj.model.dto.UserCartDTO;
-import com.sckj.model.dto.UserCartList;
-import com.sckj.repository.CouponUserRepository;
-import com.sckj.repository.ProductListJpa;
-import com.sckj.repository.ProductOrderRepository;
-import com.sckj.repository.ProductSonOrderRepository;
+import com.sckj.model.*;
+import com.sckj.model.dto.*;
+import com.sckj.repository.*;
+import com.sckj.repository.mybatis.CouponUserDAO;
 import com.sckj.repository.mybatis.ProductListMapper;
 import com.sckj.repository.mybatis.ProductOrderDAO;
 import com.sckj.service.IProductOrderService;
@@ -59,6 +51,15 @@ public class ProductOrderServiceImpl implements IProductOrderService {
 
     @Autowired
     private CouponUserRepository couponUserRepository;
+
+    @Autowired
+    private UserAddressRepository userAddressRepository;
+
+    @Autowired
+    private CouponRepository couponRepository;
+
+    @Autowired
+    private CouponUserDAO couponUserDAO;
 
     @Override
     public ProductOrderDTO findDTOById(String id) throws Exception {
@@ -153,8 +154,20 @@ public class ProductOrderServiceImpl implements IProductOrderService {
 
         productSonOrderRepository.saveAll(productSonOrders);
         ProductOrderDTO pDto =this.findDTOById(productOrder.getId());
-        List<CouponUser> couponUsers = couponUserRepository.findByUserid(productOrderDTO.getBuyuserId());
-        //pDto.setCouponUsers(couponUsers);
+        List<CouponUserDTO> couponUsers = couponUserDAO.getCouponUserByUserId(productOrderDTO.getBuyuserId());
+        List<UserAddress> userAddresss = userAddressRepository.findByUserid(productOrderDTO.getBuyuserId());
+        List<UserAddress> userAddressesDef = userAddresss.stream().filter(e->"1".equals(e.getIsdefault())).collect(Collectors.toList());
+        UserAddress userAddressDef = null;
+        if(userAddressesDef!=null && userAddressesDef.size()>0){
+            userAddressDef = userAddressesDef.get(0);
+            pDto.setAddress(userAddressDef.getAddress());
+            pDto.setCity(userAddressDef.getCity());
+            pDto.setProvince(userAddressDef.getProvince());
+            pDto.setArea(userAddressDef.getArea());
+        }
+        pDto.setCouponUserDTO(couponUsers);
+        pDto.setUserAddresss(userAddresss);
+
         return pDto;
     }
 

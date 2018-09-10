@@ -175,7 +175,7 @@ public class ProductOrderServiceImpl implements IProductOrderService {
 
 
         String userId =productOrderDTO.getBuyuserId();
-        BigDecimal discountMoney = calculateCoupon(pDto,productPrice,userId,productLists);
+        BigDecimal realReduceMoney = calculateCoupon(pDto,productPrice,userId,productLists);
 
         List<UserAddress> userAddresss = userAddressRepository.findByUserid(productOrderDTO.getBuyuserId());
         pDto.setUserAddresss(userAddresss);
@@ -185,7 +185,8 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         pDto.setExpressPrice(expressPrice);
 
         //优惠券优惠价格
-        pDto.setTotalPrice(productPrice.add(expressPrice).subtract(discountMoney));
+        pDto.setTotalPrice(productPrice.add(expressPrice).subtract(realReduceMoney));
+        pDto.setReduceMoney(realReduceMoney);
 
         return pDto;
     }
@@ -202,17 +203,19 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         List<CouponUserDTO> couponUsers = couponUserDAO.getCouponUserByUserId(userId);
         Map<String,ProductList>  productListMap = productLists.stream().collect(Collectors.toMap(ProductList::getId,ProductList->ProductList));
         List<CouponUserDTO> couponUsersCanUser = new ArrayList<>();
-        BigDecimal discountMoney = new BigDecimal(0);//优惠金额
+        BigDecimal realReduceMoney = new BigDecimal(0);//优惠金额
         String bigReduceMoneyId = "";
         for (CouponUserDTO coupon : couponUsers) {
             String couponType = coupon.getCouponType();
             BigDecimal reduceMoney = new BigDecimal(0);
             if(CouponTypeEnums.FULL_REDUCE.toString().equals(couponType)){
-                reduceMoney = coupon.getFullMoney();
-                if(productPrice.compareTo(reduceMoney)>0){
-                    couponUsersCanUser.add(coupon);
-                }else{
-                    reduceMoney = new BigDecimal(0);
+                if(coupon.getFullMoney().compareTo(productPrice)>0){
+                    reduceMoney = coupon.getReduceMoney();
+                    if(productPrice.compareTo(reduceMoney)>0){
+                        couponUsersCanUser.add(coupon);
+                    }else{
+                        reduceMoney = new BigDecimal(0);
+                    }
                 }
             }else if(CouponTypeEnums.CASH.toString().equals(couponType)){
                 couponUsersCanUser.add(coupon);
@@ -236,8 +239,8 @@ public class ProductOrderServiceImpl implements IProductOrderService {
                     reduceMoney = new BigDecimal(0);
                 }
             }
-            if(discountMoney.compareTo(reduceMoney)<0){
-                discountMoney = reduceMoney;
+            if(realReduceMoney.compareTo(reduceMoney)<0){
+                realReduceMoney = reduceMoney;
                 bigReduceMoneyId=coupon.getId();
             }
         }
@@ -249,7 +252,7 @@ public class ProductOrderServiceImpl implements IProductOrderService {
             }
         }
         pDto.setCouponUserDTO(couponUsersCanUser);
-        return  discountMoney;
+        return  realReduceMoney;
     }
 
     @Override
@@ -269,6 +272,8 @@ public class ProductOrderServiceImpl implements IProductOrderService {
     public Page<ProductOrderDTO> findProductOrderPage(ProductOrderDTO productOrderDTO, Pageable page) throws Exception{
         return productOrderDAO.findProductOrderPage(productOrderDTO,page);
     }
+
+
 
 }
 

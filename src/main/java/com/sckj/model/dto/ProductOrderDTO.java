@@ -5,6 +5,7 @@ import com.sckj.model.ProductOrder;
 import com.sckj.model.ProductSonOrder;
 import com.sckj.model.UserAddress;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -27,6 +28,8 @@ public class ProductOrderDTO extends ProductOrder{
     private String cartType;
 
     private String couponId;
+
+    private BigDecimal reduceMoney;
 
     public List<ProductSonOrderDTO> getProductSonOrderDTO() {
         return productSonOrderDTO;
@@ -82,5 +85,13 @@ public class ProductOrderDTO extends ProductOrder{
 
     public void setCouponUserDTO(List<CouponUserDTO> couponUserDTO) {
         this.couponUserDTO = couponUserDTO;
+    }
+
+    public BigDecimal getReduceMoney() {
+        return reduceMoney;
+    }
+
+    public void setReduceMoney(BigDecimal reduceMoney) {
+        this.reduceMoney = reduceMoney;
     }
 }

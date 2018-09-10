@@ -92,7 +92,7 @@ public class CouponController {
      * @param ids 购物券列表ids
      */
     @RequestMapping(value = "/deleteByIds", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData deleteByIds(@RequestParam List<String> ids) throws Exception {
+    public ResultData deleteByIds(List<String> ids) throws Exception {
         try {
             ResultData resultData = new ResultData();
             couponService.deleteByIds(ids);

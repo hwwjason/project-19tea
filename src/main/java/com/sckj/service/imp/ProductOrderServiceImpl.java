@@ -11,10 +11,7 @@ import com.sckj.repository.mybatis.ProductOrderDAO;
 import com.sckj.repository.mybatis.ProductSonOrderDAO;
 import com.sckj.service.IProductOrderService;
 import com.sckj.service.IUserCartService;
-import com.sckj.utils.BeanUtils;
-import com.sckj.utils.DateTimeUtils;
-import com.sckj.utils.JsonUtils;
-import com.sckj.utils.UUIDUtils;
+import com.sckj.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -168,14 +165,17 @@ public class ProductOrderServiceImpl implements IProductOrderService {
             productSonOrders.add(sonOrder);
         }
 
-
-
         productSonOrderRepository.saveAll(productSonOrders);
         ProductOrderDTO pDto =this.findDTOById(productOrder.getId());
 
-
         String userId =productOrderDTO.getBuyuserId();
-        BigDecimal realReduceMoney = calculateCoupon(pDto,productPrice,userId,productLists);
+        BigDecimal realReduceMoney = new BigDecimal(0);
+        if(StringUtils.isNotEmpty(productOrderDTO.getCouponId())){
+            realReduceMoney = calculateCoupon(pDto,productPrice,userId,productLists,productOrderDTO.getCouponId());
+        }else{
+            realReduceMoney = calculateCoupon(pDto,productPrice,userId,productLists,null);
+        }
+
 
         List<UserAddress> userAddresss = userAddressRepository.findByUserid(productOrderDTO.getBuyuserId());
         pDto.setUserAddresss(userAddresss);
@@ -199,13 +199,16 @@ public class ProductOrderServiceImpl implements IProductOrderService {
      * @param productLists
      * @return 优惠金额
      */
-    private BigDecimal calculateCoupon( ProductOrderDTO pDto ,BigDecimal productPrice,String userId,List<ProductList> productLists){
+    private BigDecimal calculateCoupon( ProductOrderDTO pDto ,BigDecimal productPrice,String userId,List<ProductList> productLists,String couponId){
         List<CouponUserDTO> couponUsers = couponUserDAO.getCouponUserByUserId(userId);
         Map<String,ProductList>  productListMap = productLists.stream().collect(Collectors.toMap(ProductList::getId,ProductList->ProductList));
         List<CouponUserDTO> couponUsersCanUser = new ArrayList<>();
         BigDecimal realReduceMoney = new BigDecimal(0);//优惠金额
         String bigReduceMoneyId = "";
         for (CouponUserDTO coupon : couponUsers) {
+            if(StringUtils.isEmpty(couponId) || !coupon.getId().equals(couponId)){
+                continue;
+            }
             String couponType = coupon.getCouponType();
             BigDecimal reduceMoney = new BigDecimal(0);
             if(CouponTypeEnums.FULL_REDUCE.toString().equals(couponType)){
@@ -243,6 +246,9 @@ public class ProductOrderServiceImpl implements IProductOrderService {
                 realReduceMoney = reduceMoney;
                 bigReduceMoneyId=coupon.getId();
             }
+        }
+        if(StringUtils.isEmpty(couponId) ){
+            bigReduceMoneyId = couponId;
         }
         for (CouponUserDTO couponUser : couponUsersCanUser) {
             if(couponUser.getId().equals(bigReduceMoneyId)){

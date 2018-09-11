@@ -204,13 +204,9 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         Map<String,ProductList>  productListMap = productLists.stream().collect(Collectors.toMap(ProductList::getId,ProductList->ProductList));
         List<CouponUserDTO> couponUsersCanUser = new ArrayList<>();
         BigDecimal realReduceMoney = new BigDecimal(0);//优惠金额
+        BigDecimal realReduceMoneyWithSelect = new BigDecimal(0);//优惠金额
         String bigReduceMoneyId = "";
         for (CouponUserDTO coupon : couponUsers) {
-            if(StringUtils.isNotEmpty(couponId) ){
-                if(!coupon.getId().equals(couponId)){
-                    continue;
-                }
-            }
             String couponType = coupon.getCouponType();
             BigDecimal reduceMoney = new BigDecimal(0);
             if(CouponTypeEnums.FULL_REDUCE.toString().equals(couponType)){
@@ -248,9 +244,15 @@ public class ProductOrderServiceImpl implements IProductOrderService {
                 realReduceMoney = reduceMoney;
                 bigReduceMoneyId=coupon.getId();
             }
+            if(StringUtils.isNotEmpty(couponId) ){
+                if(!coupon.getId().equals(couponId)){
+                    realReduceMoneyWithSelect = reduceMoney ;
+                }
+            }
         }
-        if(StringUtils.isEmpty(couponId) ){
+        if(StringUtils.isNotEmpty(couponId) ){
             bigReduceMoneyId = couponId;
+            realReduceMoney = realReduceMoneyWithSelect;
         }
         for (CouponUserDTO couponUser : couponUsersCanUser) {
             if(couponUser.getId().equals(bigReduceMoneyId)){

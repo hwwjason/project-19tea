@@ -3,6 +3,8 @@ package com.sckj.model.dto;
 import com.sckj.model.Coupon;
 import com.sckj.utils.DateTimeUtils;
 
+import java.util.List;
+
 /**
 * 描述：订单列表DTO
 * @author hww
@@ -14,6 +16,8 @@ public class CouponDTO extends Coupon{
     private String endtimeStr;
 
     private String createtimeStr;
+
+    private List<String> ids;
 
     public String getStarttimeStr() {
         return DateTimeUtils.getString(getStarttime(),starttimeStr);
@@ -37,5 +41,13 @@ public class CouponDTO extends Coupon{
 
     public void setCreatetimeStr(String createtimeStr) {
         this.createtimeStr = createtimeStr;
+    }
+
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
     }
 }

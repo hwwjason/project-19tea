@@ -27,7 +27,7 @@ public class ProductOrderDTO extends ProductOrder{
 
     private String cartType;
 
-    private String couponId;
+    private String couponId;//couponUserid
 
     private BigDecimal reduceMoney;
 

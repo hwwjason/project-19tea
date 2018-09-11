@@ -89,13 +89,13 @@ public class CouponController {
 
     /**
      * 描述：删除购物券列表
-     * @param ids 购物券列表ids
+     * @param couponDTO 购物券列表ids
      */
     @RequestMapping(value = "/deleteByIds", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData deleteByIds(List<String> ids) throws Exception {
+    public ResultData deleteByIds(@RequestBody CouponDTO couponDTO) throws Exception {
         try {
             ResultData resultData = new ResultData();
-            couponService.deleteByIds(ids);
+            couponService.deleteByIds(couponDTO.getIds());
             return resultData;
         }catch (BusinessException e){
             throw e;

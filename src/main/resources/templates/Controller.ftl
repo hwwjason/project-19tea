@@ -118,6 +118,10 @@ public class ${table_name}Controller {
         }
     }
 
+    /**
+    * 描述：分页查询${table_annotation}
+    * @param
+    */
     @RequestMapping(value = "/get${table_name}List", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData get${table_name}List(@RequestBody Query query){
         ResultData resultData = new ResultData();

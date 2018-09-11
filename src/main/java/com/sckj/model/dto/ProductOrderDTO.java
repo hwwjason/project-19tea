@@ -27,7 +27,7 @@ public class ProductOrderDTO extends ProductOrder{
 
     private String cartType;
 
-    private String couponId;//couponUserid
+    private String couponUserid;//couponUserid
 
     private BigDecimal reduceMoney;
 
@@ -55,12 +55,12 @@ public class ProductOrderDTO extends ProductOrder{
         this.cartType = cartType;
     }
 
-    public String getCouponId() {
-        return couponId;
+    public String getCouponUserid() {
+        return couponUserid;
     }
 
-    public void setCouponId(String couponId) {
-        this.couponId = couponId;
+    public void setCouponUserid(String couponUserid) {
+        this.couponUserid = couponUserid;
     }
 
     public List<CouponUser> getCouponUsers() {

@@ -170,8 +170,8 @@ public class ProductOrderServiceImpl implements IProductOrderService {
 
         String userId =productOrderDTO.getBuyuserId();
         BigDecimal realReduceMoney = new BigDecimal(0);
-        if(StringUtils.isNotEmpty(productOrderDTO.getCouponId())){
-            realReduceMoney = calculateCoupon(pDto,productPrice,userId,productLists,productOrderDTO.getCouponId());
+        if(StringUtils.isNotEmpty(productOrderDTO.getCouponUserid())){
+            realReduceMoney = calculateCoupon(pDto,productPrice,userId,productLists,productOrderDTO.getCouponUserid());
         }else{
             realReduceMoney = calculateCoupon(pDto,productPrice,userId,productLists,null);
         }
@@ -199,8 +199,11 @@ public class ProductOrderServiceImpl implements IProductOrderService {
      * @param productLists
      * @return 优惠金额
      */
-    private BigDecimal calculateCoupon( ProductOrderDTO pDto ,BigDecimal productPrice,String userId,List<ProductList> productLists,String couponId){
+    private BigDecimal calculateCoupon( ProductOrderDTO pDto ,BigDecimal productPrice,String userId,List<ProductList> productLists,String couponUserId){
         List<CouponUserDTO> couponUsers = couponUserDAO.getCouponUserByUserId(userId);
+        if(couponUserId!=null){
+            couponUsers = couponUsers.stream().filter(e->e.getId().equals(couponUserId)).collect(Collectors.toList());
+        }
         Map<String,ProductList>  productListMap = productLists.stream().collect(Collectors.toMap(ProductList::getId,ProductList->ProductList));
         List<CouponUserDTO> couponUsersCanUser = new ArrayList<>();
         BigDecimal realReduceMoney = new BigDecimal(0);//优惠金额
@@ -221,12 +224,12 @@ public class ProductOrderServiceImpl implements IProductOrderService {
             }else if(CouponTypeEnums.CASH.toString().equals(couponType)){
                 couponUsersCanUser.add(coupon);
                 reduceMoney = coupon.getReduceMoney();
-                if(reduceMoney.compareTo(productPrice)<0){
+                if(reduceMoney.compareTo(productPrice)>0){
                     reduceMoney = productPrice;
                 }
             }else if(CouponTypeEnums.DISCOUNT.toString().equals(couponType)){
                 couponUsersCanUser.add(coupon);
-                reduceMoney = productPrice.multiply(coupon.getDiscount());
+                reduceMoney = productPrice.subtract(productPrice.multiply(coupon.getDiscount()).divide(new BigDecimal(10)));
             }else if(CouponTypeEnums.PRODUCT.toString().equals(couponType)){
                 if(productListMap.containsKey(coupon.getProductid())){
                     couponUsersCanUser.add(coupon);
@@ -244,15 +247,6 @@ public class ProductOrderServiceImpl implements IProductOrderService {
                 realReduceMoney = reduceMoney;
                 bigReduceMoneyId=coupon.getId();
             }
-            if(StringUtils.isNotEmpty(couponId) ){
-                if(!coupon.getId().equals(couponId)){
-                    realReduceMoneyWithSelect = reduceMoney ;
-                }
-            }
-        }
-        if(StringUtils.isNotEmpty(couponId) ){
-            bigReduceMoneyId = couponId;
-            realReduceMoney = realReduceMoneyWithSelect;
         }
         for (CouponUserDTO couponUser : couponUsersCanUser) {
             if(couponUser.getId().equals(bigReduceMoneyId)){

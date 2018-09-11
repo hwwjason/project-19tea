@@ -1,5 +1,6 @@
 package com.sckj.repository.mybatis;
 
+import com.sckj.model.Coupon;
 import com.sckj.model.dto.CouponDTO;
 import com.sckj.model.dto.ProductListDTO;
 import org.apache.ibatis.annotations.Param;
@@ -17,6 +18,8 @@ import java.util.Map;
 public interface CouponDAO {
 
     CouponDTO findDTOById(@Param("id")String id);
+
+    Coupon findById(@Param("id")String id);
 
 
     /**

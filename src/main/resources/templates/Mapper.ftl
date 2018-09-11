@@ -2,7 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="${package_name}.repository.mybatis.${table_name}DAO">
 
-    <resultMap id="${table_name}DTOResultMap" type="${package_name}.model.dto.${table_name}DTO"></resultMap>
+    <resultMap id="${table_name}ResultMap" type="${package_name}.model.${table_name}"></resultMap>
+
+    <resultMap id="${table_name}DTOResultMap" extends="${table_name}ResultMap" type="${package_name}.model.dto.${table_name}DTO"></resultMap>
 
     <sql id="findDtoSql">
         select * from (
@@ -11,6 +13,13 @@
     </sql>
 
     <select id="findDTOById" parameterType="String" resultMap="${table_name}DTOResultMap">
+        <include refid="findDtoSql"></include>
+        <where>
+            and t.id = ${r'#{id}'}
+        </where>
+    </select>
+
+    <select id="findById" parameterType="String" resultMap="${table_name}ResultMap">
         <include refid="findDtoSql"></include>
         <where>
             and t.id = ${r'#{id}'}

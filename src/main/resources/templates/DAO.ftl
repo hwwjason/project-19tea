@@ -1,5 +1,6 @@
 package ${package_name}.repository.mybatis;
 
+import ${package_name}.model.${table_name};
 import ${package_name}.model.dto.${table_name}DTO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ public interface ${table_name}DAO {
 
     ${table_name}DTO findDTOById(@Param("id")String id);
 
+    ${table_name} findById(@Param("id")String id);
 
     /**
     * 描述：查询${table_annotation}列表以及高级搜索(分页)

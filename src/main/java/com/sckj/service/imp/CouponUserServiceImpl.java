@@ -7,6 +7,7 @@ import com.sckj.model.UserList;
 import com.sckj.repository.CouponRepository;
 import com.sckj.repository.CouponUserRepository;
 import com.sckj.repository.UserListJpa;
+import com.sckj.repository.mybatis.CouponDAO;
 import com.sckj.service.ICouponUserService;
 import com.sckj.repository.mybatis.CouponUserDAO;
 import com.sckj.utils.DateTimeUtils;
@@ -46,6 +47,9 @@ public class CouponUserServiceImpl implements ICouponUserService {
     @Autowired
     private UserListJpa userListJpa;
 
+    @Autowired
+    private CouponDAO couponDAO;
+
     @Override
     public CouponUserDTO findDTOById(String id) throws Exception {
         CouponUserDTO couponUserDTO = couponUserDAO.findDTOById(id);
@@ -59,7 +63,7 @@ public class CouponUserServiceImpl implements ICouponUserService {
 
     @Override
     public CouponUserDTO createCouponUser(CouponUserDTO couponUserDTO) throws Exception {
-        Coupon coupon = couponRepository.getOne(couponUserDTO.getCouponid());
+        Coupon coupon = couponDAO.findDTOById(couponUserDTO.getCouponid());
         if("1".equals(couponUserDTO.getIsAllUser())){//发放给所有用户
             List<UserList> userLists = userListJpa.findAll();
             addCouponUser(userLists,coupon);
@@ -104,7 +108,7 @@ public class CouponUserServiceImpl implements ICouponUserService {
                 couponUser.setRealendtime(coupon.getStarttime());
                 couponUser.setRealstarttime(coupon.getEndtime());
             }
-            couponUser.setUserid(list.getId());
+            couponUser.setUserid(list.getUserId());
             couponUsers.add(couponUser);
         }
         couponUserRepository.saveAll(couponUsers);

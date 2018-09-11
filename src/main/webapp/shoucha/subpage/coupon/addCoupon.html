@@ -18,7 +18,8 @@
 
     .effective-div,
     .applyType-div,
-    .discount {
+    .discount,
+    .moneyHide,.productdiv {
         display: none;
     }
 
@@ -42,64 +43,80 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">优惠券描述</label>
                 <div class="layui-input-block">
-                    <input type="text" name="title" placeholder="请输入优惠券描述" autocomplete="off" class="layui-input">
+                    <input type="text" name="describes" placeholder="请输入优惠券描述" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">优惠类型</label>
                 <div class="layui-input-block">
-                    <input type="radio" lay-filter="couponType" name="couponType" value="满减" title="满减" checked="">
-                    <input type="radio" lay-filter="couponType" name="couponType" value="现金" title="现金">
-                    <input type="radio" lay-filter="couponType" name="couponType" value="折扣" title="折扣">
-                    <input type="radio" lay-filter="couponType" name="couponType" value="商品" title="商品">
+                    <input type="radio" lay-filter="couponType" name="couponType" value="0" title="满减" checked="">
+                    <input type="radio" lay-filter="couponType" name="couponType" value="1" title="现金">
+                    <input type="radio" lay-filter="couponType" name="couponType" value="2" title="折扣">
+                    <input type="radio" lay-filter="couponType" name="couponType" value="3" title="商品">
                 </div>
             </div>
-            <div class="showHide">
+            <div class="showHide couponType">
                 <div class="layui-form-item">
                     <label class="layui-form-label">满金额(元)</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="title" placeholder="请输入满金额" autocomplete="off" class="layui-input">
+                        <input type="text" name="fullMoney" placeholder="请输入满金额" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">减金额(元)</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="title" placeholder="请输入减金额" autocomplete="off" class="layui-input">
+                        <input type="text" name="reduceMoney" placeholder="请输入减金额" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
-            <div class="discount">
+            <div class="moneyHide couponType">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">金额(元)</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="money" placeholder="请输入金额" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="discount couponType">
                 <div class="layui-form-item">
                     <label class="layui-form-label">折扣</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="title" placeholder="请输入满金额" autocomplete="off" class="layui-input">
+                        <input type="text" name="discount" placeholder="请输入折扣" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+            </div>
+            <div class="productdiv couponType">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">商品编码</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="producturl" placeholder="请输入商品编码" autocomplete="off" class="layui-input">
                     </div>
                 </div>
             </div>
             <div class="layui-form-item layui-form-text">
                 <label class="layui-form-label">配置数量</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="title" placeholder="请输入配置数量" autocomplete="off" class="layui-input">
+                    <input type="text" name="stock" placeholder="请输入配置数量" autocomplete="off" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">有效类型</label>
                 <div class="layui-input-block">
-                    <input type="radio" lay-filter="timeType" name="timeType" value="规定时间段" title="规定时间段" checked="">
-                    <input type="radio" lay-filter="timeType" name="timeType" value="领取后生效" title="领取后生效">
+                    <input type="radio" lay-filter="timeType" name="timeType" value="0" title="规定时间段" checked="">
+                    <input type="radio" lay-filter="timeType" name="timeType" value="1" title="领取后生效">
                 </div>
             </div>
             <div class="timeType-div">
                 <div class="layui-form-item">
                     <label class="layui-form-label">开始时间</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input" id="beginTime" placeholder="请选择开始时间">
+                        <input type="text" class="layui-input" name="starttime" id="beginTime" placeholder="请选择开始时间">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">结束时间</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input" id="endTime" placeholder="请选择开始时间">
+                        <input type="text" class="layui-input" name="endtime" id="endTime" placeholder="请选择开始时间">
                     </div>
                 </div>
             </div>
@@ -107,20 +124,18 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">有效天数</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input" value="0">
+                        <input type="text" class="layui-input" value="0" name="days">
                     </div>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">适用类型</label>
                 <div class="layui-input-block">
-                    <input type="radio" lay-filter="applyType" name="applyType" value="全局" title="全局" checked="">
-                    <input type="radio" lay-filter="applyType" name="applyType" value="品类" title="品类">
-                    <input type="radio" lay-filter="applyType" name="applyType" value="商品" title="商品">
-                    <input type="radio" lay-filter="applyType" name="applyType" value="频道" title="频道">
+                    <input type="radio" lay-filter="applyType" name="applyType" value="0" title="线上" checked="">
+                    <input type="radio" lay-filter="applyType" name="applyType" value="1" title="扫码购">
                 </div>
             </div>
-            <div class="applyType-div">
+            <!-- <div class="applyType-div">
                 <div class="layui-form-item productType">
                     <label class="layui-form-label">商品分类</label>
                     <div class="layui-input-block">
@@ -145,11 +160,19 @@
                         <input type="checkbox" name="like1[game]" lay-skin="primary" title="世界杯茉莉龙珠">
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="layui-form-item">
-                <label class="layui-form-label">跳转地址</label>
+                <div class="layui-form-item channel">
+                    <label class="layui-form-label">跳转地址</label>
+                    <div class="layui-input-block">
+                        <input type="radio" name="jumpType" value="0" lay-skin="primary" title="商品" checked="">
+                        <input type="radio" name="jumpType" value="1" lay-skin="primary" title="首页">
+                        <input type="radio" name="jumpType" value="2" lay-skin="primary" title="频道">
+                    </div>
+                </div>
+                <label class="layui-form-label"></label>
                 <div class="layui-input-block">
-                    <input type="text" class="layui-input" value="" placeholder="跳转地址留空则为默认跳转至首页">
+                    <input type="text" class="layui-input" name="url" value="" placeholder="跳转地址留空则为默认跳转至首页">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -164,7 +187,7 @@
                     <button class="layui-btn layuiadmin-btn-list" onclick="window.history.go(-1)">
                         <i class="layui-icon">&#xe65c;</i>返回
                     </button>
-                    <button class="layui-btn layuiadmin-btn-list">
+                    <button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="formsub">
                         <i class="fa fa-send"></i>&nbsp;&nbsp;提交
                     </button>
                 </div>
@@ -175,22 +198,24 @@
     <script type="text/javascript" src="../../frame/layui/layui.js"></script>
     <script type="text/javascript" src="../../frame/static/js/vue.min.js"></script>
     <script type="text/javascript">
-    $(function() {
-        // $.post("", {}, function(res) {
-
-        // }, "json");
-    })
-    layui.use(['form', 'laydate'], function() {
+    layui.use(['jquery', 'form', 'laydate'], function() {
         var form = layui.form;
         var laydate = layui.laydate;
+        var $ = layui.jquery;
         // 优惠券类型切换
         form.on('radio(couponType)', function(data) {
-            if (data.value == "满减" || data.value == "现金") {
+            $(".couponType").hide();
+            if (data.value == "0") {
                 $(".showHide").show();
-                $(".discount").hide();
-            } else if (data.value == "折扣") {
+            }
+            if (data.value == "2") {
                 $(".discount").show();
-                $(".showHide").hide();
+            }
+            if (data.value == "1") {
+                $(".moneyHide").show();
+            }
+            if (data.value == "3") {
+                $(".productdiv").show();
             }
         });
         // 时间段切换
@@ -228,6 +253,26 @@
         laydate.render({
             elem: '#endTime', //指定元素
             type: 'datetime'
+        });
+        form.on('submit(formsub)', function(data) {
+            data.field.starttime = data.field.starttime.replace(" ","T");
+            data.field.endtime = data.field.endtime.replace(" ","T");
+            var dataJson = JSON.stringify(data.field);
+            var url = baseURL + "bak/coupon/create";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                contentType: "application/json;charset=UTF-8",
+                data: dataJson,
+            }).done(function(res) {
+                if (res.status == "1") {
+                    window.location.href = "../coupon/couponList.html";
+                }
+            }).fail(function() {
+                console.log("error");
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
         });
     });
     </script>

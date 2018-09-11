@@ -26,10 +26,10 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">优惠券名</label>
                     <div class="layui-input-inline">
-                        <select>
-                            <option>-请选择-</option>
-                            <option>已使用</option>
-                            <option>未使用</option>
+                        <select class="isuseselect">
+                            <option value="">-请选择-</option>
+                            <option value="1">已使用</option>
+                            <option value="0">未使用</option>
                         </select>
                     </div>
                 </div>
@@ -38,16 +38,20 @@
                     <div class="layui-input-inline">
                         <input type="text" class="layui-input" id="dateBegin" placeholder="yyyy-MM-dd">
                     </div>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="dateEnd" placeholder="yyyy-MM-dd">
+                    </div>
                 </div>
+                
                 <div class="layui-inline">
                     <label class="layui-form-label">手机或用户id</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="author" placeholder="请输入商品ID" autocomplete="off" class="layui-input">
+                        <input type="text"  placeholder="请输入手机或用户id" autocomplete="off" class="layui-input phoneOrUserId">
                     </div>
                 </div>
                 <div class="layui-inline">
-                    <button class="layui-btn layuiadmin-btn-list" lay-submit="" lay-filter="LAY-app-contlist-search">
-                        <i class="layui-icon layui-icon-search layuiadmin-button-btn">&#xe615</i>
+                    <button class="layui-btn layuiadmin-btn-list" onclick="search()">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn">&#xe615</i>查询
                     </button>
                     <button class="layui-btn layuiadmin-btn-list" onclick="window.location.reload()">
                         <i class="fa fa-refresh"></i> 刷新
@@ -64,9 +68,6 @@
         <table class="layui-table">
             <thead>
                 <tr>
-                    <th>
-                        <input type="checkbox" lay-filter="checkall" id="checkall" name="checkall" lay-skin="primary" checked>
-                    </th>
                     <th>标题</th>
                     <th>用户ID</th>
                     <th>手机</th>
@@ -78,17 +79,14 @@
             </thead>
             <tbody class="orderList">
                 <tr v-for="item in orderList" v-key="orderList">
-                    <td>
-                        <input type="checkbox" lay-filter="childCheck" name="" lay-skin="primary" checked>
-                    </td>
+                    <td>{{item.title}}</td>
                     <td>{{item.id}}</td>
-                    <td>{{item.num}}</td>
-                    <td>{{item.price}}</td>
-                    <td>{{item.postage}}</td>
-                    <td>{{item.payprice}}</td>
-                    <td>{{item.vipprice}}</td>
+                    <td>{{item.tel}}</td>
+                    <td>{{item.realstarttime}}</td>
+                    <td>{{item.realendtime}}</td>
+                    <td>{{item.receivetime}}</td>
                     <td>
-                       是
+                       {{item.isuse=="0"?"否":"是"}}
                     </td>
                 </tr>
             </tbody>
@@ -98,76 +96,124 @@
     <script type="text/javascript" src="../../frame/static/js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="../../frame/layui/layui.js"></script>
     <script type="text/javascript" src="../../frame/static/js/vue.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../frame/static/js/public.js"></script>
     <script type="text/javascript">
-    $(function() {
-        // $.post("", {}, function(res) {
-
-        // }, "json");
-    })
-    var data = {
-        orderList: [{ id: 'xcx_chakarma_038', num: '冷泡水果茶（16袋装）', price: '/pages/product_detail/product_detail?id=P1529988351626', postage: 10, payprice: '亳州市', vipprice: '上架', coupon: '是', actualPrice: 110, state: 1, expressNo: 10000000, info: 'sasdadds' }, { id: 10086, num: 1, price: 100, postage: 10, payprice: 100, vipprice: 7, coupon: 10, actualPrice: 110, state: 1, expressNo: 10000000, info: 'sasdadds' }]
-    }
+    var couponid = GetRequest().id;    
+    var orderList = "",
+        layer = "",
+        form = "",
+        laypage = "",
+        count = 0,
+        pageNum = 1,
+        pageSize = 10,
+        pagecurr = 1,
+        getListData = {
+            "pageNum": pageNum,
+            "pageSize": pageSize,
+            "condition": {
+                "isuse": "",
+                "receiveStarttime": "",
+                "receiveEndtime": "",
+                "phoneOrUserId":""
+            }
+        };
+        getListData.condition.couponid = couponid
     var vm = new Vue({
         el: "#vueDiv",
-        data: data
+        data: {
+            orderList: ""
+        },
+        mounted: function() {
+            this.getMakerList(getListData);
+        },
+        methods: {
+            layuiInit: function() {
+                layui.use(['form', 'layedit', 'laypage', 'jquery', 'laydate', 'layer'], function() {
+                    laypage = layui.laypage;
+                    form = layui.form;
+                    layer = layui.layer;
+                    var laydate = layui.laydate;
+                    var $ = layui.jquery;
+                    //时间范围
+                    laydate.render({
+                        elem: '#dateBegin'
+                    });
+                    //时间范围
+                    laydate.render({
+                        elem: '#dateEnd'
+                    });
+                    //分页
+                    laypage.render({
+                        elem: 'pagelist',
+                        count: count,
+                        limit: pageSize,
+                        layout: ['count', 'prev', 'page', 'next', 'refresh', 'skip'],
+                        jump: function(obj, first) {
+                            if (!first) {
+                                pagecurr = obj.curr
+                                $.ajax({
+                                    url: baseURL + "bak/couponUser/getCouponUserList",
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    contentType: "application/json;charset=UTF-8",
+                                    data: JSON.stringify({ "pageNum": obj.curr, "pageSize": pageSize }),
+                                }).done(function(res) {
+                                    if (res.status == "1") {
+                                        orderList = res.data.list;
+                                        vm.orderList = orderList;
+                                        setTimeout(function() {
+                                            form.render();
+                                        }, 0)
+                                    }
+                                }).fail(function() {
+                                    console.log("error");
+                                })
+                            }
+                        }
+                    });
+                    setTimeout(function() {
+                        form.render();
+                    }, 0)
+                })
+            },
+            getMakerList: function(obj) {
+                var that = this;
+                $.ajax({
+                    url: baseURL + "bak/couponUser/getCouponUserList",
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify(obj),
+                }).done(function(res) {
+                    if (res.status == "1") {
+                        orderList = res.data.list;
+                        that.orderList = orderList;
+                        count = res.data.total
+                        that.layuiInit();
+                    }
+                }).fail(function() {
+                    console.log("error");
+                })
+            },
+            watch: function() {
+                this.layuiInit();
+            }
+
+        }
     })
-    layui.use(['form', 'layedit', 'laypage', 'jquery', 'laydate'], function() {
-        var laypage = layui.laypage;
-        var form = layui.form;
-        var laydate = layui.laydate;
-        var $ = layui.jquery;
-        // 监听checkbox选中事件，全选
-        form.on('checkbox(checkall)', function(data) {
-            ///data.elem.checked单选框是否选中
-            $(".orderList input[type='checkbox']").each(function(index, el) {
-                el.checked = data.elem.checked;
-            });
-            form.render('checkbox');
-        });
-        //单个checkbox选中事件
-        form.on('checkbox(childCheck)', function(event) {
-            var checkNum = 0;
-            $(".orderList input[type='checkbox']").each(function(index, el) {
-                if (el.checked == false) {
-                    checkNum++
-                    $("#checkall").prop("checked", false);
-                }
-            });
-            if (checkNum == 0) {
-                $("#checkall").prop("checked", true);
-            }
-            form.render('checkbox');
-            /* Act on the event */
-        });
-        //时间范围
-        laydate.render({
-            elem: '#dateBegin',
-            range: true
-        });
-        //执行一个laypage实例,分页
-        // laypage.render({
-        //     elem: 'pagelist', //注意，这里的 test1 是 ID，不用加 # 号
-        //     count: 500, //数据总数，从服务端得到
-        //     jump: function(obj, first) {
-        //         //obj包含了当前分页的所有参数，比如：
-        //         console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
-        //         console.log(obj.limit); //得到每页显示的条数
-        //         //首次不执行
-        //         if (!first) {
-        //             //do something
-        //         }
-        //     }
-        // });
-        //分页
-        laypage.render({
-            elem: 'pagelist',
-            count: 1000,
-            layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip'],
-            jump: function(obj) {
-                console.log(obj)
-            }
-        });
-    });
+    //查询商品
+    function search() {
+        var isuse = $(".isuseselect").val();
+        var phoneOrUserId = $(".phoneOrUserId").val();
+        var input_title = $(".input_title").val();
+        var dateBegin = $("#dateBegin").val();
+        var dateEnd = $("#dateEnd").val();
+        getListData.condition.isuse = isuse;
+        getListData.condition.phoneOrUserId = phoneOrUserId;
+        getListData.condition.receiveStarttime = dateBegin;
+        getListData.condition.receiveEndtime = dateEnd;
+        vm.getMakerList(getListData);
+    }
     </script>
 </body>
 

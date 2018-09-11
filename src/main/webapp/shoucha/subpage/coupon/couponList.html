@@ -95,7 +95,7 @@
                         <button class="layui-btn layui-btn-normal layui-btn-small" lay-event="edit">
                             <i class="layui-icon">&#xe642;</i>编辑
                         </button>
-                        <a class="layui-btn layui-btn-normal layui-btn-small" href="../../subpage/coupon/couponNameList.html">
+                        <a class="layui-btn layui-btn-normal layui-btn-small" :href="'../../subpage/coupon/couponNameList.html?id='+item.id">
                             <i class="layui-icon">&#xe63c;</i>名单
                         </a>
                         <a class="layui-btn layui-btn-danger layui-btn-small" lay-event="del">
@@ -251,13 +251,14 @@
         }, function(index) {
             layer.close(index);
             var url = baseURL + "bak/coupon/deleteByIds";
-            var data = checkId.toString();
+            //var data = checkId.toString();
+            console.log(checkId)
             $.ajax({
                 url: url,
                 type: 'POST',
                 dataType: 'json',
                 contentType: "application/json;charset=UTF-8",
-                ids: data,
+                ids: checkId,
             }).done(function(res) {
                 if (res.status == 1) {
                     //window.location.reload();

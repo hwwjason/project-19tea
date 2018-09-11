@@ -14,6 +14,7 @@ import com.sckj.model.dto.CouponDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +44,7 @@ public class CouponServiceImpl implements ICouponService {
     }
 
     @Override
+    @Transactional
     public void deleteByIds(List<String> ids) throws Exception {
         couponRepository.deleteByIdIn(ids);
     }

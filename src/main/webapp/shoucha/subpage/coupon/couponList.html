@@ -258,7 +258,7 @@
                 type: 'POST',
                 dataType: 'json',
                 contentType: "application/json;charset=UTF-8",
-                ids: checkId,
+                data: JSON.stringify({"ids":checkId}),
             }).done(function(res) {
                 if (res.status == 1) {
                     //window.location.reload();

@@ -28,28 +28,28 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">优惠券名</label>
                 <div class="layui-input-block">
-                    <label class="layui-input-inline" style="line-height: 38px;">冰炮水果茶测试</label>
+                    <label class="layui-input-inline couponname" style="line-height: 38px;"></label>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">发放类型</label>
                 <div class="layui-input-block">
-                    <input type="radio" lay-filter="userType" name="userType" value="全用户" title="全用户" checked="">
-                    <input type="radio" lay-filter="userType" name="userType" value="选择用户" title="选择用户">
+                    <input type="radio" lay-filter="isAllUser" name="isAllUser" value="1" title="全用户" checked="">
+                    <input type="radio" lay-filter="isAllUser" name="isAllUser" value="0" title="选择用户">
                 </div>
             </div>
             <div class="showHide">
-                <div class="layui-form-item">
+                <!-- <div class="layui-form-item">
                     <label class="layui-form-label">字段选择</label>
                     <div class="layui-input-block">
                         <input type="radio" name="ziduan" value="男" title="手机号码" checked="">
                         <input type="radio" name="ziduan" value="女" title="用户ID">
                     </div>
-                </div>
+                </div> -->
                 <div class="layui-form-item layui-form-text">
                     <label class="layui-form-label">字符串</label>
                     <div class="layui-input-block" style="width: 50%;">
-                        <textarea placeholder="请输入手机号码或用户ID，用逗号(“,”)分割" class="layui-textarea"></textarea>
+                        <textarea name="userPhoneStr" placeholder="请输入手机号码或用户ID，用逗号(“,”)分割" class="layui-textarea"></textarea>
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                     <button class="layui-btn layuiadmin-btn-list" onclick="window.history.go(-1)">
                         <i class="layui-icon">&#xe65c;</i>返回
                     </button>
-                    <button class="layui-btn layuiadmin-btn-list">
+                    <button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="formsub">
                         <i class="fa fa-send"></i>&nbsp;&nbsp;发券
                     </button>
                 </div>
@@ -69,21 +69,48 @@
     <script type="text/javascript" src="../../frame/static/js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="../../frame/layui/layui.js"></script>
     <script type="text/javascript" src="../../frame/static/js/vue.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../frame/static/js/public.js"></script>
     <script type="text/javascript">
-    $(function() {
-        // $.post("", {}, function(res) {
 
-        // }, "json");
+    $(function() {
+        var name = GetRequest().couponname;
+        $(".couponname").text(name);
     })
-    layui.use(['form'], function() {
+    layui.use(['form',"layer"], function() {
         var form = layui.form;
-        form.on('radio(userType)',function(data){
-            if(data.value=="选择用户"){
+        var layer = layui.layer;
+
+        form.on('radio(isAllUser)',function(data){
+            if(data.value==0){
                 $(".showHide").show();
             }else{
                 $(".showHide").hide();
             }
         })
+        form.on('submit(formsub)', function(data) {
+            var id = GetRequest().id;
+            var dataJson = data.field;
+            dataJson.id = id;
+            dataJson.userPhoneFile = "";
+            dataJson = JSON.stringify(dataJson);
+            console.log(dataJson)
+            var url = baseURL + "bak/couponUser/create";
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                contentType: "application/json;charset=UTF-8",
+                data: dataJson,
+            }).done(function(res) {
+                if (res.status == "1") {
+                    layer.msg("发放成功")
+                    //window.location.href = "../coupon/couponList.html";
+                }
+            }).fail(function() {
+                console.log("error");
+            })
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        });
     });
     </script>
 </body>

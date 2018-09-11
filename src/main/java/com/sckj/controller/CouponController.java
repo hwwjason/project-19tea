@@ -8,6 +8,7 @@ import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
 import com.sckj.model.dto.CouponDTO;
+import com.sckj.model.dto.CouponUserDTO;
 import com.sckj.service.ICouponService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,7 +129,7 @@ public class CouponController {
         ResultData resultData = new ResultData();
         PageHelper.startPage(query.getPageNum(),query.getPageSize());
         Map<String,Object> map = (Map<String, Object>) query.getCondition();
-        List<CouponDTO> sckjUserList = couponService.getProductList(map);
+        List<CouponDTO> sckjUserList = couponService.getCouponList(map);
         PageInfo<CouponDTO> pageInfo = new PageInfo<CouponDTO>(sckjUserList);
         resultData.setData(pageInfo);
         return resultData;

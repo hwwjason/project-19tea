@@ -1,12 +1,12 @@
 package com.sckj.model.dto;
 
-import com.sckj.model.SckjUserList;
+import com.sckj.model.UserList;
 import com.sckj.utils.DateTimeUtils;
 import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
-public class SckjUserListDTO extends SckjUserList {
+public class SckjUserListDTO extends UserList {
 
     private String regtimeStr ;
 

@@ -8,5 +8,13 @@ import ${package_name}.model.${table_name};
 * @date ${date}
 */
 public class ${table_name}DTO extends ${table_name}{
+    private List<String> ids;
 
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
+    }
 }

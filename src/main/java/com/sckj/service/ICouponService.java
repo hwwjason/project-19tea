@@ -30,6 +30,6 @@ public interface ICouponService  {
 
     Page<CouponDTO> findCouponPage(CouponDTO couponDTO, Pageable page) throws Exception;
 
-    List<CouponDTO> getProductList(Map<String,Object> productListMap);
+    List<CouponDTO> getCouponList(Map<String,Object> productListMap);
 
 }

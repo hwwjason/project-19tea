@@ -81,4 +81,12 @@
         WHERE cu.userid = #{userid}
     </select>
 
+    <select id="getCouponUserList" parameterType="java.util.Map" resultMap="CouponUserDTOResultMap">
+        select * from sckj_coupon_user as temp
+        <where>
+
+        </where>
+        ORDER BY temp.createtime DESC
+    </select>
+
 </mapper>

@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import ${package_name}.model.dto.${table_name}DTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import javax.transaction.Transactional;
+import java.util.List;
 
 /**
 * 描述：${table_annotation} 服务实现层
@@ -64,6 +66,18 @@ public class ${table_name}ServiceImpl implements I${table_name}Service {
     @Override
     public Page<${table_name}DTO> find${table_name}Page(${table_name}DTO ${table_name?uncap_first}DTO, Pageable page) throws Exception{
         return ${table_name?uncap_first}DAO.find${table_name}Page(${table_name?uncap_first}DTO,page);
+    }
+
+    @Override
+    @Transactional
+    public void deleteByIds(List<String> ids) throws Exception {
+        ${table_name?uncap_first}Repository.deleteByIdIn(ids);
+    }
+
+    @Override
+    public List<${table_name}DTO> get${table_name}List(Map<String,Object> map) {
+        List<${table_name}DTO> lists = ${table_name?uncap_first}DAO.get${table_name}List(map);
+        return lists;
     }
 
 }

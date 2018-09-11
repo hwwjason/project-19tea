@@ -11,7 +11,7 @@ import com.sckj.repository.ProductListJpa;
 import com.sckj.repository.UserCartJpa;
 import com.sckj.repository.UserListJpa;
 import com.sckj.model.ProductList;
-import com.sckj.model.SckjUserList;
+import com.sckj.model.UserList;
 import com.sckj.model.UserCart;
 import com.sckj.service.IUserCartService;
 import com.sckj.utils.StringUtils;
@@ -57,8 +57,8 @@ public class UserCartServiceImp implements IUserCartService {
         }
 
         //查询用户是否已经收藏这个商品了
-        List<SckjUserList> sckjUserList =  userListJpa.findByUserId(userId);
-        if(sckjUserList==null || sckjUserList.size()==0){
+        List<UserList> userList =  userListJpa.findByUserId(userId);
+        if(userList ==null || userList.size()==0){
             throw new BusinessException("用户信息出错，请联系管理员");
         }
 

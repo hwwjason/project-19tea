@@ -20,6 +20,16 @@ public class DateTimeUtils {
         return date;
     }
 
+    /**
+     * 获取前后日期
+     * @param days
+     * @return
+     */
+    public static Date  getDate(int days){
+        Date date = new Date();
+        return  new Date(date.getTime() + days * 24 * 60 * 60 * 1000);
+    }
+
     public static String getCurTime2(){
         return fmtDT2.format(new Date());
     }

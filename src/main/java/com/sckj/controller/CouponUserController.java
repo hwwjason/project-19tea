@@ -1,5 +1,8 @@
 package com.sckj.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.sckj.common.Query;
 import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
@@ -12,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
 import com.sckj.common.ResultData;
+
+import java.util.List;
+import java.util.Map;
 
 /**
 * 描述：优惠券用户表控制层
@@ -47,7 +53,7 @@ public class CouponUserController {
     }
 
     /**
-    * 描述:创建优惠券用户表
+    * 描述:创建优惠券用户表 couponid,userInfo,
     * @param couponUserDTO  优惠券用户表DTO
     */
     @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -98,6 +104,40 @@ public class CouponUserController {
             logger.error("Error 更新失败", e);
             return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
         }
+    }
+
+    /**
+     * 描述：删除用户优惠券
+     * @param couponUserDTO 用户优惠券ids
+     */
+    @RequestMapping(value = "/deleteByIds", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData deleteByIds(@RequestBody CouponUserDTO couponUserDTO) throws Exception {
+        try {
+            ResultData resultData = new ResultData();
+            couponUserService.deleteByIds(couponUserDTO.getIds());
+            return resultData;
+        }catch (BusinessException e){
+            throw e;
+        } catch (Exception e){
+            logger.error("Error 删除失败", e);
+            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+        }
+    }
+
+    /**
+     *
+     * @param query
+     * @return
+     */
+    @RequestMapping(value = "/getCouponUserList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData getCouponUserList(@RequestBody Query query){
+        ResultData resultData = new ResultData();
+        PageHelper.startPage(query.getPageNum(),query.getPageSize());
+        Map<String,Object> map = (Map<String, Object>) query.getCondition();
+        List<CouponUserDTO> list = couponUserService.getCouponUserList(map);
+        PageInfo<CouponUserDTO> pageInfo = new PageInfo<CouponUserDTO>(list);
+        resultData.setData(pageInfo);
+        return resultData;
     }
 
 }

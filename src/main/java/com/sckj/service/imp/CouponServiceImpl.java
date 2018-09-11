@@ -79,7 +79,7 @@ public class CouponServiceImpl implements ICouponService {
     }
 
     @Override
-    public List<CouponDTO> getProductList(Map<String,Object> map) {
+    public List<CouponDTO> getCouponList(Map<String,Object> map) {
         List<CouponDTO> productLists = couponDAO.getCouponList(map);
         return productLists;
     }

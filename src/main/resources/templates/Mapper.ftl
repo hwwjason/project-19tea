@@ -24,4 +24,12 @@
         </where>
     </select>
 
+    <select id="get${table_name}List" parameterType="java.util.Map" resultMap="${table_name}DTOResultMap">
+        select * from ${table_name_small} as temp
+        <where>
+
+        </where>
+        ORDER BY temp.createtime DESC
+    </select>
+
 </mapper>

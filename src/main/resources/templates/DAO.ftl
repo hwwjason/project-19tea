@@ -21,4 +21,6 @@ public interface ${table_name}DAO {
     */
     Page<${table_name}DTO> find${table_name}Page(${table_name}DTO ${table_name?uncap_first}DTO, Pageable page);
 
+    List<${table_name}DTO> get${table_name}List(Map<String,Object> map);
+
 }

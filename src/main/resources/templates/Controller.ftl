@@ -100,4 +100,33 @@ public class ${table_name}Controller {
         }
     }
 
+    /**
+    * 描述：删除${table_annotation}
+    * @param ${table_name?uncap_first}DTO ${table_annotation}ids
+    */
+    @RequestMapping(value = "/deleteByIds", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData deleteByIds(@RequestBody ${table_name}DTO ${table_name?uncap_first}DTO) throws Exception {
+        try {
+            ResultData resultData = new ResultData();
+            ${table_name?uncap_first}Service.deleteByIds(${table_name?uncap_first}DTO.getIds());
+            return resultData;
+        }catch (BusinessException e){
+            throw e;
+        } catch (Exception e){
+            logger.error("Error 删除失败", e);
+            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+        }
+    }
+
+    @RequestMapping(value = "/get${table_name}List", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData get${table_name}List(@RequestBody Query query){
+        ResultData resultData = new ResultData();
+        PageHelper.startPage(query.getPageNum(),query.getPageSize());
+        Map<String,Object> map = (Map<String, Object>) query.getCondition();
+        List<${table_name}DTO> list = ${table_name?uncap_first}Service.get${table_name}List(map);
+        PageInfo<${table_name}DTO> pageInfo = new PageInfo<CouponDTO>(list);
+        resultData.setData(pageInfo);
+        return resultData;
+    }
+
 }

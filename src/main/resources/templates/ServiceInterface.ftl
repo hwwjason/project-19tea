@@ -3,6 +3,7 @@ import ${package_name}.model.${table_name};
 import ${package_name}.model.dto.${table_name}DTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import java.util.List;
 
 /**
 * 描述：${table_annotation} 服务实现层接口
@@ -25,4 +26,7 @@ public interface I${table_name}Service  {
 
     Page<${table_name}DTO> find${table_name}Page(${table_name}DTO ${table_name?uncap_first}DTO, Pageable page) throws Exception;
 
+    void deleteByIds(List<String> ids)throws Exception;
+
+    List<${table_name}DTO> get${table_name}List(Map<String,Object> ${table_name?uncap_first}ListMap);
 }

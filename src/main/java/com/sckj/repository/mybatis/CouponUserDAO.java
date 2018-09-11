@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 描述：优惠券用户表DAO 层
@@ -25,5 +26,7 @@ public interface CouponUserDAO {
     Page<CouponUserDTO> findCouponUserPage(CouponUserDTO couponUserDTO, Pageable page);
 
     List<CouponUserDTO> getCouponUserByUserId(@Param("userid") String userid);
+
+    List<CouponUserDTO> getCouponUserList(Map<String,Object> map);
 
 }

@@ -4,6 +4,9 @@ import com.sckj.model.dto.CouponUserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+import java.util.Map;
+
 /**
 * 描述：优惠券用户表 服务实现层接口
 * @author hww
@@ -25,4 +28,7 @@ public interface ICouponUserService  {
 
     Page<CouponUserDTO> findCouponUserPage(CouponUserDTO couponUserDTO, Pageable page) throws Exception;
 
+    void deleteByIds(List<String> ids)throws Exception;
+
+    List<CouponUserDTO> getCouponUserList(Map<String,Object> couponUserListMap);
 }

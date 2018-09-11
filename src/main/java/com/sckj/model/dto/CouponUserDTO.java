@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
 * 描述：优惠券用户表DTO
@@ -18,6 +19,14 @@ public class CouponUserDTO extends CouponUser{
     private String title;
 
     private String isOptimal;//0 否，1是  //最理想的
+
+    private List<String> ids;
+
+    private String isAllUser;//0否，1是  是否全部用户
+
+    private String userPhoneStr;
+
+    private String userPhoneFile;
 
     ///////////////////////////////////////////////coupon
     /**
@@ -258,5 +267,37 @@ public class CouponUserDTO extends CouponUser{
 
     public void setIsOptimal(String isOptimal) {
         this.isOptimal = isOptimal;
+    }
+
+    public List<String> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<String> ids) {
+        this.ids = ids;
+    }
+
+    public String getIsAllUser() {
+        return isAllUser;
+    }
+
+    public void setIsAllUser(String isAllUser) {
+        this.isAllUser = isAllUser;
+    }
+
+    public String getUserPhoneStr() {
+        return userPhoneStr;
+    }
+
+    public void setUserPhoneStr(String userPhoneStr) {
+        this.userPhoneStr = userPhoneStr;
+    }
+
+    public String getUserPhoneFile() {
+        return userPhoneFile;
+    }
+
+    public void setUserPhoneFile(String userPhoneFile) {
+        this.userPhoneFile = userPhoneFile;
     }
 }

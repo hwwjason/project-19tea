@@ -9,7 +9,7 @@ import com.sckj.repository.mybatis.UserListDAO;
 import com.sckj.model.dto.SckjUserListDTO;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.repository.UserListJpa;
-import com.sckj.model.SckjUserList;
+import com.sckj.model.UserList;
 import com.sckj.service.IUserListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -38,13 +38,13 @@ public class BakUserController {
     public ResultData getUserInfo(){
         ResultData resultData = new ResultData();
         try{
-            List<SckjUserList> sckjUserList = userListJpa.findAll();
-            for (SckjUserList user : sckjUserList) {
+            List<UserList> userList = userListJpa.findAll();
+            for (UserList user : userList) {
                 user.setSessionKey(null);
                 user.setSignature(null);
                 user.setRawData(null);
             }
-            resultData.setData(sckjUserList);
+            resultData.setData(userList);
             resultData.setStatus(ResultStatusEnum.SUCESS.toString());
             resultData.setMessage("查询成功");
         }catch (Exception e){

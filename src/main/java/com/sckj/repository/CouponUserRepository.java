@@ -15,4 +15,6 @@ public interface CouponUserRepository extends JpaRepository<CouponUser, String> 
 
     List<CouponUser> findByUserid(String userId);
 
+    void deleteByIdIn(List<String> ids);
+
 }

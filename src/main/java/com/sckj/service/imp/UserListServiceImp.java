@@ -10,7 +10,7 @@ import com.sckj.repository.mybatis.UserListDAO;
 import com.sckj.model.dto.OpenIdAndSessionKey;
 import com.sckj.model.dto.WechatLoginInfo;
 import com.sckj.enums.LoginStateEnum;
-import com.sckj.model.SckjUserList;
+import com.sckj.model.UserList;
 import com.sckj.service.IUserListService;
 import com.sckj.utils.AesEncodeUtil;
 import com.sckj.utils.DateTimeUtils;
@@ -97,7 +97,7 @@ public class UserListServiceImp implements IUserListService {
                 wechatLoginInfo.setUserId(encryptOpenid);
                 //判断是否已经登录过
                 if(!isLogin(wechatLoginInfo)){
-                    SckjUserList userList = new SckjUserList();
+                    UserList userList = new UserList();
                     userList.setId(UUIDUtils.generate());
                     userList.setUserId(encryptOpenid);
                     userList.setOpenid(openid);
@@ -125,9 +125,9 @@ public class UserListServiceImp implements IUserListService {
                 }else{
                     //更新 头像 昵称
                     boolean isSpeedLogin = false;
-                    List<SckjUserList> userList = userListJpa.findByUserId(encryptOpenid);
+                    List<UserList> userList = userListJpa.findByUserId(encryptOpenid);
                     if(userList.size()>0){
-                        SckjUserList user = userList.get(0);
+                        UserList user = userList.get(0);
                         user.setSessionKey(session_key);//Ao+XJdoi5YvJrZvqEI1zmQ== Ao+XJdoi5YvJrZvqEI1zmQ== 8q9rxhum2iOLzTSdGTuJhA==
                         user.setNickname(userInfo.getNickName());
                         user.setOpenid(openid);
@@ -169,11 +169,11 @@ public class UserListServiceImp implements IUserListService {
     public WechatLoginInfo speedLogin(String userId,String encryptedData, String iv) {
         //判断登录情况
         WechatLoginInfo wechatLoginInfo = new WechatLoginInfo();
-        List<SckjUserList>  userList = userListJpa.findByUserId(userId);
+        List<UserList>  userList = userListJpa.findByUserId(userId);
         if(userList.size()==0){
             wechatLoginInfo.setState(LoginStateEnum.FAIL.toString());
         }else {
-            SckjUserList user = userList.get(0);
+            UserList user = userList.get(0);
             String session_key = user.getSessionKey();
             String signature = user.getSessionKey();
             String rawData = user.getRawData();
@@ -215,7 +215,7 @@ public class UserListServiceImp implements IUserListService {
         if(StringUtils.isEmpty(wechatLoginInfo.getUserId())){
             return false;
         }
-        List<SckjUserList> UserLists = userListJpa.findByUserId(wechatLoginInfo.getUserId());
+        List<UserList> UserLists = userListJpa.findByUserId(wechatLoginInfo.getUserId());
         if(UserLists.size()>0){
             return true;
         }
@@ -230,7 +230,7 @@ public class UserListServiceImp implements IUserListService {
         if(wechatLoginInfo.getUserId()==null){
             return false;
         }
-        List<SckjUserList> UserLists = userListJpa.findByUserId(wechatLoginInfo.getUserId());
+        List<UserList> UserLists = userListJpa.findByUserId(wechatLoginInfo.getUserId());
         if(UserLists.size()==0){
             return false;
         }

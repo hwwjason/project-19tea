@@ -1,5 +1,6 @@
 package com.sckj.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import javax.persistence.*;
 import java.util.Date;
@@ -64,7 +65,7 @@ public class CouponUser {
     /**
     *
     */
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "realstarttime",columnDefinition = "TIMESTAMP")
     private Date realstarttime;
 
@@ -72,7 +73,7 @@ public class CouponUser {
     /**
     *
     */
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "realendtime",columnDefinition = "TIMESTAMP")
     private Date realendtime;
 
@@ -80,7 +81,7 @@ public class CouponUser {
     /**
     *领取时间
     */
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "receivetime",columnDefinition = "TIMESTAMP")
     private Date receivetime;
 

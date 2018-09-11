@@ -90,7 +90,7 @@
         form.on('submit(formsub)', function(data) {
             var id = GetRequest().id;
             var dataJson = data.field;
-            dataJson.id = id;
+            dataJson.couponid = id;
             dataJson.userPhoneFile = "";
             dataJson = JSON.stringify(dataJson);
             console.log(dataJson)

@@ -100,6 +100,7 @@ public class CouponUserServiceImpl implements ICouponUserService {
             couponUser.setId(UUIDUtils.generate());
             couponUser.setCouponid(coupon.getId());
             couponUser.setIsuse("0");
+            couponUser.setTel(list.getTel());
             //根据时间类型设置开始和结束时间
             if(CouponTimeTypeEnums.DSYS.toString().equals(coupon.getTimeType())){
                 couponUser.setRealendtime(DateTimeUtils.getCurrentDate());

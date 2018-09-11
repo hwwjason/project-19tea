@@ -84,9 +84,25 @@
     <select id="getCouponUserList" parameterType="java.util.Map" resultMap="CouponUserDTOResultMap">
         select * from sckj_coupon_user as temp
         <where>
-
+            <if test="receiveStarttime !=null">
+                <![CDATA[
+                    and date_format(temp.receivetime,'%Y-%m-%d') >= str_to_date(#{receiveStarttime},'%Y-%m-%d')
+                ]]>
+            </if>
+            <if test="receiveEndtime !=null">
+                <![CDATA[
+                    and date_format(temp.receivetime,'%Y-%m-%d') <= str_to_date(#{receiveEndtime},'%Y-%m-%d')
+                ]]>
+            </if>
+            <if test="null != isuse and  '' neq isuse">
+                and  UPPER(temp.isuse) LIKE CONCAT('%',UPPER (#{isuse}),'%')
+            </if>
+            <if test="null != phoneOrUserId and  '' neq phoneOrUserId">
+                and (  UPPER(temp.userid) LIKE CONCAT('%',UPPER (#{phoneOrUserId}),'%')
+                    or UPPER(temp.tel) LIKE CONCAT('%',UPPER (#{phoneOrUserId}),'%'))
+            </if>
         </where>
-        ORDER BY temp.createtime DESC
+        ORDER BY temp.receivetime DESC
     </select>
 
 </mapper>

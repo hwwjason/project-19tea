@@ -28,6 +28,12 @@ public class CouponUserDTO extends CouponUser{
 
     private String userPhoneFile;
 
+    private String receiveStarttime;
+
+    private String receiveEndtime;
+
+    private String phoneOrUserId;
+
     ///////////////////////////////////////////////coupon
     /**
      * FULL_REDUCE("0","满减"),WAITE_DELIVER("1","现金"),DELIVERED("2","折扣"),TAKED("3","商品");
@@ -299,5 +305,29 @@ public class CouponUserDTO extends CouponUser{
 
     public void setUserPhoneFile(String userPhoneFile) {
         this.userPhoneFile = userPhoneFile;
+    }
+
+    public String getReceiveStarttime() {
+        return receiveStarttime;
+    }
+
+    public void setReceiveStarttime(String receiveStarttime) {
+        this.receiveStarttime = receiveStarttime;
+    }
+
+    public String getReceiveEndtime() {
+        return receiveEndtime;
+    }
+
+    public void setReceiveEndtime(String receiveEndtime) {
+        this.receiveEndtime = receiveEndtime;
+    }
+
+    public String getPhoneOrUserId() {
+        return phoneOrUserId;
+    }
+
+    public void setPhoneOrUserId(String phoneOrUserId) {
+        this.phoneOrUserId = phoneOrUserId;
     }
 }

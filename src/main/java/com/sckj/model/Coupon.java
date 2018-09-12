@@ -1,6 +1,8 @@
 package com.sckj.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.math.BigDecimal;
@@ -14,6 +16,7 @@ import java.math.BigDecimal;
 @Table(name="sckj_coupon")
 @JsonSerialize(include= JsonSerialize.Inclusion.NON_NULL)
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
+@Where(clause = "status > '0'")
 public class Coupon {
 
     /**

@@ -1,4 +1,5 @@
 package com.sckj.repository;
+
 import com.sckj.model.Coupon;
 import org.springframework.data.jpa.repository.JpaRepository;
 

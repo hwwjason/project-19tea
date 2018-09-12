@@ -61,6 +61,7 @@
     <select id="getCouponList" parameterType="java.util.Map" resultMap="CouponDTOResultMap">
         select * from sckj_coupon as coupon
         <where>
+            and coupon.status > 0
             <if test="null != couponType and  '' neq couponType">
                 and  UPPER(coupon.coupon_type) LIKE CONCAT('%',UPPER (#{couponType}),'%')
             </if>
@@ -73,5 +74,12 @@
         </where>
         ORDER BY coupon.createtime DESC
     </select>
+
+    <update id="deleteLogicByIds" parameterType="java.lang.String">
+        UPDATE sckj_coupon set status = '0' WHERE id in
+        <foreach index = "index" item="item"  collection="array" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 
 </mapper>

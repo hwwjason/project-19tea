@@ -47,7 +47,8 @@ public class CouponServiceImpl implements ICouponService {
     @Override
     @Transactional
     public void deleteByIds(List<String> ids) throws Exception {
-        couponRepository.deleteByIdIn(ids);
+        //couponRepository.deleteByIdIn(ids);
+        couponDAO.deleteLogicByIds(ids.toArray(new String[0]));
     }
 
     @Override

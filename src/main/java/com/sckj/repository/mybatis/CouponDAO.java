@@ -31,4 +31,5 @@ public interface CouponDAO {
 
     List<CouponDTO> getCouponList(Map<String,Object> map);
 
+    int deleteLogicByIds(String[] ids);
 }

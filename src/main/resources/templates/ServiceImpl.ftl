@@ -42,10 +42,16 @@ public class ${table_name}ServiceImpl implements I${table_name}Service {
     @Override
     public ${table_name}DTO create${table_name}(${table_name}DTO ${table_name?uncap_first}DTO) throws Exception {
         ${table_name} ${table_name?uncap_first} = new ${table_name}();
-        BeanUtils.copyProperties(${table_name?uncap_first},${table_name?uncap_first}DTO);
-        //${table_name?uncap_first}.setStatus(StatusEnum.ENABLE.toString());
-        ${table_name?uncap_first}.setCreatetime(DateTimeUtils.getCurrentDate());
-        ${table_name?uncap_first}.setId(UUIDUtils.generate());
+        String id = ${table_name?uncap_first}DTO.getId();
+        if(StringUtils.isEmpty(id)){
+            BeanUtils.copyProperties(${table_name?uncap_first},${table_name?uncap_first}DTO);
+            ${table_name?uncap_first}.setCreatetime(DateTimeUtils.getCurrentDate());
+            ${table_name?uncap_first}.setId(UUIDUtils.generate());
+        }else{
+            ${table_name} ${table_name?uncap_first} = ${table_name} ${table_name?uncap_first}DAO.findById(id);
+            BeanUtils.copyPropertiesWithoutNull(${table_name?uncap_first},${table_name?uncap_first}DTO);
+        }
+
         ${table_name?uncap_first} = ${table_name?uncap_first}Repository.saveAndFlush(${table_name?uncap_first});
         return this.findDTOById(${table_name?uncap_first}.getId());
     }

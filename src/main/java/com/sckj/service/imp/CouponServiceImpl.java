@@ -5,6 +5,7 @@ import com.sckj.repository.CouponRepository;
 import com.sckj.service.ICouponService;
 import com.sckj.repository.mybatis.CouponDAO;
 import com.sckj.utils.DateTimeUtils;
+import com.sckj.utils.StringUtils;
 import com.sckj.utils.UUIDUtils;
 import com.sckj.utils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +53,15 @@ public class CouponServiceImpl implements ICouponService {
     @Override
     public CouponDTO createCoupon(CouponDTO couponDTO) throws Exception {
         Coupon coupon = new Coupon();
-        BeanUtils.copyProperties(coupon,couponDTO);
-        //coupon.setStatus(StatusEnum.ENABLE.toString());
-        coupon.setCreatetime(DateTimeUtils.getCurrentDate());
-        coupon.setId(UUIDUtils.generate());
+        String id = couponDTO.getId();
+        if(StringUtils.isEmpty(id)){
+            BeanUtils.copyProperties(coupon,couponDTO);
+            coupon.setCreatetime(DateTimeUtils.getCurrentDate());
+            coupon.setId(UUIDUtils.generate());
+        }else{
+            coupon = couponDAO.findById(id);
+            BeanUtils.copyPropertiesWithoutNull(coupon,couponDTO);
+        }
         coupon = couponRepository.saveAndFlush(coupon);
         return this.findDTOById(coupon.getId());
     }

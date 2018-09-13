@@ -12,4 +12,6 @@ public interface ${table_name}Repository extends JpaRepository<${table_name}, St
 
     void deleteByIdIn(List<String> ids);
 
+    List<${table_name}> findByIdIn(List<String> ids);
+
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class UserCartList {
     private List<UserCartDTO> userCarts;
-    private List<UserCartDTO> userCartOuts;
+    private List<UserCartDTO> userCartOuts;//下架的商品
 
     private int totalNum;
     private BigDecimal totalSum;

@@ -70,6 +70,11 @@ public class ProductSonOrder {
     @Column(name = "productid",columnDefinition = "VARCHAR")
     private String productid;
 
+    /**
+     *商品id
+     */
+    @Column(name = "productcode",columnDefinition = "VARCHAR")
+    private String productcode;
 
 
     /**
@@ -296,5 +301,13 @@ public class ProductSonOrder {
 
     public void setSpecification(String specification) {
         this.specification = specification;
+    }
+
+    public String getProductcode() {
+        return productcode;
+    }
+
+    public void setProductcode(String productcode) {
+        this.productcode = productcode;
     }
 }

@@ -123,6 +123,11 @@ public class CouponUserDTO extends CouponUser{
     private String productid;
 
     /**
+     *指定商品（商品券）
+     */
+    private String productcode;
+
+    /**
      *商品名称
      */
     private String productname;
@@ -329,5 +334,13 @@ public class CouponUserDTO extends CouponUser{
 
     public void setPhoneOrUserId(String phoneOrUserId) {
         this.phoneOrUserId = phoneOrUserId;
+    }
+
+    public String getProductcode() {
+        return productcode;
+    }
+
+    public void setProductcode(String productcode) {
+        this.productcode = productcode;
     }
 }

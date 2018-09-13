@@ -129,85 +129,139 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         BeanUtils.copyProperties(productOrder,productOrderDTO);
         productOrder.setId(UUIDUtils.generate());
         productOrder.setCreatetime(DateTimeUtils.getCurrentDate());
+        productOrder.setOrderStatus(OrderStatusEnums.TEMPORARY.toString());
         productOrder = productOrderRepository.saveAndFlush(productOrder);
 
+        //productOrderDTO = productOrderDAO.findDTOById(productOrder.getId());
         //保存子订单
-
         //获取购物车列表
         UserCartList userCartList = userCartService.getUserCart(productOrderDTO.getBuyuserId(),productOrderDTO.getCartType());
-        List<UserCartDTO> userCarts = userCartList.getUserCarts();
+        List<UserCartDTO> userCarts = userCartList.getUserCarts();//购物车未下线的商品
 
-        Map<String,UserCartDTO> productMap = userCarts.stream().filter(e->"1".equals(e.getStatus())).collect(Collectors.toMap(UserCartDTO::getProductid,UserCartDTO->UserCartDTO));
+        //对应的商品
+        List<String> productIds = userCarts.stream().map(UserCartDTO::getProductid).collect(Collectors.toList());
+        List<ProductList> productLists = productListJpa.findByIdIn(productIds);
 
+        //保存子订单，并返回商品总额
+        BigDecimal productTotalPrice = saveProductSonOrders(productOrderDTO,userCarts,productLists,true);
+
+        //包装订单所需的信息，地址，优惠券
+        return packageProductOrder(productOrderDTO,productTotalPrice,productLists);
+    }
+
+    @Override
+    public ProductOrderDTO toAccount(ProductOrderDTO productOrderDTO) throws Exception {
+        //生成子订单
+        //获取购物车列表
+        UserCartList userCartList = userCartService.getUserCart(productOrderDTO.getBuyuserId(),productOrderDTO.getCartType());
+        List<UserCartDTO> userCarts = userCartList.getUserCarts();//购物车未下线的商品
+
+        //对应的商品
+        List<String> productIds = userCarts.stream().map(UserCartDTO::getProductid).collect(Collectors.toList());
+        List<ProductList> productLists = productListJpa.findByIdIn(productIds);
+
+        BigDecimal productTotalPrice = saveProductSonOrders(productOrderDTO,userCarts,productLists,false);
+
+        //包装订单所需的信息，地址，优惠券
+        return packageProductOrder(productOrderDTO,productTotalPrice,productLists);
+
+    }
+
+
+    /**
+     * 包装订单所需的信息，地址，优惠券
+     * @param productOrderDTO
+     * @param productTotalPrice
+     * @param productLists
+     * @return
+     */
+    private ProductOrderDTO  packageProductOrder(ProductOrderDTO productOrderDTO,BigDecimal productTotalPrice,List<ProductList> productLists){
+        String userId =productOrderDTO.getBuyuserId();
+
+        BigDecimal realReduceMoney = new BigDecimal(0);//真正优惠的价格
+
+        if(StringUtils.isNotEmpty(productOrderDTO.getCouponUserid())){
+            realReduceMoney = packageCouponUser(productOrderDTO,productTotalPrice,userId,productLists,userId);
+        }else{
+            realReduceMoney = packageCouponUser(productOrderDTO,productTotalPrice,userId,productLists);
+        }
+
+        List<UserAddress> userAddresss = userAddressRepository.findByUserid(userId);
+
+        //设置地址
+        productOrderDTO.setUserAddresss(userAddresss);
+        productOrderDTO.setProductPrice(productTotalPrice);
+        //邮费怎么算！！
+        BigDecimal expressPrice = new BigDecimal(10);
+        productOrderDTO.setExpressPrice(expressPrice);
+
+        //优惠券优惠价格
+        productOrderDTO.setTotalPrice(productTotalPrice.add(expressPrice).subtract(realReduceMoney));
+        productOrderDTO.setReduceMoney(realReduceMoney);
+
+        return productOrderDTO;
+    }
+
+    /**
+     * 保存子订单，并返回商品总额
+     * @param productOrderDTO
+     * @param userCarts
+     * @param productLists
+     * @return
+     */
+    private BigDecimal saveProductSonOrders(ProductOrderDTO productOrderDTO,List<UserCartDTO> userCarts,List<ProductList> productLists,Boolean isSave){
+        Map<String,UserCartDTO> userCartDTOMap = userCarts.stream().filter(e->"1".equals(e.getStatus())).collect(Collectors.toMap(UserCartDTO::getProductid,UserCartDTO->UserCartDTO));
+        Map<String,ProductList> productListMap = productLists.stream().collect(Collectors.toMap(ProductList::getId,ProductList->ProductList));
         List<ProductSonOrder> productSonOrders = new ArrayList<>();
 
-        BigDecimal productPrice = new BigDecimal(0);
-        List<ProductList> productLists = new ArrayList<>();
-        for(Map.Entry<String,UserCartDTO> entry :productMap.entrySet()){
-            String productId = entry.getKey();
+        BigDecimal productTotalPrice = new BigDecimal(0);//商品总金额
+        for(Map.Entry<String,UserCartDTO> entry :userCartDTOMap.entrySet()){
             UserCartDTO userCartDTO = entry.getValue();
-            ProductList productList = productListMapper.getOne(productId);
-            productLists.add(productList);//可优化
+
             ProductSonOrder sonOrder = new ProductSonOrder();
-            sonOrder.setId(UUIDUtils.generate());
-            sonOrder.setProductOrderid(productOrder.getId());
-            sonOrder.setProductid(productId);
+
+            ProductList productList = productListMap.get(entry.getKey());
+
+            sonOrder.setProductid(productList.getId());
+            sonOrder.setProductcode(productList.getCode());
             sonOrder.setProductPrice(productList.getPrice());
-            productPrice = productPrice.add(productList.getPrice().multiply(new BigDecimal(userCartDTO.getNum())));
-            sonOrder.setExpressStatus(OrderStatusEnums.NO_PAY.toString());//!!!
             sonOrder.setPrice(productList.getOriginalPrice());
-            sonOrder.setBuynum(userCartDTO.getNum());
-            sonOrder.setCreateTime(DateTimeUtils.getCurrentDate());
             sonOrder.setCode(productList.getCode());
             sonOrder.setImg(productList.getImg());
             sonOrder.setTitle(productList.getTitle());
             sonOrder.setSpecification(productList.getSpecification());
+
+            sonOrder.setId(UUIDUtils.generate());
+            sonOrder.setProductOrderid(productOrderDTO.getId());
+            sonOrder.setExpressStatus(OrderStatusEnums.NO_PAY.toString());//!!!
+            sonOrder.setBuynum(userCartDTO.getNum());
+            sonOrder.setCreateTime(DateTimeUtils.getCurrentDate());
+
             productSonOrders.add(sonOrder);
+
+            productTotalPrice = productTotalPrice.add(productList.getPrice().multiply(new BigDecimal(userCartDTO.getNum())));//计算商品总金额
+
         }
+        productOrderDTO.setProductSonOrder(productSonOrders);
 
-        productSonOrderRepository.saveAll(productSonOrders);
-        ProductOrderDTO pDto =this.findDTOById(productOrder.getId());
+        if(isSave) productSonOrderRepository.saveAll(productSonOrders);
 
-        String userId =productOrderDTO.getBuyuserId();
-        BigDecimal realReduceMoney = new BigDecimal(0);
-        if(StringUtils.isNotEmpty(productOrderDTO.getCouponUserid())){
-            realReduceMoney = calculateCoupon(pDto,productPrice,userId,productLists,productOrderDTO.getCouponUserid());
-        }else{
-            realReduceMoney = calculateCoupon(pDto,productPrice,userId,productLists,null);
-        }
-
-
-        List<UserAddress> userAddresss = userAddressRepository.findByUserid(productOrderDTO.getBuyuserId());
-        pDto.setUserAddresss(userAddresss);
-        pDto.setProductPrice(productPrice);
-        //邮费怎么算！！
-        BigDecimal expressPrice = new BigDecimal(10);
-        pDto.setExpressPrice(expressPrice);
-
-        //优惠券优惠价格
-        pDto.setTotalPrice(productPrice.add(expressPrice).subtract(realReduceMoney));
-        pDto.setReduceMoney(realReduceMoney);
-
-        return pDto;
+        return productTotalPrice;
     }
 
     /**
-     * 设置最优优惠券，以及优惠金额
+     * 设置最优优惠券，以及获取优惠金额
      * @param pDto
      * @param productPrice
      * @param userId
      * @param productLists
      * @return 优惠金额
      */
-    private BigDecimal calculateCoupon( ProductOrderDTO pDto ,BigDecimal productPrice,String userId,List<ProductList> productLists,String couponUserId){
+    private BigDecimal packageCouponUser(ProductOrderDTO pDto , BigDecimal productPrice, String userId, List<ProductList> productLists){
         List<CouponUserDTO> couponUsers = couponUserDAO.getCouponUserByUserId(userId);
-        if(couponUserId!=null){
-            couponUsers = couponUsers.stream().filter(e->e.getId().equals(couponUserId)).collect(Collectors.toList());
-        }
-        Map<String,ProductList>  productListMap = productLists.stream().collect(Collectors.toMap(ProductList::getId,ProductList->ProductList));
+        Map<String,ProductList>  productListCodeMap = productLists.stream().collect(Collectors.toMap(ProductList::getCode,ProductList->ProductList));
         List<CouponUserDTO> couponUsersCanUser = new ArrayList<>();
         BigDecimal realReduceMoney = new BigDecimal(0);//优惠金额
-        BigDecimal realReduceMoneyWithSelect = new BigDecimal(0);//优惠金额
         String bigReduceMoneyId = "";
         for (CouponUserDTO coupon : couponUsers) {
             String couponType = coupon.getCouponType();
@@ -231,9 +285,9 @@ public class ProductOrderServiceImpl implements IProductOrderService {
                 couponUsersCanUser.add(coupon);
                 reduceMoney = productPrice.subtract(productPrice.multiply(coupon.getDiscount()).divide(new BigDecimal(10)));
             }else if(CouponTypeEnums.PRODUCT.toString().equals(couponType)){
-                if(productListMap.containsKey(coupon.getProductid())){
+                if(productListCodeMap.containsKey(coupon.getProductcode())){
                     couponUsersCanUser.add(coupon);
-                    ProductList productList = productListMap.get(coupon.getProductid());
+                    ProductList productList = productListCodeMap.get(coupon.getProductid());
                     if(coupon.getReduceMoney().compareTo(productList.getPrice())>0){
                         reduceMoney = productList.getPrice();
                     }else {
@@ -257,6 +311,55 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         }
         pDto.setCouponUserDTO(couponUsersCanUser);
         return  realReduceMoney;
+    }
+
+    /**
+     * 设置最优优惠券，以及获取优惠金额
+     * @param pDto
+     * @param productPrice
+     * @param userId
+     * @param productLists
+     * @param couponUserId 指定优惠券
+     * @return 优惠金额
+     */
+    private BigDecimal packageCouponUser(ProductOrderDTO pDto , BigDecimal productPrice, String userId, List<ProductList> productLists, String couponUserId){
+        this.packageCouponUser(pDto,productPrice,userId,productLists);
+        CouponUserDTO couponUs = couponUserDAO.findDTOById(couponUserId);
+        List<CouponUserDTO>  couponUserDTOS = pDto.getCouponUserDTO();
+        for (CouponUserDTO couponUser : couponUserDTOS) {
+            if(couponUserId.equals(couponUser.getId())){
+                couponUser.setIsOptimal("1");
+            }else{
+                couponUser.setIsOptimal("0");
+            }
+        }
+        return  getOneCouponUserReduceMoney(couponUs,productPrice);
+    }
+
+    /**
+     * 计算优惠金额，前提是优惠券可被使用
+     * @param coupon
+     * @param productPrice
+     * @return
+     */
+    private BigDecimal getOneCouponUserReduceMoney(CouponUserDTO coupon,BigDecimal productPrice){
+        String couponType = coupon.getCouponType();
+        BigDecimal reduceMoney = new BigDecimal(0);
+        if(CouponTypeEnums.FULL_REDUCE.toString().equals(couponType)){
+            if(coupon.getFullMoney().compareTo(productPrice)<0){
+                reduceMoney = coupon.getReduceMoney();
+            }
+        }else if(CouponTypeEnums.CASH.toString().equals(couponType)){
+            reduceMoney = coupon.getReduceMoney();
+            if(reduceMoney.compareTo(productPrice)>0){
+                reduceMoney = productPrice;
+            }
+        }else if(CouponTypeEnums.DISCOUNT.toString().equals(couponType)){
+            reduceMoney = productPrice.subtract(productPrice.multiply(coupon.getDiscount()).divide(new BigDecimal(10)));
+        }else if(CouponTypeEnums.PRODUCT.toString().equals(couponType)){
+            reduceMoney = coupon.getReduceMoney();
+        }
+        return reduceMoney;
     }
 
     @Override

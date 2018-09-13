@@ -32,6 +32,7 @@
         <result column="url" jdbcType="VARCHAR" property="url" />
         <result column="apply_type" jdbcType="CHAR" property="applyType" />
         <result column="productid" jdbcType="VARCHAR" property="productid" />
+        <result column="productcode" jdbcType="VARCHAR" property="productcode" />
         <result column="productname" jdbcType="VARCHAR" property="productname" />
         <result column="describes" jdbcType="LONGVARCHAR" property="describes" />
         <result column="jump_type" jdbcType="CHAR" property="jumpType" />
@@ -40,7 +41,24 @@
 
     <sql id="findDtoSql">
         select * from (
-        select * from  sckj_coupon_user temp
+            SELECT cu.*,
+            c.coupon_type as couponType,
+            c.full_money as fullMoney,
+            c.reduce_money as reduceMoney,
+            c.time_type as timeType,
+            c.days,
+            c.starttime,
+            c.endtime,
+            c.describes,
+            c.scores,
+            c.discount,
+            c.url,
+            c.apply_type as applyType,
+            c.jump_type as jumpType,
+            c.productid,
+            c.productname
+            from sckj_coupon_user cu
+            left JOIN sckj_coupon c on c.id = cu.couponid
         ) t
     </sql>
 
@@ -69,7 +87,6 @@
         c.endtime,
         c.describes,
         c.scores,
-        c.status,
         c.discount,
         c.url,
         c.apply_type as applyType,

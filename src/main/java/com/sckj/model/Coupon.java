@@ -176,6 +176,14 @@ public class Coupon {
     private String productid;
 
 
+
+    /**
+     *指定商品（商品券）
+     */
+    @Column(name = "productcode",columnDefinition = "VARCHAR")
+    private String productcode;
+
+
     /**
     *商品名称
     */
@@ -362,5 +370,13 @@ public class Coupon {
 
     public void setJumpType(String jumpType) {
         this.jumpType = jumpType;
+    }
+
+    public String getProductcode() {
+        return productcode;
+    }
+
+    public void setProductcode(String productcode) {
+        this.productcode = productcode;
     }
 }

@@ -57,7 +57,7 @@ public class ProductListDTO extends ProductList {
     }
 
     public String getMiniProUrl() {
-        return miniProUrl==null? MiniAppConstants.MiniAppUrlPre+getId():miniProUrl;
+        return miniProUrl==null? MiniAppConstants.MINI_APP_URL_PRE+getId():miniProUrl;
     }
 
     public void setMiniProUrl(String miniProUrl) {

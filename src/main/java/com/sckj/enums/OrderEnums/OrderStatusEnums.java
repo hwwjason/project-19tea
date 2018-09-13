@@ -1,7 +1,7 @@
 package com.sckj.enums.OrderEnums;
 
 public enum OrderStatusEnums {
-    TEMPORARY("t",""),
+    TEMPORARY("t","临时订单"),
     NO_PAY("0","未支付"),
     WAITE_DELIVER("1","待发货"),
     DELIVERED("2","已发货"),

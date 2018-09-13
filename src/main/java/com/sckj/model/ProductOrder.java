@@ -57,7 +57,7 @@ public class ProductOrder {
     private BigDecimal expressPrice;
 
     /**
-    *商品价格(销售)
+    *商品价格(真正的销售价格)
     */
 
 

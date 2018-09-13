@@ -9,6 +9,7 @@
         <result column="deliver_time" jdbcType="TIMESTAMP" property="deliverTime" />
         <result column="receipt_time" jdbcType="TIMESTAMP" property="receiptTime" />
         <result column="productid" jdbcType="VARCHAR" property="productid" />
+        <result column="productcode" jdbcType="VARCHAR" property="productcode" />
         <result column="product_type" jdbcType="CHAR" property="productType" />
         <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
         <result column="coupon_price" jdbcType="DECIMAL" property="couponPrice" />

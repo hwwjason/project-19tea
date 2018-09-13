@@ -20,6 +20,7 @@
         <result column="url" jdbcType="VARCHAR" property="url" />
         <result column="apply_type" jdbcType="CHAR" property="applyType" />
         <result column="productid" jdbcType="VARCHAR" property="productid" />
+        <result column="productcode" jdbcType="VARCHAR" property="productcode" />
         <result column="productname" jdbcType="VARCHAR" property="productname" />
         <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
         <result column="img" jdbcType="LONGVARCHAR" property="img" />

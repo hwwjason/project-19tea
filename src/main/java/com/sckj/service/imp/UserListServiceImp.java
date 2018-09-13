@@ -191,8 +191,8 @@ public class UserListServiceImp implements IUserListService {
     }
 
     private OpenIdAndSessionKey getSession(String code){
-        String url = "https://api.weixin.qq.com/sns/jscode2session?appid="+ MiniAppConstants.AppID+
-                "&secret="+MiniAppConstants.AppSecret+"&js_code="+ code +"&grant_type=authorization_code";
+        String url = "https://api.weixin.qq.com/sns/jscode2session?appid="+ MiniAppConstants.APP_ID+
+                "&secret="+MiniAppConstants.APP_SECRET+"&js_code="+ code +"&grant_type=authorization_code";
         RestTemplate restTemplate = new RestTemplate();
         //进行网络请求,访问url接口
         ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.GET, null, String.class);

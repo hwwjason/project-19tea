@@ -87,7 +87,7 @@ public class CouponUser {
 
 
     /**
-    *是否适用（0，否，1是）
+    *是否使用（0，否，1是）
     */
     @Column(name = "isuse",columnDefinition = "VARCHAR")
     private String isuse;

@@ -27,6 +27,8 @@ public interface IProductOrderService  {
 
     ProductOrderDTO createProductOrder(ProductOrderDTO productOrderDTO) throws Exception;
 
+    ProductOrderDTO toAccount(ProductOrderDTO productOrderDTO) throws Exception;
+
     ProductOrderDTO updateProductOrder(ProductOrderDTO productOrderDTO) throws Exception;
 
     Page<ProductOrderDTO> findProductOrderPage(ProductOrderDTO productOrderDTO, Pageable page) throws Exception;

@@ -13,7 +13,7 @@ public class MiniAppConstants {
     public static final String PACKAGE = "test";
     public static final String SIGN_TYPE = "test";
 
-    public static final String MCH_ID = "1325131301";
+    public static final String MCH_ID = "1510891351";
     public static final String DEVICE_INFO = "test";
     public static final String BODY = "test";
 

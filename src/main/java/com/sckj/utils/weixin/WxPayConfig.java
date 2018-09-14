@@ -13,7 +13,7 @@ public class WxPayConfig {
     //微信支付的商户id
     public static final String mch_id = MiniAppConstants.MCH_ID;
     //微信支付的商户密钥
-    public static final String key = MiniAppConstants.APP_SECRET;
+    public static final String key = MiniAppConstants.KEY;
     //支付成功后的服务器回调url
     public static final String notify_url = String.format("https://%s/weixin/wxNotify",MiniAppConstants.URL);
     //签名方式

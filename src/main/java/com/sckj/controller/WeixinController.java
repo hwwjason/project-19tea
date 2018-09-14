@@ -1,6 +1,11 @@
 package com.sckj.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.sckj.exception.BusinessException;
+import com.sckj.model.UserList;
+import com.sckj.model.dto.ProductOrderDTO;
+import com.sckj.repository.UserListJpa;
+import com.sckj.service.IProductOrderService;
 import com.sckj.utils.weixin.IpUtils;
 import com.sckj.utils.weixin.StringUtils;
 import com.sckj.utils.weixin.PayUtil;
@@ -11,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sckj.constant.MiniAppConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.weixin4j.WeixinException;
@@ -26,6 +32,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,6 +49,12 @@ public class WeixinController extends WeixinSupport{
     private static final String appid = MiniAppConstants.APP_ID;	    //微信小程序appid
     private static final String secret = MiniAppConstants.APP_SECRET;	//微信小程序密钥
     private static final String grant_type = "authorization_code";
+
+    @Autowired
+    private  UserListJpa userListJpa;
+
+    @Autowired
+    private IProductOrderService productOrderService;
 
     /**
      * 小程序后台登录，向微信平台发送获取access_token请求，并返回openId
@@ -86,13 +99,26 @@ public class WeixinController extends WeixinSupport{
 
     /**
      * @Description: 发起微信支付
-     * @param openid
+     * @param buyuserId
+     * @param cartType
+     * @param couponUserid
      * @param request
-     * @author: wcf
-     * @date: 2017年8月28日
+     * @return
      */
     @RequestMapping("/wxPay")
-    public Json wxPay(String openid, HttpServletRequest request){
+    public Json wxPay(String buyuserId,String cartType,String couponUserid,HttpServletRequest request)  {
+        ProductOrderDTO productOrderDTO = new ProductOrderDTO();
+        productOrderDTO.setBuyuserId(buyuserId);
+        productOrderDTO.setCartType(cartType);
+        productOrderDTO.setCouponUserid(couponUserid);
+        try {
+            productOrderDTO = productOrderService.createProductOrder(productOrderDTO);
+        } catch (Exception e) {
+            throw new BusinessException("创建订单失败，请联系管理员");
+        }
+
+        List<UserList> userLists = userListJpa.findByUserId(buyuserId);
+        String openid = userLists.get(0).getOpenid();
         Json json = new Json();
         try{
             //生成的随机字符串
@@ -102,7 +128,7 @@ public class WeixinController extends WeixinSupport{
             //获取本机的ip地址
             String spbill_create_ip = IpUtils.getIpAddr(request);
 
-            String orderNo = "123456789";
+            String orderNo = productOrderDTO.getId();
             String money = "1";//支付金额，单位：分，这边需要转成字符串类型，否则后面的签名会失败
 
             Map<String, String> packageParams = new HashMap<String, String>();

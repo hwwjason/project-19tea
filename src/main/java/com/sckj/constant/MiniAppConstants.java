@@ -14,6 +14,7 @@ public class MiniAppConstants {
     public static final String SIGN_TYPE = "test";
 
     public static final String MCH_ID = "1510891351";
+    public static final String KEY = "129c7798e24249c0b8d3b7dd72846ed7";
     public static final String DEVICE_INFO = "test";
     public static final String BODY = "test";
 

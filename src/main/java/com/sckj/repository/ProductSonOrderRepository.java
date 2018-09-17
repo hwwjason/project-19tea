@@ -16,4 +16,5 @@ public interface ProductSonOrderRepository extends JpaRepository<ProductSonOrder
 
      List<ProductSonOrder> findByProductOrderid(String productOrderid);
 
+     List<ProductSonOrder> findByIdIn(List<String> ids);
 }

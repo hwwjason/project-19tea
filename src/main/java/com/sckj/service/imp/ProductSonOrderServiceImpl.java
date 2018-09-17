@@ -11,6 +11,8 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 /**
 * 描述：订单子表 服务实现层
 * @author hww
@@ -29,6 +31,16 @@ public class ProductSonOrderServiceImpl  implements IProductSonOrderService {
     public ProductSonOrderDTO findDTOById(String id) throws Exception {
         ProductSonOrderDTO productSonOrderDTO = productSonOrderDAO.findDTOById(id);
         return productSonOrderDTO;
+    }
+
+    @Override
+    public  List<ProductSonOrder> findByIds(List<String> ids)throws Exception{
+        return productSonOrderRepository.findByIdIn(ids);
+    }
+
+    @Override
+    public  List<ProductSonOrder> findByProductOrderids(List<String> ids)throws Exception{
+        return productSonOrderRepository.findByProductOrderidIn(ids);
     }
 
     @Override

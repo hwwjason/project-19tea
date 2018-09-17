@@ -6,7 +6,6 @@ import com.sckj.common.Query;
 import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
-import com.sckj.model.dto.ProductListDTO;
 import com.sckj.service.IProductOrderService;
 import com.sckj.model.dto.ProductOrderDTO;
 import org.slf4j.Logger;
@@ -83,6 +82,7 @@ public class ProductOrderController {
             PageHelper.startPage(query.getPageNum(),query.getPageSize());
             Map<String,Object> map = (Map<String, Object>) query.getCondition();
             List<ProductOrderDTO> productOrder = productOrderService.getProductOrder(map);
+            productOrderService.packageSonOrders(productOrder);
             PageInfo<ProductOrderDTO> pageInfo = new PageInfo<ProductOrderDTO>(productOrder);
             resultData.setData(pageInfo);
             return resultData;

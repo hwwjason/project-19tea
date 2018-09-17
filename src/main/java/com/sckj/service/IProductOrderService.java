@@ -30,6 +30,8 @@ public interface IProductOrderService  {
      */
     List<ProductOrderDTO> getProductOrder(Map<String,Object> productListMap)throws Exception;
 
+    void packageSonOrders(List<ProductOrderDTO> productOrder) throws Exception ;
+
     List<ProductOrderDTO> findProductOrderByUserID(String userId) throws Exception;
 
     void deleteById(String id)throws Exception;

@@ -11,6 +11,7 @@ import com.sckj.repository.mybatis.ProductListMapper;
 import com.sckj.repository.mybatis.ProductOrderDAO;
 import com.sckj.repository.mybatis.ProductSonOrderDAO;
 import com.sckj.service.IProductOrderService;
+import com.sckj.service.IProductSonOrderService;
 import com.sckj.service.IUserCartService;
 import com.sckj.utils.*;
 import org.slf4j.Logger;
@@ -45,6 +46,9 @@ public class ProductOrderServiceImpl implements IProductOrderService {
 
     @Autowired
     private ProductSonOrderRepository productSonOrderRepository;
+
+    @Autowired
+    private IProductSonOrderService productSonOrderService;
 
     @Autowired
     private ProductSonOrderDAO productSonOrderDAO;
@@ -112,7 +116,37 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         return productOrders;
     }
 
+    @Override
+    public void packageSonOrders(List<ProductOrderDTO> productOrder) throws Exception {
+        //获取子订单信息
+        List<String> orderIds = new ArrayList<>();
+        Map<String,List<ProductSonOrder>> productSonOrdersMap = new HashMap<>();
+        for (ProductOrderDTO order : productOrder) {
+            orderIds.add(order.getId());
+        }
+        List<ProductSonOrder> productSonOrders = productSonOrderService.findByProductOrderids(orderIds);
+        for (ProductSonOrder sonOrder : productSonOrders) {
+            List<ProductSonOrder> productSonOrder =  productSonOrdersMap.get(sonOrder.getProductOrderid());
+            if(productSonOrder == null){
+                productSonOrder = new ArrayList<>();
+            }
+            productSonOrder.add(sonOrder);
+            productSonOrdersMap.put(sonOrder.getProductOrderid(),productSonOrder);
+        }
+        for (ProductOrderDTO orderDTO : productOrder) {
+            List<ProductSonOrder> productSonOrders1  =productSonOrdersMap.get(orderDTO.getId());
+            BigDecimal totalPrice = new BigDecimal(0);
+            if(productSonOrders1 != null){
+                for (ProductSonOrder sonOrder : productSonOrders1) {
+                     totalPrice = totalPrice.add(sonOrder.getProductPrice().multiply(new BigDecimal(sonOrder.getBuynum())));
+                }
+            }
+            orderDTO.setProductSonOrder(productSonOrdersMap.get(orderDTO.getId()));
+            orderDTO.setTotalPrice(totalPrice);
+        }
+    }
 
+    @Override
     public List<ProductOrderDTO> findProductOrderByUserID(String id) throws Exception{
         List<ProductOrder> productOrder = productOrderRepository.findByBuyuserId(id);
         List<ProductOrderDTO> productOrderDTOS = new ArrayList<>();
@@ -150,7 +184,7 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         List<ProductList> productLists = productListJpa.findByIdIn(productIds);
 
         //创建子订单，并返回商品总额
-        BigDecimal productTotalPrice = saveProductSonOrders(productOrderDTO,userCarts,productLists);
+        BigDecimal productTotalPrice = packageProductSonOrdersByUserCarAndProductList(productOrderDTO,userCarts,productLists);
 
         //包装订单所需的信息，地址，优惠券
         return packageProductOrder(productOrderDTO,productTotalPrice,productLists);
@@ -209,7 +243,7 @@ public class ProductOrderServiceImpl implements IProductOrderService {
      * @param productLists
      * @return
      */
-    private BigDecimal saveProductSonOrders(ProductOrderDTO productOrderDTO,List<UserCartDTO> userCarts,List<ProductList> productLists){
+    private BigDecimal packageProductSonOrdersByUserCarAndProductList(ProductOrderDTO productOrderDTO, List<UserCartDTO> userCarts, List<ProductList> productLists){
         Map<String,UserCartDTO> userCartDTOMap = userCarts.stream().filter(e->"1".equals(e.getStatus())).collect(Collectors.toMap(UserCartDTO::getProductid,UserCartDTO->UserCartDTO));
         Map<String,ProductList> productListMap = productLists.stream().collect(Collectors.toMap(ProductList::getId,ProductList->ProductList));
         productOrderDTO.setProductListMap(productListMap);

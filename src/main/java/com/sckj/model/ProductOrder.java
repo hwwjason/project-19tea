@@ -212,7 +212,7 @@ public class ProductOrder {
 
 
     /**
-    *退款状态
+    *退款状态（售后状态）
     */
     @Column(name = "refundstatus",columnDefinition = "VARCHAR")
     private String refundstatus;

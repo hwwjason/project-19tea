@@ -231,10 +231,11 @@
 
         }
     })
-    // //删除商品
-    var checkId = [];
+   
 
     function deleteProduct(argument) {
+         // //删除商品
+    var checkId = [];
         $(".orderList .childCheck").each(function(index, el) {
             var elchecked = $(el).prop("checked");
             var productId = $(el).attr("productid");

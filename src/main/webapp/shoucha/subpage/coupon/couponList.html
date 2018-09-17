@@ -51,7 +51,7 @@
                     <a class="layui-btn layuiadmin-btn-list" href="../../subpage/coupon/addCoupon.html">
                         <i class="fa fa-plus"></i> 添加
                     </a>
-                    <a class="layui-btn layuiadmin-btn-list" onclick="deleteProduct()">
+                    <a class="layui-btn layuiadmin-btn-list" onclick="deleteProduct('all')">
                         <i class="fa fa-remove"></i> 删除
                     </a>
                 </div>
@@ -101,7 +101,7 @@
                         <a class="layui-btn layui-btn-normal layui-btn-small" :href="'../../subpage/coupon/couponNameList.html?id='+item.id">
                             <i class="layui-icon">&#xe63c;</i>名单
                         </a>
-                        <a class="layui-btn layui-btn-danger layui-btn-small" lay-event="del">
+                        <a class="layui-btn layui-btn-danger layui-btn-small" :productid="item.id" onclick="deleteProduct(this)">
                             <i class="layui-icon">&#xe640;</i>删除
                         </a>
                     </td>
@@ -238,24 +238,35 @@
 
         }
     })
-    // //删除商品
-    var checkId = [];
+    
 
     function deleteProduct(argument) {
-        $(".orderList .childCheck").each(function(index, el) {
-            var elchecked = $(el).prop("checked");
-            var productId = $(el).attr("productid");
-            if (elchecked == true) {
-                checkId.push(productId)
+        //删除商品
+        if(argument=="all"){
+            // 批量删除
+            var checkId = [];
+            $(".orderList .childCheck").each(function(index, el) {
+                var elchecked = $(el).prop("checked");
+                var productId = $(el).attr("productid");
+                if (elchecked == true) {
+                    checkId.push(productId)
+                }
+            });
+            if(checkId.length==0){
+                layer.msg("请勾选要删除的优惠券");
+                return false;
             }
-        });
+        }else{
+            //单个删除
+            var checkId = [];
+            checkId.push($(argument).attr("productid"));
+        }
         layer.confirm('确定删除？', {
             btn: ['确定', '取消'] //按钮
         }, function(index) {
             layer.close(index);
             var url = baseURL + "bak/coupon/deleteByIds";
             //var data = checkId.toString();
-            console.log(checkId)
             $.ajax({
                 url: url,
                 type: 'POST',

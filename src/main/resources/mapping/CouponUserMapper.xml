@@ -69,6 +69,13 @@
         </where>
     </select>
 
+    <select id="findById" parameterType="String" resultMap="CouponUserDTOResultMap">
+        <include refid="findDtoSql"></include>
+        <where>
+            and t.id = #{id}
+        </where>
+    </select>
+
     <select id="findCouponUserPage" parameterType="com.sckj.model.dto.CouponUserDTO" resultMap="CouponUserDTOResultMap">
         <include refid="findDtoSql" />
         <where>

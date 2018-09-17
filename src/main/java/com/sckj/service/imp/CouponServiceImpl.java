@@ -40,6 +40,12 @@ public class CouponServiceImpl implements ICouponService {
     }
 
     @Override
+    public Coupon findById(String id) throws Exception {
+        Coupon coupon = couponDAO.findById(id);
+        return coupon;
+    }
+
+    @Override
     public void deleteById(String id) throws Exception {
         couponRepository.deleteById(id);
     }

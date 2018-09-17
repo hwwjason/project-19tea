@@ -20,6 +20,12 @@ public interface ICouponService  {
     */
     CouponDTO findDTOById(String id)throws Exception;
 
+    /**
+     * 描述：根据Id获取DTO
+     * @param id
+     */
+    Coupon findById(String id)throws Exception;
+
     void deleteById(String id)throws Exception;
 
     void deleteByIds(List<String> ids)throws Exception;

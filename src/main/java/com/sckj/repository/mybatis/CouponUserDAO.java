@@ -1,5 +1,6 @@
 package com.sckj.repository.mybatis;
 
+import com.sckj.model.CouponUser;
 import com.sckj.model.dto.CouponUserDTO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ public interface CouponUserDAO {
 
     CouponUserDTO findDTOById(@Param("id")String id);
 
+    CouponUser findById(@Param("id")String id);
 
     /**
     * 描述：查询优惠券用户表列表以及高级搜索(分页)

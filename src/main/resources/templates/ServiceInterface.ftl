@@ -18,11 +18,15 @@ public interface I${table_name}Service  {
     */
     ${table_name}DTO findDTOById(String id)throws Exception;
 
+    ${table_name} findById(String id)throws Exception;
+
+    ${table_name} saveAndFlush(${table_name} ${table_name?uncap_first})throws Exception;
+
     void deleteById(String id)throws Exception;
 
-    ${table_name}DTO create${table_name}(${table_name}DTO ${table_name?uncap_first}DTO) throws Exception;
+    ${table_name}DTO createOrUpdate${table_name}(${table_name}DTO ${table_name?uncap_first}DTO) throws Exception;
 
-    ${table_name}DTO update${table_name}(${table_name}DTO ${table_name?uncap_first}DTO) throws Exception;
+    <#--${table_name}DTO update${table_name}(${table_name}DTO ${table_name?uncap_first}DTO) throws Exception;-->
 
     Page<${table_name}DTO> find${table_name}Page(${table_name}DTO ${table_name?uncap_first}DTO, Pageable page) throws Exception;
 

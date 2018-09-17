@@ -2,6 +2,7 @@ package com.sckj.service.imp;
 
 import com.sckj.enums.OrderEnums.CouponTypeEnums;
 import com.sckj.enums.OrderEnums.OrderStatusEnums;
+import com.sckj.exception.BusinessException;
 import com.sckj.model.*;
 import com.sckj.model.dto.*;
 import com.sckj.repository.*;
@@ -12,6 +13,8 @@ import com.sckj.repository.mybatis.ProductSonOrderDAO;
 import com.sckj.service.IProductOrderService;
 import com.sckj.service.IUserCartService;
 import com.sckj.utils.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,6 +34,8 @@ import java.util.stream.Collectors;
 */
 @Service
 public class ProductOrderServiceImpl implements IProductOrderService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductOrderServiceImpl.class);
 
     @Autowired
     private ProductOrderDAO productOrderDAO;
@@ -124,16 +130,11 @@ public class ProductOrderServiceImpl implements IProductOrderService {
     }
 
     @Override
-    public ProductOrderDTO createProductOrder(ProductOrderDTO productOrderDTO) throws Exception {
-        ProductOrder productOrder = new ProductOrder();
-        BeanUtils.copyProperties(productOrder,productOrderDTO);
-        productOrder.setId(UUIDUtils.generate());
-        productOrder.setCreatetime(DateTimeUtils.getCurrentDate());
-        productOrder.setOrderStatus(OrderStatusEnums.TEMPORARY.toString());
-        productOrder = productOrderRepository.saveAndFlush(productOrder);
+    public ProductOrderDTO createTempProductOrder(ProductOrderDTO productOrderDTO) throws Exception {
+        productOrderDTO.setId(UUIDUtils.generate());
+        productOrderDTO.setCreatetime(DateTimeUtils.getCurrentDate());
 
-        //productOrderDTO = productOrderDAO.findDTOById(productOrder.getId());
-        //保存子订单
+        //子订单
         //获取购物车列表
         UserCartList userCartList = userCartService.getUserCart(productOrderDTO.getBuyuserId(),productOrderDTO.getCartType());
         List<UserCartDTO> userCarts = userCartList.getUserCarts();//购物车未下线的商品
@@ -142,29 +143,22 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         List<String> productIds = userCarts.stream().map(UserCartDTO::getProductid).collect(Collectors.toList());
         List<ProductList> productLists = productListJpa.findByIdIn(productIds);
 
-        //保存子订单，并返回商品总额
-        BigDecimal productTotalPrice = saveProductSonOrders(productOrderDTO,userCarts,productLists,true);
+        //创建子订单，并返回商品总额
+        BigDecimal productTotalPrice = saveProductSonOrders(productOrderDTO,userCarts,productLists);
 
         //包装订单所需的信息，地址，优惠券
         return packageProductOrder(productOrderDTO,productTotalPrice,productLists);
     }
 
+    /**
+     * 去结算
+     * @param productOrderDTO
+     * @return
+     * @throws Exception
+     */
     @Override
     public ProductOrderDTO toAccount(ProductOrderDTO productOrderDTO) throws Exception {
-        //生成子订单
-        //获取购物车列表
-        UserCartList userCartList = userCartService.getUserCart(productOrderDTO.getBuyuserId(),productOrderDTO.getCartType());
-        List<UserCartDTO> userCarts = userCartList.getUserCarts();//购物车未下线的商品
-
-        //对应的商品
-        List<String> productIds = userCarts.stream().map(UserCartDTO::getProductid).collect(Collectors.toList());
-        List<ProductList> productLists = productListJpa.findByIdIn(productIds);
-
-        BigDecimal productTotalPrice = saveProductSonOrders(productOrderDTO,userCarts,productLists,false);
-
-        //包装订单所需的信息，地址，优惠券
-        return packageProductOrder(productOrderDTO,productTotalPrice,productLists);
-
+        return createTempProductOrder(productOrderDTO);
     }
 
 
@@ -181,7 +175,7 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         BigDecimal realReduceMoney = new BigDecimal(0);//真正优惠的价格
 
         if(StringUtils.isNotEmpty(productOrderDTO.getCouponUserid())){
-            realReduceMoney = packageCouponUser(productOrderDTO,productTotalPrice,userId,productLists,userId);
+            realReduceMoney = packageCouponUser(productOrderDTO,productTotalPrice,userId,productLists,productOrderDTO.getCouponUserid());
         }else{
             realReduceMoney = packageCouponUser(productOrderDTO,productTotalPrice,userId,productLists);
         }
@@ -209,9 +203,10 @@ public class ProductOrderServiceImpl implements IProductOrderService {
      * @param productLists
      * @return
      */
-    private BigDecimal saveProductSonOrders(ProductOrderDTO productOrderDTO,List<UserCartDTO> userCarts,List<ProductList> productLists,Boolean isSave){
+    private BigDecimal saveProductSonOrders(ProductOrderDTO productOrderDTO,List<UserCartDTO> userCarts,List<ProductList> productLists){
         Map<String,UserCartDTO> userCartDTOMap = userCarts.stream().filter(e->"1".equals(e.getStatus())).collect(Collectors.toMap(UserCartDTO::getProductid,UserCartDTO->UserCartDTO));
         Map<String,ProductList> productListMap = productLists.stream().collect(Collectors.toMap(ProductList::getId,ProductList->ProductList));
+        productOrderDTO.setProductListMap(productListMap);
         List<ProductSonOrder> productSonOrders = new ArrayList<>();
 
         BigDecimal productTotalPrice = new BigDecimal(0);//商品总金额
@@ -244,7 +239,7 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         }
         productOrderDTO.setProductSonOrder(productSonOrders);
 
-        if(isSave) productSonOrderRepository.saveAll(productSonOrders);
+        //if(isSave) productSonOrderRepository.saveAll(productSonOrders);
 
         return productTotalPrice;
     }
@@ -259,7 +254,13 @@ public class ProductOrderServiceImpl implements IProductOrderService {
      */
     private BigDecimal packageCouponUser(ProductOrderDTO pDto , BigDecimal productPrice, String userId, List<ProductList> productLists){
         List<CouponUserDTO> couponUsers = couponUserDAO.getCouponUserByUserId(userId);
-        Map<String,ProductList>  productListCodeMap = productLists.stream().collect(Collectors.toMap(ProductList::getCode,ProductList->ProductList));
+        Map<String,ProductList>  productListCodeMap = new HashMap<>();
+        try{
+            productListCodeMap = productLists.stream().collect(Collectors.toMap(ProductList::getCode,ProductList->ProductList));
+        }catch (IllegalStateException e){
+            logger.error("error","商品编码重复");
+            throw new BusinessException("商品编码重复请! 联系管理员");
+        }
         List<CouponUserDTO> couponUsersCanUser = new ArrayList<>();
         BigDecimal realReduceMoney = new BigDecimal(0);//优惠金额
         String bigReduceMoneyId = "";
@@ -319,21 +320,30 @@ public class ProductOrderServiceImpl implements IProductOrderService {
      * @param productPrice
      * @param userId
      * @param productLists
-     * @param couponUserId 指定优惠券
+     * @param couponUserId 指定优惠券,值为0指定不适用优惠券
      * @return 优惠金额
      */
     private BigDecimal packageCouponUser(ProductOrderDTO pDto , BigDecimal productPrice, String userId, List<ProductList> productLists, String couponUserId){
         this.packageCouponUser(pDto,productPrice,userId,productLists);
-        CouponUserDTO couponUs = couponUserDAO.findDTOById(couponUserId);
         List<CouponUserDTO>  couponUserDTOS = pDto.getCouponUserDTO();
-        for (CouponUserDTO couponUser : couponUserDTOS) {
-            if(couponUserId.equals(couponUser.getId())){
-                couponUser.setIsOptimal("1");
-            }else{
+        if("0".equals(couponUserId)){
+            for (CouponUserDTO couponUser : couponUserDTOS) {
                 couponUser.setIsOptimal("0");
             }
+            return  new BigDecimal(0);
+        }else{
+            CouponUserDTO couponUs = couponUserDAO.findDTOById(couponUserId);
+
+            for (CouponUserDTO couponUser : couponUserDTOS) {
+                if(couponUserId.equals(couponUser.getId())){
+                    couponUser.setIsOptimal("1");
+                }else{
+                    couponUser.setIsOptimal("0");
+                }
+            }
+            return  getOneCouponUserReduceMoney(couponUs,productPrice);
         }
-        return  getOneCouponUserReduceMoney(couponUs,productPrice);
+
     }
 
     /**

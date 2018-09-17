@@ -105,6 +105,10 @@ public class ProductServiceImp implements IProductService{
         }
         ProductList productList = (ProductList) JsonUtils.mapToObject(hashMap,ProductList.class);
         productList.setImg(imgFilePath);
+        productList.setSellNum(0);
+        if(productList.getStock()==null){
+            productList.setSellNum(0);
+        }
         return productList;
     }
 

@@ -66,23 +66,23 @@ public class ProductOrderController {
         }
     }
 
-    /**
-    * 描述:创建订单列表
-    * @param productOrderDTO  订单列表DTO
-    */
-    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData create(@RequestBody ProductOrderDTO productOrderDTO) throws Exception {
-        try {
-            ResultData resultData = new ResultData();
-            resultData.setData(productOrderService.createProductOrder(productOrderDTO));
-            return resultData;
-        }catch (BusinessException e){
-            throw e;
-        } catch (Exception e){
-            logger.error("Error", e);
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
-        }
-    }
+//    /**
+//    * 描述:创建订单列表
+//    * @param productOrderDTO  订单列表DTO
+//    */
+//    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+//    public ResultData create(@RequestBody ProductOrderDTO productOrderDTO) throws Exception {
+//        try {
+//            ResultData resultData = new ResultData();
+//            resultData.setData(productOrderService.createProductOrder(productOrderDTO));
+//            return resultData;
+//        }catch (BusinessException e){
+//            throw e;
+//        } catch (Exception e){
+//            logger.error("Error", e);
+//            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+//        }
+//    }
 
     /**
      * 描述:去结算

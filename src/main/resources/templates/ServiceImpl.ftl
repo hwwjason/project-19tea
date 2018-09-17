@@ -13,6 +13,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import javax.transaction.Transactional;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
 * 描述：${table_annotation} 服务实现层
@@ -21,6 +23,8 @@ import java.util.List;
 */
 @Service
 public class ${table_name}ServiceImpl implements I${table_name}Service {
+
+    private static final Logger logger = LoggerFactory.getLogger(${table_name}ServiceImpl.class);
 
     @Autowired
     private ${table_name}DAO ${table_name?uncap_first}DAO;
@@ -35,12 +39,23 @@ public class ${table_name}ServiceImpl implements I${table_name}Service {
     }
 
     @Override
+    public ${table_name} findById(String id) throws Exception {
+        ${table_name} ${table_name?uncap_first} = ${table_name?uncap_first}DAO.findById(id);
+        return ${table_name?uncap_first};
+    }
+
+    @Override
+    public ${table_name} saveAndFlush(${table_name} ${table_name?uncap_first})throws Exception{
+        return ${table_name?uncap_first}Repository.saveAndFlush(${table_name?uncap_first});
+    }
+
+    @Override
     public void deleteById(String id) throws Exception {
         ${table_name?uncap_first}Repository.deleteById(id);
     }
 
     @Override
-    public ${table_name}DTO create${table_name}(${table_name}DTO ${table_name?uncap_first}DTO) throws Exception {
+    public ${table_name}DTO createOrUpdate${table_name}(${table_name}DTO ${table_name?uncap_first}DTO) throws Exception {
         ${table_name} ${table_name?uncap_first} = new ${table_name}();
         String id = ${table_name?uncap_first}DTO.getId();
         if(StringUtils.isEmpty(id)){
@@ -56,13 +71,13 @@ public class ${table_name}ServiceImpl implements I${table_name}Service {
         return this.findDTOById(${table_name?uncap_first}.getId());
     }
 
-    @Override
-    public ${table_name}DTO update${table_name}(${table_name}DTO ${table_name?uncap_first}DTO)throws Exception {
-        ${table_name} ${table_name?uncap_first} = new ${table_name}();
-        BeanUtils.copyPropertiesWithoutNull(${table_name?uncap_first},${table_name?uncap_first}DTO);
-        ${table_name?uncap_first} = ${table_name?uncap_first}Repository.saveAndFlush(${table_name?uncap_first});
-        return this.findDTOById(${table_name?uncap_first}.getId());
-    }
+    <#--@Override-->
+    <#--public ${table_name}DTO update${table_name}(${table_name}DTO ${table_name?uncap_first}DTO)throws Exception {-->
+        <#--${table_name} ${table_name?uncap_first} = new ${table_name}();-->
+        <#--BeanUtils.copyPropertiesWithoutNull(${table_name?uncap_first},${table_name?uncap_first}DTO);-->
+        <#--${table_name?uncap_first} = ${table_name?uncap_first}Repository.saveAndFlush(${table_name?uncap_first});-->
+        <#--return this.findDTOById(${table_name?uncap_first}.getId());-->
+    <#--}-->
 
     /**
     * 描述：查询列表(分页)

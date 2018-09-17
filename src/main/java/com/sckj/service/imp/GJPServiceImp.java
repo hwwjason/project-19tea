@@ -24,5 +24,8 @@ public class GJPServiceImp implements IGJPService {
     }
 
 
+    @Override
+    public void synchProductList(String productCode) {
 
+    }
 }

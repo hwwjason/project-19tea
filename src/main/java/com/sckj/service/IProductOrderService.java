@@ -25,8 +25,20 @@ public interface IProductOrderService  {
 
     void deleteById(String id)throws Exception;
 
-    ProductOrderDTO createProductOrder(ProductOrderDTO productOrderDTO) throws Exception;
+    /**
+     * 创建临时订单信息（生成数据但是不保存）
+     * @param productOrderDTO
+     * @return
+     * @throws Exception
+     */
+    ProductOrderDTO createTempProductOrder(ProductOrderDTO productOrderDTO) throws Exception;
 
+    /**
+     * 去结算
+     * @param productOrderDTO
+     * @return
+     * @throws Exception
+     */
     ProductOrderDTO toAccount(ProductOrderDTO productOrderDTO) throws Exception;
 
     ProductOrderDTO updateProductOrder(ProductOrderDTO productOrderDTO) throws Exception;

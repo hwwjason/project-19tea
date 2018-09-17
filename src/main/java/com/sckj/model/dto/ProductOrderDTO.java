@@ -1,12 +1,10 @@
 package com.sckj.model.dto;
 
-import com.sckj.model.CouponUser;
-import com.sckj.model.ProductOrder;
-import com.sckj.model.ProductSonOrder;
-import com.sckj.model.UserAddress;
+import com.sckj.model.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
 * 描述：订单列表DTO
@@ -25,9 +23,11 @@ public class ProductOrderDTO extends ProductOrder{
 
     private List<UserAddress> userAddresss;
 
+    Map<String,ProductList> productListMap;//与订单列表对应的商品<id,ProductList>
+
     private String cartType;
 
-    private String couponUserid;//couponUserid
+    private String couponUserid;//couponUserid  ,去结算的时候传空，不用的时候传 0
 
     private BigDecimal reduceMoney;
 
@@ -93,5 +93,13 @@ public class ProductOrderDTO extends ProductOrder{
 
     public void setReduceMoney(BigDecimal reduceMoney) {
         this.reduceMoney = reduceMoney;
+    }
+
+    public Map<String, ProductList> getProductListMap() {
+        return productListMap;
+    }
+
+    public void setProductListMap(Map<String, ProductList> productListMap) {
+        this.productListMap = productListMap;
     }
 }

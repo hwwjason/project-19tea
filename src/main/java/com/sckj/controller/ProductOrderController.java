@@ -1,8 +1,12 @@
 package com.sckj.controller;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.sckj.common.Query;
 import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
+import com.sckj.model.dto.ProductListDTO;
 import com.sckj.service.IProductOrderService;
 import com.sckj.model.dto.ProductOrderDTO;
 import org.slf4j.Logger;
@@ -13,6 +17,7 @@ import org.springframework.http.MediaType;
 import com.sckj.common.ResultData;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * 描述：订单列表控制层
@@ -66,23 +71,30 @@ public class ProductOrderController {
         }
     }
 
-//    /**
-//    * 描述:创建订单列表
-//    * @param productOrderDTO  订单列表DTO
-//    */
-//    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-//    public ResultData create(@RequestBody ProductOrderDTO productOrderDTO) throws Exception {
-//        try {
-//            ResultData resultData = new ResultData();
-//            resultData.setData(productOrderService.createProductOrder(productOrderDTO));
-//            return resultData;
-//        }catch (BusinessException e){
-//            throw e;
-//        } catch (Exception e){
-//            logger.error("Error", e);
-//            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
-//        }
-//    }
+    /**
+     * 分页查询
+     * @param query
+     * @return
+     */
+    @RequestMapping(value = "/getProductOrder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData getProductOrder(@RequestBody Query query){
+        try{
+            ResultData resultData = new ResultData();
+            PageHelper.startPage(query.getPageNum(),query.getPageSize());
+            Map<String,Object> map = (Map<String, Object>) query.getCondition();
+            List<ProductOrderDTO> productOrder = productOrderService.getProductOrder(map);
+            PageInfo<ProductOrderDTO> pageInfo = new PageInfo<ProductOrderDTO>(productOrder);
+            resultData.setData(pageInfo);
+            return resultData;
+        }catch (BusinessException e){
+            throw e;
+        } catch (Exception e){
+            logger.error("Error", e);
+            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+        }
+
+    }
+
 
     /**
      * 描述:去结算

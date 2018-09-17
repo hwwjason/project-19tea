@@ -2,42 +2,25 @@ package com.sckj.GJP.example;
 
 
 import com.sckj.constant.GJPConstants;
+import com.sckj.constant.GJPTESTConstants;
 
 public class Config {
 
-//	1，app key：68943923115886070418838901844741
-//			2，app secret ：ONxYDyNaCoyTzsp83JoQ3YYuMPHxk3j7
-//3，sign key：lezitiancheng
-
-//	线上参数申请和查看地址  https://authcentral.wsgjp.com/AppKey/ApplyAppkey
-//	线上环境erp登录地址：http://login.wsgjp.com/
-//	线上授权获取授权认证码访问地址： https://authcentral.wsgjp.com/account/login?
-//	线上获取token信息时请访问地址 http://apigateway.wsgjp.com.cn/api/token
-//	线上接口地址： http://apigateway.wsgjp.com.cn/api/
+	public static String api_link = GJPTESTConstants.API_LINK;
 
 
-//	接下来 利用授权认证码获取token信息。获取token信息时请访问地址 http://ca.mygjp.com:8002/api/token
-	//授权测试时获取授权认证码请访问地址： http://ca.mygjp.com:666/account/login?
-//	测试环境erp登录地址：http://ca.mygjp.com:8001/
+	public static String appkey = GJPTESTConstants.APP_KEY;
+	public static String app_secret = GJPTESTConstants.APP_SECRET;
+	public static String sign_key = GJPTESTConstants.SIGN_KEY;
 
+	public static String get_token_url = GJPTESTConstants.GET_TOKEN_URL;
+	public static String redirect_url =  GJPTESTConstants.REDIRECT_URL;
+	public static String login_code = GJPTESTConstants.LOGIN_CODE;
+	public static String shop_key = GJPTESTConstants.SHOP_KEY;
+	public static String auth_code = GJPTESTConstants.AUTH_CODE;
+	public static String token = GJPTESTConstants.TOKEN;
 
-
-	public static String api_link = "http://ca.mygjp.com:8010/api";
-	public static String companyName = "TestMall";
-	public static String userName = "test";
-	public static String userpass = "grasp@101";
-//	public static String appkey = "68943923115886070418838901844741";
-	public static String appkey = GJPConstants.APP_KEY;
-	public static String app_secret = "ONxYDyNaCoyTzsp83JoQ3YYuMPHxk3j7";
-	public static String sign_key = "lezitiancheng";
-	public static String get_token_url = "http://ca.mygjp.com:8002/api/token";
-	public static String redirect_url =  "http://localhost:8081/GetToken.jsp";
-//	public static String login_code = "http://ca.mygjp.com:666/account/login?";
-	public static String login_code = GJPConstants.AUTH_CODE_URL;
 	public static String auth_code_url = String.format("%sappkey=%s&redirect_url=%s&keyword=test", login_code,appkey,redirect_url);
-	public static String shop_key = "e4994811-bbb8-44cd-86cb-328b263be7e0";
-	public static String token = "zK4f4hRxpwehi651mBPM3gkeQEqw2BH96SG32kOr";
-
 
 	public String GetAuthCodeUrl(String redirect_url) throws Exception {
 		return auth_code_url;

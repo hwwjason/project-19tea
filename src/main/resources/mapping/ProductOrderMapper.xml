@@ -42,6 +42,7 @@
         <result column="syn_gjp_time" jdbcType="TIMESTAMP" property="synGjpTime" />
         <result column="refundreason" jdbcType="LONGVARCHAR" property="refundreason" />
         <result column="refund_remark" jdbcType="LONGVARCHAR" property="refundRemark" />
+        <result column="order_type" jdbcType="CHAR" property="orderType" />
     </resultMap>
 
     <sql id="findDtoSql">
@@ -62,6 +63,43 @@
         <where>
 
         </where>
+    </select>
+
+    <select id="getProductOrder" parameterType="java.util.Map" resultMap="ProductOrderDTOResultMap">
+        select * from sckj_product_order as product
+        <where>
+            <if test="null != id and  '' neq id">
+                and  UPPER(product.id) LIKE CONCAT('%',UPPER (#{id}),'%')
+            </if>
+            <if test="null != signerTel and  '' neq signerTel">
+                and  UPPER(product.signer_tel) LIKE CONCAT('%',UPPER (#{signerTel}),'%')
+            </if>
+            <if test="null != buyuserTel and  '' neq buyuserTel">
+                and  UPPER(product.buyuser_tel) LIKE CONCAT('%',UPPER (#{buyuserTel}),'%')
+            </if>
+            <if test="null != orderidSignerTelBuyuserTel and  '' neq orderidSignerTelBuyuserTel">
+                and (  UPPER(product.id) LIKE CONCAT('%',UPPER (#{id}),'%')
+                    OR UPPER(product.signer_tel) LIKE CONCAT('%',UPPER (#{signerTel}),'%')
+                    OR UPPER(product.buyuser_tel) LIKE CONCAT('%',UPPER (#{buyuserTel}),'%')
+                    )
+            </if>
+
+            <if test="createStarttime !=null and '' neq createStarttime">
+                <![CDATA[
+                    and date_format(product.createtime,'%Y-%m-%d') >= str_to_date(#{createStarttime},'%Y-%m-%d')
+                ]]>
+            </if>
+            <if test="createEndtime !=null and '' neq createEndtime">
+                <![CDATA[
+                    and date_format(product.createtime,'%Y-%m-%d') <= str_to_date(#{createEndtime},'%Y-%m-%d')
+                ]]>
+            </if>
+
+            <if test="null != orderType and  '' neq orderType">
+                and  UPPER(product.order_type) LIKE CONCAT('%',UPPER (#{orderType}),'%')
+            </if>
+        </where>
+        ORDER BY product.createtime DESC
     </select>
 
 </mapper>

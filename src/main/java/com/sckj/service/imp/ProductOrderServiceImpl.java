@@ -106,6 +106,12 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         return productOrderDTOS;
     }
 
+    @Override
+    public List<ProductOrderDTO> getProductOrder(Map<String,Object> map) {
+        List<ProductOrderDTO> productOrders = productOrderDAO.getProductOrder(map);
+        return productOrders;
+    }
+
 
     public List<ProductOrderDTO> findProductOrderByUserID(String id) throws Exception{
         List<ProductOrder> productOrder = productOrderRepository.findByBuyuserId(id);

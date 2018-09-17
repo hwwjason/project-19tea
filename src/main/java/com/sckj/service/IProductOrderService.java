@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * 描述：订单列表 服务实现层接口
@@ -20,6 +21,14 @@ public interface IProductOrderService  {
     ProductOrderDTO findDTOById(String id)throws Exception;
 
     List<ProductOrderDTO> findProductOrder(ProductOrderDTO productOrderDTO)throws Exception;
+
+    /**
+     * 分页查询
+     * @param productListMap
+     * @return
+     * @throws Exception
+     */
+    List<ProductOrderDTO> getProductOrder(Map<String,Object> productListMap)throws Exception;
 
     List<ProductOrderDTO> findProductOrderByUserID(String userId) throws Exception;
 

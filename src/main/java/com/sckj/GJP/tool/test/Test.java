@@ -12,6 +12,7 @@ import com.sckj.GJP.tool.entity.RsModel;
 import com.sckj.GJP.tool.util.AESUtil;
 import com.sckj.GJP.tool.util.HttpsClientUtil;
 import com.sckj.constant.GJPConstants;
+import com.sckj.constant.GJPTESTConstants;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -32,18 +33,13 @@ public class Test {
 
 	static String appkey="68943923115886070418838901844741";
 	static String secretStr="ONxYDyNaCoyTzsp83JoQ3YYuMPHxk3j7";
-	static String auth_code="yYvJPGsh7woXgl1mRUS9CRKD5dDdnCdn";
+//	static String auth_code="yYvJPGsh7woXgl1mRUS9CRKD5dDdnCdn";
+	static String auth_code= GJPTESTConstants.AUTH_CODE;
 	static String signKey="lezitiancheng";
 	static String algorithmstr="AES/CBC/PKCS7Padding";
 
-//	static String appkey= GJPConstants.APPKEY;
-//	static String secretStr=GJPConstants.APPSECRET;
-//	static String auth_code=GJPConstants.;
-//	static String signKey=GJPConstants.SIGNKEY;
-//	static String algorithmstr="AES/CBC/PKCS7Padding";
-
-
 	static String tokenUrl= "http://ca.mygjp.com:8002/api/token";
+
 	public static void getToken() throws Exception{
 		//获取token接口
 		//第一步   获取P参数
@@ -106,8 +102,8 @@ public class Test {
 
 
 	public static void main(String[] args) throws Exception {
-		getToken() ;
-		//refreshToken("111");
+		//getToken() ;
+		refreshToken("");
 		//getCurTime();
 //		AESUtil  AESUtil =new AESUtil();
 //String srt = "0123456789";

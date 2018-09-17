@@ -31,6 +31,12 @@ public class ProductOrderDTO extends ProductOrder{
 
     private BigDecimal reduceMoney;
 
+    private String orderidSignerTelBuyuserTel;//订单号，或收货人手机，或用户手机
+
+    private String createStarttime;
+
+    private String createEndtime;
+
     public List<ProductSonOrderDTO> getProductSonOrderDTO() {
         return productSonOrderDTO;
     }
@@ -101,5 +107,29 @@ public class ProductOrderDTO extends ProductOrder{
 
     public void setProductListMap(Map<String, ProductList> productListMap) {
         this.productListMap = productListMap;
+    }
+
+    public String getOrderidSignerTelBuyuserTel() {
+        return orderidSignerTelBuyuserTel;
+    }
+
+    public void setOrderidSignerTelBuyuserTel(String orderidSignerTelBuyuserTel) {
+        this.orderidSignerTelBuyuserTel = orderidSignerTelBuyuserTel;
+    }
+
+    public String getCreateStarttime() {
+        return createStarttime;
+    }
+
+    public void setCreateStarttime(String createStarttime) {
+        this.createStarttime = createStarttime;
+    }
+
+    public String getCreateEndtime() {
+        return createEndtime;
+    }
+
+    public void setCreateEndtime(String createEndtime) {
+        this.createEndtime = createEndtime;
     }
 }

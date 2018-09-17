@@ -12,8 +12,8 @@ import java.util.Map;
 public class GetToken {
 	public String DoGetToken(String param) throws Exception
 	{
-//		String code = GetAuthCode(param);
-		String code = GJPConstants.AUTH_CODE;
+		String code = GetAuthCode(param);
+		//String code = Config.auth_code;
 
 
 		//获取p参数

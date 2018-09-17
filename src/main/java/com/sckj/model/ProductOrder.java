@@ -1,5 +1,6 @@
 package com.sckj.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import javax.persistence.*;
 import java.util.Date;
@@ -115,6 +116,7 @@ public class ProductOrder {
     /**
     *创建时间
     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "createtime",columnDefinition = "TIMESTAMP")
     private Date createtime;
 
@@ -131,6 +133,7 @@ public class ProductOrder {
     /**
     *支付时间
     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "paytime",columnDefinition = "TIMESTAMP")
     private Date paytime;
 
@@ -251,6 +254,7 @@ public class ProductOrder {
     /**
     *退款时间
     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "refund_time",columnDefinition = "TIMESTAMP")
     private Date refundTime;
 
@@ -259,6 +263,7 @@ public class ProductOrder {
     /**
     *确认收货时间
     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "confirm_time",columnDefinition = "TIMESTAMP")
     private Date confirmTime;
 
@@ -307,6 +312,7 @@ public class ProductOrder {
     /**
     *
     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "m_refundtime",columnDefinition = "TIMESTAMP")
     private Date mRefundtime;
 
@@ -323,8 +329,16 @@ public class ProductOrder {
     /**
     *同步管家婆的时间
     */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "syn_gjp_time",columnDefinition = "TIMESTAMP")
     private Date synGjpTime;
+
+    /**
+     *订单类型（订单渠道）扫码购0，线上购物1
+     */
+    @Column(name = "order_type",columnDefinition = "VARCHAR")
+    private String orderType;
+
 
 
     public String getId() {
@@ -637,5 +651,13 @@ public class ProductOrder {
 
     public void setSynGjpTime(Date synGjpTime) {
         this.synGjpTime = synGjpTime;
+    }
+
+    public String getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(String orderType) {
+        this.orderType = orderType;
     }
 }

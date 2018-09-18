@@ -113,6 +113,26 @@ public class ProductOrderServiceImpl implements IProductOrderService {
     @Override
     public List<ProductOrderDTO> getProductOrder(Map<String,Object> map) {
         List<ProductOrderDTO> productOrders = productOrderDAO.getProductOrder(map);
+        for (ProductOrderDTO order : productOrders) {
+            if (null == order.getExpressPrice()){
+                order.setExpressPrice(new BigDecimal(0));
+            }
+            if(null == order.getOrderStatus()){
+                order.setOrderStatus(OrderStatusEnums.NO_PAY.toString());
+            }
+            if(null == order.getExpressCode()){
+                order.setExpressCode("");
+            }
+            if(null == order.getExpressPrice()){
+                order.setExpressPrice(new BigDecimal(0));
+            }
+            if(null == order.getBuyuserTel()){
+                order.setBuyuserTel("");
+            }
+            if(null == order.getOrderType()){
+                order.setOrderType("0");
+            }
+        }
         return productOrders;
     }
 

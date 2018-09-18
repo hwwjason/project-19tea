@@ -308,6 +308,23 @@ public class ProductOrder {
     private String expressOrderid;
 
 
+    /**
+     *收货人姓名
+     */
+    @Column(name = "accept_name",columnDefinition = "VARCHAR")
+    private String acceptName;
+
+    /**
+     *收货人电话
+     */
+    @Column(name = "accept_tel",columnDefinition = "VARCHAR")
+    private String acceptTel;
+
+    /**
+     *订单编号
+     */
+    @Column(name = "code",columnDefinition = "VARCHAR")
+    private String code;
 
     /**
     *
@@ -659,5 +676,29 @@ public class ProductOrder {
 
     public void setOrderType(String orderType) {
         this.orderType = orderType;
+    }
+
+    public String getAcceptName() {
+        return acceptName;
+    }
+
+    public void setAcceptName(String acceptName) {
+        this.acceptName = acceptName;
+    }
+
+    public String getAcceptTel() {
+        return acceptTel;
+    }
+
+    public void setAcceptTel(String acceptTel) {
+        this.code = acceptTel;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

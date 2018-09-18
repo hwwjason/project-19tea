@@ -17,7 +17,7 @@ public interface IWeiXinService {
 
     Map<String, Object> login(String code, HttpServletRequest request) throws WeixinException, IOException;
 
-    Map<String, Object> wxPay(String buyuserId, String cartType, String couponUserid, HttpServletRequest request);
+    Map<String, Object> wxPay(String buyuserId, String cartType, String couponUserid, String userRemark, HttpServletRequest request);
 
     void wxNotify(HttpServletRequest request,HttpServletResponse response) throws Exception;
 }

@@ -8,11 +8,9 @@ import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
 import com.sckj.model.*;
 import com.sckj.model.dto.ProductOrderDTO;
+import com.sckj.model.dto.UserCartDTO;
 import com.sckj.repository.*;
-import com.sckj.service.ICouponService;
-import com.sckj.service.ICouponUserService;
-import com.sckj.service.IProductOrderService;
-import com.sckj.service.IWeiXinService;
+import com.sckj.service.*;
 import com.sckj.utils.BeanUtils;
 import com.sckj.utils.weixin.*;
 import org.slf4j.Logger;
@@ -36,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
@@ -60,6 +59,9 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
 
     @Autowired
     private ICouponUserService couponUserService;
+
+    @Autowired
+    private IUserCartService userCartService;
 
     /**
      * 小程序后台登录，向微信平台发送获取access_token请求，并返回openId
@@ -108,11 +110,12 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
      * @param request
      * @return
      */
-    public  Map<String, Object> wxPay(String buyuserId, String cartType, String couponUserid, HttpServletRequest request)  {
+    public  Map<String, Object> wxPay(String buyuserId, String cartType, String couponUserid, String userRemark,HttpServletRequest request)  {
         ProductOrderDTO productOrderDTO = new ProductOrderDTO();
         productOrderDTO.setBuyuserId(buyuserId);
         productOrderDTO.setCartType(cartType);
         productOrderDTO.setCouponUserid(couponUserid);
+        productOrderDTO.setUserRemark(userRemark);
         try {
             productOrderDTO = productOrderService.createTempProductOrder(productOrderDTO);
         } catch (Exception e) {
@@ -225,7 +228,10 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
                     couponUser.setIsuse("1");
                     couponUserService.saveAndFlush(couponUser);
                 }
-
+                //移除购物车商品
+                List<UserCartDTO> userCarts = productOrderDTO.getUserCarts();
+                List<String> ids = userCarts.stream().map(e->e.getId()).collect(Collectors.toList());
+                userCartService.deleteByIds(ids);
             }
 
             response.put("appid", WxPayConfig.appid);

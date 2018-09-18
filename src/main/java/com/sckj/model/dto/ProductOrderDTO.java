@@ -33,6 +33,8 @@ public class ProductOrderDTO extends ProductOrder{
 
     private String orderidSignerTelBuyuserTel;//订单号，或收货人手机，或用户手机
 
+    private List<UserCartDTO> userCarts;//购物车商品，生成订单时临时保存，订单提交成功后，删除购物车中的物品
+
     private String createStarttime;
 
     private String createEndtime;
@@ -131,5 +133,13 @@ public class ProductOrderDTO extends ProductOrder{
 
     public void setCreateEndtime(String createEndtime) {
         this.createEndtime = createEndtime;
+    }
+
+    public List<UserCartDTO> getUserCarts() {
+        return userCarts;
+    }
+
+    public void setUserCarts(List<UserCartDTO> userCarts) {
+        this.userCarts = userCarts;
     }
 }

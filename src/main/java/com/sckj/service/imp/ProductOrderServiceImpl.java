@@ -198,6 +198,7 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         //获取购物车列表
         UserCartList userCartList = userCartService.getUserCart(productOrderDTO.getBuyuserId(),productOrderDTO.getCartType());
         List<UserCartDTO> userCarts = userCartList.getUserCarts();//购物车未下线的商品
+        productOrderDTO.setUserCarts(userCarts);
 
         //对应的商品
         List<String> productIds = userCarts.stream().map(UserCartDTO::getProductid).collect(Collectors.toList());
@@ -244,6 +245,15 @@ public class ProductOrderServiceImpl implements IProductOrderService {
 
         //设置地址
         productOrderDTO.setUserAddresss(userAddresss);
+        if(userAddresss!=null){
+            UserAddress userAddress = userAddresss.get(0);
+            productOrderDTO.setProvince(userAddress.getProvince());
+            productOrderDTO.setArea(userAddress.getArea());
+            productOrderDTO.setCity(userAddress.getCity());
+            productOrderDTO.setAcceptName(userAddress.getName());
+            productOrderDTO.setAcceptTel(userAddress.getTel());
+            productOrderDTO.setAddress(userAddress.getAddress());
+        }
         productOrderDTO.setProductPrice(productTotalPrice);
         //邮费怎么算！！
         BigDecimal expressPrice = new BigDecimal(10);

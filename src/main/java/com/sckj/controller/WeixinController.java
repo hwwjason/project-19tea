@@ -92,10 +92,10 @@ public class WeixinController extends WeixinSupport{
      * @return
      */
     @RequestMapping("/wxPay")
-    public ResultData wxPay(String buyuserId, String cartType, String couponUserid, HttpServletRequest request)  {
+    public ResultData wxPay(String buyuserId, String cartType, String couponUserid, String userRemark ,HttpServletRequest request)  {
         try {
             ResultData resultData = new ResultData();
-            resultData.setData( weiXinService.wxPay(buyuserId,cartType,couponUserid,request));
+            resultData.setData( weiXinService.wxPay(buyuserId,cartType,couponUserid,userRemark,request));
             return resultData;
         }catch (BusinessException e){
             throw e;

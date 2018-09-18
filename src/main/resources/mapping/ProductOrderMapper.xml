@@ -43,6 +43,9 @@
         <result column="refundreason" jdbcType="LONGVARCHAR" property="refundreason" />
         <result column="refund_remark" jdbcType="LONGVARCHAR" property="refundRemark" />
         <result column="order_type" jdbcType="CHAR" property="orderType" />
+        <result column="accept_name" jdbcType="VARCHAR" property="acceptName" />
+        <result column="accept_tel" jdbcType="VARCHAR" property="acceptTel" />
+        <result column="code" jdbcType="VARCHAR" property="code" />
     </resultMap>
 
     <sql id="findDtoSql">

@@ -26,7 +26,7 @@ public interface IUserCartService {
      */
     UserCartList removeGoods(List<String> ids, String userId ,  String cartType);
 
-    public void deleteByIds( List<String> ids);
+    void deleteByIds( List<String> ids);
 
     /**
      * 获取购物车列表

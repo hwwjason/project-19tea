@@ -98,6 +98,9 @@
             <if test="null != orderType and  '' neq orderType">
                 and  UPPER(product.order_type) LIKE CONCAT('%',UPPER (#{orderType}),'%')
             </if>
+            <if test="null != orderStatus and  '' neq orderStatus">
+                and  UPPER(product.order_status) LIKE CONCAT('%',UPPER (#{orderStatus}),'%')
+            </if>
         </where>
         ORDER BY product.createtime DESC
     </select>

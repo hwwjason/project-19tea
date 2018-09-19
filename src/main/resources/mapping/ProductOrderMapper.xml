@@ -71,6 +71,9 @@
     <select id="getProductOrder" parameterType="java.util.Map" resultMap="ProductOrderDTOResultMap">
         select * from sckj_product_order as product
         <where>
+            <if test="null != buyuserId and  '' neq buyuserId">
+                and  UPPER(product.buyuser_id) LIKE CONCAT('%',UPPER (#{buyuserId}),'%')
+            </if>
             <if test="null != id and  '' neq id">
                 and  UPPER(product.id) LIKE CONCAT('%',UPPER (#{id}),'%')
             </if>

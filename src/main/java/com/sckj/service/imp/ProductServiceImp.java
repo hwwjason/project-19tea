@@ -163,6 +163,10 @@ public class ProductServiceImp implements IProductService{
         }else if(productList.getImg()==null){
             productList.setImg("");
         }
+        String introdude = productList.getIntroduce();
+        if (StringUtils.isNotEmpty(introdude)){
+            productList.setIntroduce(HtmlUtils.replaceHtmlImgSrc(introdude));//(String str, String tag, String tagAttrib, String startTag, String endTag) {
+        }
         productList.setSlideImgs(slideImgs);
     }
 

@@ -1,4 +1,4 @@
-package ${package_name}.controller;
+package com.sckj.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -7,9 +7,9 @@ import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
 import com.sckj.model.dto.CouponDTO;
-import ${package_name}.service.I${table_name}Service;
-import ${package_name}.model.${table_name};
-import ${package_name}.model.dto.${table_name}DTO;
+import com.sckj.service.IContentAdvertisementService;
+import com.sckj.model.ContentAdvertisement;
+import com.sckj.model.dto.ContentAdvertisementDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,29 +21,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* 描述：${table_annotation}控制层
-* @author ${author}
-* @date ${date}
+* 描述：广告长图配置控制层
+* @author hww
+* @date 2018/09/25
 */
 @RestController
-@RequestMapping("/${table_name?uncap_first}")
-public class ${table_name}Controller {
+@RequestMapping("/contentAdvertisement")
+public class ContentAdvertisementController {
 
-    private static final Logger logger = LoggerFactory.getLogger(${table_name}Controller.class);
+    private static final Logger logger = LoggerFactory.getLogger(ContentAdvertisementController.class);
 
     @Autowired
-    private I${table_name}Service ${table_name?uncap_first}Service;
+    private IContentAdvertisementService contentAdvertisementService;
 
     /**
     * 描述：根据Id 查询
-    * @param id  ${table_annotation}id
+    * @param id  广告长图配置id
     */
     @RequestMapping(value = "/findById", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData findById(@RequestParam String id)throws Exception {
         try{
             ResultData resultData = new ResultData();
-            ${table_name}DTO ${table_name?uncap_first}DTO = ${table_name?uncap_first}Service.findDTOById(id);
-            resultData.setData(${table_name?uncap_first}DTO);
+            ContentAdvertisementDTO contentAdvertisementDTO = contentAdvertisementService.findDTOById(id);
+            resultData.setData(contentAdvertisementDTO);
             return resultData;
         }catch (BusinessException e){
             throw e;
@@ -54,14 +54,14 @@ public class ${table_name}Controller {
     }
 
     /**
-    * 描述:创建或更新${table_annotation}
-    * @param ${table_name?uncap_first}DTO  ${table_annotation}DTO
+    * 描述:创建或更新广告长图配置
+    * @param contentAdvertisementDTO  广告长图配置DTO
     */
     @RequestMapping(value = "/createOrUpdate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData createOrUpdate(@RequestBody ${table_name}DTO ${table_name?uncap_first}DTO) throws Exception {
+    public ResultData createOrUpdate(@RequestBody ContentAdvertisementDTO contentAdvertisementDTO) throws Exception {
         try {
             ResultData resultData = new ResultData();
-            resultData.setData(${table_name?uncap_first}Service.createOrUpdate${table_name}(${table_name?uncap_first}DTO));
+            resultData.setData(contentAdvertisementService.createOrUpdateContentAdvertisement(contentAdvertisementDTO));
             return resultData;
         }catch (BusinessException e){
             throw e;
@@ -72,14 +72,14 @@ public class ${table_name}Controller {
     }
 
     /**
-    * 描述：删除${table_annotation}
-    * @param ids ${table_annotation}ids
+    * 描述：删除广告长图配置
+    * @param ids 广告长图配置ids
     */
     @RequestMapping(value = "/deleteByIds", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData deleteByIds(@RequestParam List<String> ids) throws Exception {
         try {
             ResultData resultData = new ResultData();
-            ${table_name?uncap_first}Service.deleteByIds(ids);
+            contentAdvertisementService.deleteByIds(ids);
             return resultData;
         }catch (BusinessException e){
             throw e;
@@ -90,16 +90,16 @@ public class ${table_name}Controller {
     }
 
     /**
-    * 描述：分页查询${table_annotation}
+    * 描述：分页查询广告长图配置
     * @param
     */
-    @RequestMapping(value = "/get${table_name}List", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData get${table_name}List(@RequestBody Query query){
+    @RequestMapping(value = "/getContentAdvertisementList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData getContentAdvertisementList(@RequestBody Query query){
         ResultData resultData = new ResultData();
         PageHelper.startPage(query.getPageNum(),query.getPageSize());
         Map<String,Object> map = (Map<String, Object>) query.getCondition();
-        List<${table_name}DTO> list = ${table_name?uncap_first}Service.get${table_name}List(map);
-        PageInfo<${table_name}DTO> pageInfo = new PageInfo<${table_name}DTO>(list);
+        List<ContentAdvertisementDTO> list = contentAdvertisementService.getContentAdvertisementList(map);
+        PageInfo<ContentAdvertisementDTO> pageInfo = new PageInfo<ContentAdvertisementDTO>(list);
         resultData.setData(pageInfo);
         return resultData;
     }

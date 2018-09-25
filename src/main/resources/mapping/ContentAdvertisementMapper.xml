@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sckj.repository.mybatis.ContentAdvertisementDAO">
+
+    <resultMap id="ContentAdvertisementResultMap" type="com.sckj.model.ContentAdvertisement">
+        <result column="id" jdbcType="VARCHAR" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="contentid" jdbcType="VARCHAR" property="contentid" />
+        <result column="parentid" jdbcType="VARCHAR" property="parentid" />
+        <result column="imgurl" jdbcType="VARCHAR" property="imgurl" />
+        <result column="jump_type" jdbcType="VARCHAR" property="jumpType" />
+        <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+        <result column="product_name" jdbcType="VARCHAR" property="productName" />
+        <result column="order" jdbcType="INTEGER" property="order" />
+        <result column="time_type" jdbcType="VARCHAR" property="timeType" />
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    </resultMap>
+
+    <resultMap id="ContentAdvertisementDTOResultMap" extends="ContentAdvertisementResultMap" type="com.sckj.model.dto.ContentAdvertisementDTO"></resultMap>
+
+    <sql id="findDtoSql">
+        select * from (
+        select * from  sckj_content_advertisement temp
+        ) t
+    </sql>
+
+    <select id="findDTOById" parameterType="String" resultMap="ContentAdvertisementDTOResultMap">
+        <include refid="findDtoSql"></include>
+        <where>
+            and t.id = #{id}
+        </where>
+    </select>
+
+    <select id="findById" parameterType="String" resultMap="ContentAdvertisementResultMap">
+        <include refid="findDtoSql"></include>
+        <where>
+            and t.id = #{id}
+        </where>
+    </select>
+
+    <select id="findContentAdvertisementPage" parameterType="com.sckj.model.dto.ContentAdvertisementDTO" resultMap="ContentAdvertisementDTOResultMap">
+        <include refid="findDtoSql" />
+        <where>
+
+        </where>
+    </select>
+
+    <select id="getContentAdvertisementList" parameterType="java.util.Map" resultMap="ContentAdvertisementDTOResultMap">
+        select * from sckj_content_advertisement as temp
+        <where>
+
+        </where>
+        ORDER BY temp.create_time DESC
+    </select>
+
+</mapper>

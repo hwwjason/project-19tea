@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sckj.repository.mybatis.ContentLineDAO">
+
+    <resultMap id="ContentLineResultMap" type="com.sckj.model.ContentLine">
+        <result column="id" jdbcType="VARCHAR" property="id" />
+        <result column="content_id" jdbcType="INTEGER" property="contentId" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="width" jdbcType="VARCHAR" property="width" />
+    </resultMap>
+
+    <resultMap id="ContentLineDTOResultMap" extends="ContentLineResultMap" type="com.sckj.model.dto.ContentLineDTO"></resultMap>
+
+    <sql id="findDtoSql">
+        select * from (
+        select * from  sckj_content_line temp
+        ) t
+    </sql>
+
+    <select id="findDTOById" parameterType="String" resultMap="ContentLineDTOResultMap">
+        <include refid="findDtoSql"></include>
+        <where>
+            and t.id = #{id}
+        </where>
+    </select>
+
+    <select id="findById" parameterType="String" resultMap="ContentLineResultMap">
+        <include refid="findDtoSql"></include>
+        <where>
+            and t.id = #{id}
+        </where>
+    </select>
+
+    <select id="findContentLinePage" parameterType="com.sckj.model.dto.ContentLineDTO" resultMap="ContentLineDTOResultMap">
+        <include refid="findDtoSql" />
+        <where>
+
+        </where>
+    </select>
+
+    <select id="getContentLineList" parameterType="java.util.Map" resultMap="ContentLineDTOResultMap">
+        select * from sckj_content_line as temp
+        <where>
+
+        </where>
+        ORDER BY temp.create_time DESC
+    </select>
+
+</mapper>

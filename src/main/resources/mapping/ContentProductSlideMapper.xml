@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sckj.repository.mybatis.ContentProductSlideDAO">
+
+    <resultMap id="ContentProductSlideResultMap" type="com.sckj.model.ContentProductSlide">
+        <result column="id" jdbcType="VARCHAR" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="contentid" jdbcType="INTEGER" property="contentid" />
+        <result column="parentid" jdbcType="VARCHAR" property="parentid" />
+        <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+        <result column="product_name" jdbcType="VARCHAR" property="productName" />
+        <result column="product_price" jdbcType="VARCHAR" property="productPrice" />
+        <result column="order" jdbcType="TIMESTAMP" property="order" />
+        <result column="time_type" jdbcType="VARCHAR" property="timeType" />
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    </resultMap>
+
+    <resultMap id="ContentProductSlideDTOResultMap" extends="ContentProductSlideResultMap" type="com.sckj.model.dto.ContentProductSlideDTO"></resultMap>
+
+    <sql id="findDtoSql">
+        select * from (
+        select * from  sckj_content_product_slide temp
+        ) t
+    </sql>
+
+    <select id="findDTOById" parameterType="String" resultMap="ContentProductSlideDTOResultMap">
+        <include refid="findDtoSql"></include>
+        <where>
+            and t.id = #{id}
+        </where>
+    </select>
+
+    <select id="findById" parameterType="String" resultMap="ContentProductSlideResultMap">
+        <include refid="findDtoSql"></include>
+        <where>
+            and t.id = #{id}
+        </where>
+    </select>
+
+    <select id="findContentProductSlidePage" parameterType="com.sckj.model.dto.ContentProductSlideDTO" resultMap="ContentProductSlideDTOResultMap">
+        <include refid="findDtoSql" />
+        <where>
+
+        </where>
+    </select>
+
+    <select id="getContentProductSlideList" parameterType="java.util.Map" resultMap="ContentProductSlideDTOResultMap">
+        select * from sckj_content_product_slide as temp
+        <where>
+
+        </where>
+        ORDER BY temp.create_time DESC
+    </select>
+
+</mapper>

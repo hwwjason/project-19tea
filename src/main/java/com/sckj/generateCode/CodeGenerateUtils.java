@@ -20,10 +20,10 @@ public class CodeGenerateUtils {
     private final String AUTHOR = "hww";
     private final String CURRENT_DATE = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
     /** 表名称 **/
-    private final String tableName = "sckj_coupon_user";
+    private final String tableName = "sckj_content_banner";
     private final String packageName = "com.sckj";
-    private final String tableAnnotation = "用户优惠券";
-    private final String URL = "jdbc:mysql://192.168.0.134/sckj";
+    private final String tableAnnotation = "Banner配置";
+    private final String URL = "jdbc:mysql://192.168.43.94/sckj";
     private final String USER = "root";
     private final String PASSWORD = "root";
     private final String DRIVER = "com.mysql.jdbc.Driver";
@@ -47,22 +47,25 @@ public class CodeGenerateUtils {
             DatabaseMetaData databaseMetaData = connection.getMetaData();
             ResultSet resultSet = null;
             resultSet = databaseMetaData.getColumns(null,"%", tableName,"%");
-            //生成Mapper文件
-            generateMapperFile(resultSet);
-            //生成Dao文件
-            generateDaoFile(resultSet);
-            //生成Repository文件
-            generateRepositoryFile(resultSet);
-            //生成服务层接口文件
-            generateServiceInterfaceFile(resultSet);
-            //生成服务实现层文件
-            generateServiceImplFile(resultSet);
-            //生成Controller层文件
-            generateControllerFile(resultSet);
-            //生成DTO文件
-            generateDTOFile(resultSet);
+
+//            //生成Dao文件
+//            generateDaoFile(resultSet);
+//            //生成Repository文件
+//            generateRepositoryFile(resultSet);
+//            //生成服务层接口文件
+//            generateServiceInterfaceFile(resultSet);
+//            //生成服务实现层文件
+//            generateServiceImplFile(resultSet);
+//            //生成Controller层文件
+//            generateControllerFile(resultSet);
+//            //生成DTO文件
+//            generateDTOFile(resultSet);
+//
+            List<DBColumnDefinition> columnDefinitionList = getCloumnDefinitionList(resultSet);
+//            //生成Mapper文件
+//            generateMapperFile(resultSet,columnDefinitionList);
             //生成Model文件
-            generateModelFile(resultSet);
+            generateModelFile(resultSet,columnDefinitionList);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }finally{
@@ -70,17 +73,28 @@ public class CodeGenerateUtils {
         }
     }
 
-    private void generateModelFile(ResultSet resultSet) throws Exception{
+    private void generateModelFile(ResultSet resultSet,List<DBColumnDefinition> columnDefinitionList) throws Exception{
 
         final String suffix = ".java";
         final String path = diskPath + changeTableName + suffix;
         final String templateName = "Model.ftl";
         File mapperFile = new File(path);
+        Map<String,Object> dataMap = new HashMap<>();
+        dataMap.put("model_column", columnDefinitionList);
+        generateFileByTemplate(templateName,mapperFile,dataMap);
+
+    }
+
+    /**
+     * 获取所有列
+     * @param resultSet
+     * @return
+     * @throws Exception
+     */
+    private List<DBColumnDefinition>  getCloumnDefinitionList(ResultSet resultSet) throws Exception{
         List<DBColumnDefinition> columnDefinitionList = new ArrayList<>();
         DBColumnDefinition columnDefinition = null;
         while(resultSet.next()){
-            //id字段略过
-            //if(resultSet.getString("COLUMN_NAME").equals("id")) continue;
             columnDefinition = new DBColumnDefinition();
             columnDefinition.setColumnName(resultSet.getString("COLUMN_NAME"));
             columnDefinition.setColumnType(resultSet.getString("TYPE_NAME"));
@@ -88,10 +102,7 @@ public class CodeGenerateUtils {
             columnDefinition.setColumnComment(resultSet.getString("REMARKS"));
             columnDefinitionList.add(columnDefinition);
         }
-        Map<String,Object> dataMap = new HashMap<>();
-        dataMap.put("model_column", columnDefinitionList);
-        generateFileByTemplate(templateName,mapperFile,dataMap);
-
+        return columnDefinitionList;
     }
 
     private void generateDTOFile(ResultSet resultSet) throws Exception{
@@ -150,12 +161,13 @@ public class CodeGenerateUtils {
 
     }
 
-    private void generateMapperFile(ResultSet resultSet) throws Exception{
+    private void generateMapperFile(ResultSet resultSet,List<DBColumnDefinition> columnDefinitionList) throws Exception{
         final String suffix = "Mapper.xml";
         final String path = diskPath + changeTableName + suffix;
         final String templateName = "Mapper.ftl";
         File mapperFile = new File(path);
         Map<String,Object> dataMap = new HashMap<>();
+        dataMap.put("model_column", columnDefinitionList);
         generateFileByTemplate(templateName,mapperFile,dataMap);
     }
 

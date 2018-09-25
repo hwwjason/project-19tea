@@ -1,4 +1,4 @@
-package ${package_name}.controller;
+package com.sckj.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -7,9 +7,9 @@ import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
 import com.sckj.model.dto.CouponDTO;
-import ${package_name}.service.I${table_name}Service;
-import ${package_name}.model.${table_name};
-import ${package_name}.model.dto.${table_name}DTO;
+import com.sckj.service.IContentProductSlideService;
+import com.sckj.model.ContentProductSlide;
+import com.sckj.model.dto.ContentProductSlideDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,29 +21,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* 描述：${table_annotation}控制层
-* @author ${author}
-* @date ${date}
+* 描述：商品滑动配置控制层
+* @author hww
+* @date 2018/09/25
 */
 @RestController
-@RequestMapping("/${table_name?uncap_first}")
-public class ${table_name}Controller {
+@RequestMapping("/contentProductSlide")
+public class ContentProductSlideController {
 
-    private static final Logger logger = LoggerFactory.getLogger(${table_name}Controller.class);
+    private static final Logger logger = LoggerFactory.getLogger(ContentProductSlideController.class);
 
     @Autowired
-    private I${table_name}Service ${table_name?uncap_first}Service;
+    private IContentProductSlideService contentProductSlideService;
 
     /**
     * 描述：根据Id 查询
-    * @param id  ${table_annotation}id
+    * @param id  商品滑动配置id
     */
     @RequestMapping(value = "/findById", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData findById(@RequestParam String id)throws Exception {
         try{
             ResultData resultData = new ResultData();
-            ${table_name}DTO ${table_name?uncap_first}DTO = ${table_name?uncap_first}Service.findDTOById(id);
-            resultData.setData(${table_name?uncap_first}DTO);
+            ContentProductSlideDTO contentProductSlideDTO = contentProductSlideService.findDTOById(id);
+            resultData.setData(contentProductSlideDTO);
             return resultData;
         }catch (BusinessException e){
             throw e;
@@ -54,14 +54,14 @@ public class ${table_name}Controller {
     }
 
     /**
-    * 描述:创建或更新${table_annotation}
-    * @param ${table_name?uncap_first}DTO  ${table_annotation}DTO
+    * 描述:创建或更新商品滑动配置
+    * @param contentProductSlideDTO  商品滑动配置DTO
     */
     @RequestMapping(value = "/createOrUpdate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData createOrUpdate(@RequestBody ${table_name}DTO ${table_name?uncap_first}DTO) throws Exception {
+    public ResultData createOrUpdate(@RequestBody ContentProductSlideDTO contentProductSlideDTO) throws Exception {
         try {
             ResultData resultData = new ResultData();
-            resultData.setData(${table_name?uncap_first}Service.createOrUpdate${table_name}(${table_name?uncap_first}DTO));
+            resultData.setData(contentProductSlideService.createOrUpdateContentProductSlide(contentProductSlideDTO));
             return resultData;
         }catch (BusinessException e){
             throw e;
@@ -72,14 +72,14 @@ public class ${table_name}Controller {
     }
 
     /**
-    * 描述：删除${table_annotation}
-    * @param ids ${table_annotation}ids
+    * 描述：删除商品滑动配置
+    * @param ids 商品滑动配置ids
     */
     @RequestMapping(value = "/deleteByIds", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData deleteByIds(@RequestParam List<String> ids) throws Exception {
         try {
             ResultData resultData = new ResultData();
-            ${table_name?uncap_first}Service.deleteByIds(ids);
+            contentProductSlideService.deleteByIds(ids);
             return resultData;
         }catch (BusinessException e){
             throw e;
@@ -90,16 +90,16 @@ public class ${table_name}Controller {
     }
 
     /**
-    * 描述：分页查询${table_annotation}
+    * 描述：分页查询商品滑动配置
     * @param
     */
-    @RequestMapping(value = "/get${table_name}List", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData get${table_name}List(@RequestBody Query query){
+    @RequestMapping(value = "/getContentProductSlideList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData getContentProductSlideList(@RequestBody Query query){
         ResultData resultData = new ResultData();
         PageHelper.startPage(query.getPageNum(),query.getPageSize());
         Map<String,Object> map = (Map<String, Object>) query.getCondition();
-        List<${table_name}DTO> list = ${table_name?uncap_first}Service.get${table_name}List(map);
-        PageInfo<${table_name}DTO> pageInfo = new PageInfo<${table_name}DTO>(list);
+        List<ContentProductSlideDTO> list = contentProductSlideService.getContentProductSlideList(map);
+        PageInfo<ContentProductSlideDTO> pageInfo = new PageInfo<ContentProductSlideDTO>(list);
         resultData.setData(pageInfo);
         return resultData;
     }

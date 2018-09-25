@@ -2,6 +2,8 @@ package ${package_name}.model.dto;
 
 import ${package_name}.model.${table_name};
 
+import java.util.List;
+
 /**
 * 描述：${table_annotation}DTO
 * @author ${author}

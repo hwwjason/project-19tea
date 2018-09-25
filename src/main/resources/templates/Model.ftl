@@ -1,5 +1,6 @@
 package ${package_name}.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import javax.persistence.*;
 import java.util.Date;
@@ -21,6 +22,11 @@ public class ${table_name} {
     /**
     *${model.columnComment!}
     */
+    <#if (model.columnName = 'id')>
+    @Id
+    private String id;
+
+    </#if>
     <#if (model.columnType = 'varchar' || model.columnType = 'VARCHAR'|| model.columnType = 'CHAR' )>
     @Column(name = "${model.columnName}",columnDefinition = "VARCHAR")
     private String ${model.changeColumnName?uncap_first};
@@ -32,6 +38,7 @@ public class ${table_name} {
      </#if>
 
     <#if model.columnType = 'timestamp' || model.columnType = 'DATETIME' >
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "${model.columnName}",columnDefinition = "TIMESTAMP")
     private Date ${model.changeColumnName?uncap_first};
     </#if>

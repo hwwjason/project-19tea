@@ -22,7 +22,7 @@ public class AESCoder {
     final String KEY_ALGORITHM = "AES";
 
     //private static
-    AESCoder(){
+    public AESCoder(){
 
     }
 

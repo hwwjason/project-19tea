@@ -1,19 +1,13 @@
 package com.sckj.GJP.example;
 
+import net.sf.json.JSONArray;
+
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-import org.junit.jupiter.api.Test;
-
-public class UploadSaleorders {
+public class GjpQueryProductInfo {
     public static String DoUploadSaleOrders()  throws Exception
     {
         String ret = "";
@@ -30,7 +24,6 @@ public class UploadSaleorders {
             }
             postString = postString.substring(0, postString.length() - 1);
             ret =  HttpRequest.sendPost(Config.api_link, postString);
-            System.out.println("上传订单");
         } catch (NoSuchAlgorithmException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -101,7 +94,7 @@ public class UploadSaleorders {
         saleorder.setTradeModifiedTime(time);
         saleorder.setTradeStatus(2);
         saleorder.setTradeTotal(176);
-        saleorder.setTradeType(1);
+        saleorder.setTradeType(0);
         saleorder.setShippingType(1);
         saleorder.setTradeId("DD000001234");
         saleorder.setTotal(100);
@@ -109,28 +102,26 @@ public class UploadSaleorders {
         saleorder.setOrderDetails(new ArrayList<SaleOrderDetailEntity>());
 
         SaleOrderDetailEntity detail = new SaleOrderDetailEntity();
-        String numid = "9529";
-        detail.setProductName("测试套餐");
-        detail.setPtypeId(numid);
+        detail.setProductName("测试商品");
+        detail.setPtypeId("110890-9001");
         detail.setQty(1);
         detail.setPrice(70);
         detail.setTradeOriginalPrice(120);
         detail.setSkuId("1108909527");
         detail.setpreferentialtotal(50);
-        detail.setPlatformPropertiesName("123");
+        detail.setPlatformPropertiesName("红色_XL");
         saleorder.OrderDetails.add(detail);
 
-//        SaleOrderDetailEntity detail1 = new SaleOrderDetailEntity();
-//        detail1.setProductName("测试商品");
-//        detail1.setPtypeId("110890-9001");
-//        detail1.setQty(2);
-//        detail1.setPrice(0);
-//        detail1.setpreferentialtotal(116);
-//        detail1.setSkuId("1108909528");
-//        detail1.setTradeOriginalPrice(58);
-//        detail1.setPlatformPropertiesName("绿色_XL");
-//        saleorder.OrderDetails.add(detail1);
-
+        SaleOrderDetailEntity detail1 = new SaleOrderDetailEntity();
+        detail1.setProductName("测试商品");
+        detail1.setPtypeId("110890-9001");
+        detail1.setQty(2);
+        detail1.setPrice(0);
+        detail1.setpreferentialtotal(116);
+        detail1.setSkuId("1108909528");
+        detail1.setTradeOriginalPrice(58);
+        detail1.setPlatformPropertiesName("绿色_XL");
+        saleorder.OrderDetails.add(detail1);
         orderList.add(saleorder);
         orders.orders=orderList;
         return orders;
@@ -143,6 +134,5 @@ public class UploadSaleorders {
             e.printStackTrace();
         }
     }
-
 
 }

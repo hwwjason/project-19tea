@@ -103,13 +103,14 @@ public class Test {
 
 	public static void main(String[] args) throws Exception {
 		//getToken() ;
-		refreshToken("");
-		//getCurTime();
+		//refreshToken("");
+//		getCurTime();
 //		AESUtil  AESUtil =new AESUtil();
-//String srt = "0123456789";
-//System.out.println(AESUtil.SHAEncrypt(srt));
-//		
-		//String Str = "{\"signkey\":\"hrbb-LOyLg3I6dKoE3PG5\",\"p\":\"p8L/djSRmYVcj83X8vylvrEtscBdVAGLjbIm6OTjOWLj1n9+M9XLDiiDy0mwcvBWOdbc4KTUV0QG0hiNyl0Cxg+HegYZr98Ep5dmYDupzu8d5Mfk5x+Eym0Wx24H2vB3Tor7Bjl52O99MAzDFY0Vpg\u003d\u003d\",\"appkey\":\"30378877211223672178040181303135\"}";
+//		String srt = "0123456789";
+		//System.out.println(AESUtil.SHAEncrypt(srt));
+
+//		String Str = "{\"signkey\":\"hrbb-LOyLg3I6dKoE3PG5\",\"p\":\"p8L/djSRmYVcj83X8vylvrEtscBdVAGLjbIm6OTjOWLj1n9+M9XLDiiDy0mwcvBWOdbc4KTUV0QG0hiNyl0Cxg+HegYZr98Ep5dmYDupzu8d5Mfk5x+Eym0Wx24H2vB3Tor7Bjl52O99MAzDFY0Vpg\u003d\u003d\",\"appkey\":\"30378877211223672178040181303135\"}";
+
 
 	}
 	public static void refreshToken(String token_str) throws Exception{

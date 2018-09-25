@@ -1,10 +1,61 @@
 package com.sckj.service;
 
+import net.sf.json.JSONObject;
+
+import java.util.List;
+
 public interface IGJPService {
+    /**
+     * ERP商品基本资料获取，可通过商品id进行筛选条件。
+     * @return
+     * @throws Exception
+     */
+    String getProductinfo()  throws Exception;
 
     /**
-     * 同步管家婆库存信息
-     * @param productCode
+     * ERP商品基本资料获取，可通过商品id进行筛选条件。
+     * @param code
+     * @return
+     * @throws Exception
      */
-    void synchProductList(String productCode);
+    String getProductinfoByCode(String code) throws Exception;
+
+
+    /**
+     * 获取ERP商品基本资料的库存信息
+     * @param code
+     * @return
+     * @throws Exception
+     */
+    String querysaleqty(String code) throws Exception;
+
+    /**
+     * 上载商品信息
+     * @param uploadproducts
+     * @return
+     * @throws Exception
+     */
+    String uploadproducts(String uploadproducts) throws Exception;
+
+    /**
+     * 查询查库信息
+     * @return
+     * @throws Exception
+     */
+    List<Object> queryktypelist() throws Exception;
+
+    /**
+     * 查询交易列表信息
+     * @return
+     * @throws Exception
+     */
+    List<Object> querysaleorder() throws Exception;
+
+
+    /**
+     * 订单批量上载/更新接口
+     * @return
+     * @throws Exception
+     */
+    List<Object> uploadsaleorders() throws Exception;
 }

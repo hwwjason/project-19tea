@@ -66,8 +66,8 @@ public class ${table_name}ServiceImpl implements I${table_name}Service {
             ${table_name?uncap_first}.setId(UUIDUtils.generate());
         }else{
             ${table_name?uncap_first} = ${table_name?uncap_first}DAO.findById(id);
-            ${table_name?uncap_first}.setUpdateTime(DateTimeUtils.getCurrentDate());
             BeanUtils.copyPropertiesWithoutNull(${table_name?uncap_first},${table_name?uncap_first}DTO);
+            ${table_name?uncap_first}.setUpdateTime(DateTimeUtils.getCurrentDate());
         }
 
         ${table_name?uncap_first} = ${table_name?uncap_first}Repository.saveAndFlush(${table_name?uncap_first});

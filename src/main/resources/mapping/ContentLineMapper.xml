@@ -4,7 +4,7 @@
 
     <resultMap id="ContentLineResultMap" type="com.sckj.model.ContentLine">
         <result column="id" jdbcType="VARCHAR" property="id" />
-        <result column="content_id" jdbcType="INTEGER" property="contentId" />
+        <result column="content_id" jdbcType="VARCHAR" property="contentId" />
         <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="width" jdbcType="VARCHAR" property="width" />
     </resultMap>

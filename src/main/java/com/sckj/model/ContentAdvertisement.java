@@ -38,7 +38,7 @@ public class ContentAdvertisement {
 
 
     @Column(name = "contentid",columnDefinition = "VARCHAR")
-    private int contentid;
+    private String contentid;
 
     /**
     *
@@ -134,108 +134,96 @@ public class ContentAdvertisement {
     private Date updateTime;
 
 
-
     public String getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(String id) {
         this.id = id;
     }
 
-
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-
-
-
-    public int getContentid() {
-    return this.contentid;
+    public String getContentid() {
+        return contentid;
     }
 
-    public void setContentid(int contentid) {
-    this.contentid = contentid;
+    public void setContentid(String contentid) {
+        this.contentid = contentid;
     }
+
     public String getParentid() {
-        return this.parentid;
+        return parentid;
     }
 
     public void setParentid(String parentid) {
         this.parentid = parentid;
     }
 
-
     public String getImgurl() {
-        return this.imgurl;
+        return imgurl;
     }
 
     public void setImgurl(String imgurl) {
         this.imgurl = imgurl;
     }
 
-
     public String getJumpType() {
-        return this.jumpType;
+        return jumpType;
     }
 
     public void setJumpType(String jumpType) {
         this.jumpType = jumpType;
     }
 
-
     public String getProductCode() {
-        return this.productCode;
+        return productCode;
     }
 
     public void setProductCode(String productCode) {
         this.productCode = productCode;
     }
 
-
     public String getProductName() {
-        return this.productName;
+        return productName;
     }
 
     public void setProductName(String productName) {
         this.productName = productName;
     }
 
-
-
-
     public int getOrder() {
-    return this.order;
+        return order;
     }
 
     public void setOrder(int order) {
-    this.order = order;
+        this.order = order;
     }
+
     public String getTimeType() {
-        return this.timeType;
+        return timeType;
     }
 
     public void setTimeType(String timeType) {
         this.timeType = timeType;
     }
 
-
     public Date getStartTime() {
-        return this.startTime;
+        return startTime;
     }
 
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
-
     public Date getEndTime() {
-        return this.endTime;
+        return endTime;
     }
 
     public void setEndTime(Date endTime) {

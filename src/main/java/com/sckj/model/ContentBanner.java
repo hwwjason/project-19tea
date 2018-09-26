@@ -37,8 +37,8 @@ public class ContentBanner {
     */
 
 
-    @Column(name = "contentid",columnDefinition = "INTEGER")
-    private int contentid;
+    @Column(name = "contentid",columnDefinition = "VARCHAR")
+    private String contentid;
 
     /**
     *
@@ -139,15 +139,14 @@ public class ContentBanner {
     }
 
 
-
-
-    public int getContentid() {
-    return this.contentid;
+    public String getContentid() {
+        return contentid;
     }
 
-    public void setContentid(int contentid) {
-    this.contentid = contentid;
+    public void setContentid(String contentid) {
+        this.contentid = contentid;
     }
+
     public String getParentid() {
         return this.parentid;
     }

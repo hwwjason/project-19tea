@@ -5,7 +5,7 @@
     <resultMap id="ContentProductSlideResultMap" type="com.sckj.model.ContentProductSlide">
         <result column="id" jdbcType="VARCHAR" property="id" />
         <result column="name" jdbcType="VARCHAR" property="name" />
-        <result column="contentid" jdbcType="INTEGER" property="contentid" />
+        <result column="contentid" jdbcType="VARCHAR" property="contentid" />
         <result column="parentid" jdbcType="VARCHAR" property="parentid" />
         <result column="product_code" jdbcType="VARCHAR" property="productCode" />
         <result column="product_name" jdbcType="VARCHAR" property="productName" />

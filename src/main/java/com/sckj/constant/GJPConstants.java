@@ -1,5 +1,7 @@
 package com.sckj.constant;
 
+import com.sckj.utils.HttpUtils;
+
 public class GJPConstants {
     //管家婆接口参数
     public static final String APP_KEY = "10651245836115605605707684031430";
@@ -12,7 +14,7 @@ public class GJPConstants {
     public static final String LOGIN_CODE = "https://authcentral.wsgjp.com/account/login?";//授权获取授权认证码访问地址
     public static final String GET_TOKEN_URL = "http://apigateway.wsgjp.com.cn/api/token";
     public static final String API_LINK = "http://apigateway.wsgjp.com.cn/api/";
-    public static final String REDIRECT_URL = "https://192.168.0.179/GetToken.jsp";
+    public static final String REDIRECT_URL = "https://"+ HttpUtils.getServerUrl()+"/GetToken.jsp";
 
 
     public static final String ERP_LOGIN_URL = "http://login.wsgjp.com/";//erp登录地址

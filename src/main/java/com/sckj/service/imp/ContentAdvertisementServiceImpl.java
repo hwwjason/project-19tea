@@ -66,8 +66,8 @@ public class ContentAdvertisementServiceImpl implements IContentAdvertisementSer
             contentAdvertisement.setId(UUIDUtils.generate());
         }else{
             contentAdvertisement = contentAdvertisementDAO.findById(id);
-            contentAdvertisement.setUpdateTime(DateTimeUtils.getCurrentDate());
             BeanUtils.copyPropertiesWithoutNull(contentAdvertisement,contentAdvertisementDTO);
+            contentAdvertisement.setUpdateTime(DateTimeUtils.getCurrentDate());
         }
 
         contentAdvertisement = contentAdvertisementRepository.saveAndFlush(contentAdvertisement);

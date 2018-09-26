@@ -5,7 +5,7 @@
     <resultMap id="ContentBannerResultMap" type="com.sckj.model.ContentBanner">
         <result column="id" jdbcType="VARCHAR" property="id" />
         <result column="name" jdbcType="VARCHAR" property="name" />
-        <result column="contentid" jdbcType="INTEGER" property="contentid" />
+        <result column="contentid" jdbcType="VARCHAR" property="contentid" />
         <result column="parentid" jdbcType="VARCHAR" property="parentid" />
         <result column="imgurl" jdbcType="VARCHAR" property="imgurl" />
         <result column="jump_type" jdbcType="VARCHAR" property="jumpType" />

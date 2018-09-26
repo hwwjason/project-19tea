@@ -1,5 +1,8 @@
 package com.sckj.enums;
 
+/**
+ * 内容管理系统
+ */
 public enum ContentTypeEnum {
     CONTENT_BANNER("0","Banner配置"),
     CONTENT_PRODUCT_SLIDE("1","商品滑动栏"),

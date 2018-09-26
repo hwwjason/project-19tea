@@ -12,5 +12,4 @@ import java.util.List;
 public interface ProductOrderRepository extends JpaRepository<ProductOrder, String> {
 
     List<ProductOrder> findByBuyuserId(String buyUserId);
-
 }

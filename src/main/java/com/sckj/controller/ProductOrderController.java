@@ -45,7 +45,7 @@ public class ProductOrderController {
             return resultData;
         }catch (BusinessException e){
             throw e;
-        } catch (Exception e){
+        }catch (Exception e){
             logger.error("Error", e);
             return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
         }
@@ -60,7 +60,7 @@ public class ProductOrderController {
         try{
             ResultData resultData = new ResultData();
             List<ProductOrderDTO> productOrderDTOList = productOrderService.findProductOrder(productOrderDTO);
-            resultData.setData(productOrderDTO);
+            resultData.setData(productOrderDTOList);
             return resultData;
         }catch (BusinessException e){
             throw e;

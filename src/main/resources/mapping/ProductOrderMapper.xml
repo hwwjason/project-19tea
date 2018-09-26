@@ -107,6 +107,12 @@
             <if test="null != orderStatus and  '' neq orderStatus">
                 and  UPPER(product.order_status) LIKE CONCAT('%',UPPER (#{orderStatus}),'%')
             </if>
+            <if test="orderStatusList !=null and orderStatusList.size>0">
+                and product.order_status  in
+                <foreach index = "index" item="item"  collection="orderStatusList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
         </where>
         ORDER BY product.createtime DESC
     </select>

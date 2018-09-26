@@ -43,7 +43,9 @@
     <select id="getContentList" parameterType="java.util.Map" resultMap="ContentDTOResultMap">
         select * from sckj_content as temp
         <where>
-
+            <if test="null != type and  '' neq type">
+                and  UPPER(temp.type) LIKE CONCAT('%',UPPER (#{type}),'%')
+            </if>
         </where>
         ORDER BY temp.create_time DESC
     </select>

@@ -66,10 +66,8 @@ public class ContentServiceImpl implements IContentService {
         String orders = content.getOrders();
         String[] orderList =  orders.split(",");
         List<Object> contents = new ArrayList<>();
+
         List<ContentAdvertisement> contentAdvertisement = contentAdvertisementService.findByContentid(contentid);
-
-
-
         Map<String,ContentAdvertisement> contentAdvertisementMap = contentAdvertisement.stream().collect(Collectors.toMap(ContentAdvertisement::getId, ContentAdvertisement->ContentAdvertisement));
 
         List<ContentBanner> contentBanners = contentBannerService.findByContentid(contentid);

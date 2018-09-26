@@ -54,6 +54,25 @@ public class ContentBannerController {
     }
 
     /**
+     * 描述：根据parentd 查询
+     * @param parentid
+     */
+    @RequestMapping(value = "/findByParentid", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData findByParentid(@RequestParam String parentid)throws Exception {
+        try{
+            ResultData resultData = new ResultData();
+            List<ContentBanner> contentBanners = contentBannerService.findByParentid(parentid);
+            resultData.setData(contentBanners);
+            return resultData;
+        }catch (BusinessException e){
+            throw e;
+        } catch (Exception e){
+            logger.error("Error 查询失败", e);
+            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+        }
+    }
+
+    /**
     * 描述:创建或更新Banner配置
     * @param contentBannerDTO  Banner配置DTO
     */

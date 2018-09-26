@@ -19,6 +19,10 @@ public interface IContentProductColumnService  {
     */
     ContentProductColumnDTO findDTOById(String id)throws Exception;
 
+    List<ContentProductColumn> findByParentid(String parentid)throws Exception;
+
+    List<ContentProductColumn> findByContentid(String contentid)throws Exception;
+
     ContentProductColumn findById(String id)throws Exception;
 
     ContentProductColumn saveAndFlush(ContentProductColumn contentProductColumn)throws Exception;

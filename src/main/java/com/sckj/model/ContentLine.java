@@ -30,7 +30,7 @@ public class ContentLine {
 
 
     @Column(name = "content_id",columnDefinition = "VARCHAR")
-    private String contentId;
+    private String contentid;
 
     /**
     *
@@ -60,12 +60,12 @@ public class ContentLine {
     }
 
 
-    public String getContentId() {
-        return contentId;
+    public String getContentid() {
+        return contentid;
     }
 
-    public void setContentId(String contentId) {
-        this.contentId = contentId;
+    public void setContentid(String contentid) {
+        this.contentid = contentid;
     }
 
     public String getName() {

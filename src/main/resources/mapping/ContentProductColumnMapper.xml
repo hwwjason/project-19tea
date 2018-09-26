@@ -12,10 +12,13 @@
         <result column="product_price" jdbcType="VARCHAR" property="productPrice" />
         <result column="tag_first" jdbcType="VARCHAR" property="tagFirst" />
         <result column="tag_second" jdbcType="VARCHAR" property="tagSecond" />
-        <result column="order" jdbcType="INTEGER" property="order" />
+        <result column="orders" jdbcType="VARCHAR" property="orders" />
+        <result column="level" jdbcType="VARCHAR" property="level" />
         <result column="time_type" jdbcType="VARCHAR" property="timeType" />
         <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     </resultMap>
 
     <resultMap id="ContentProductColumnDTOResultMap" extends="ContentProductColumnResultMap" type="com.sckj.model.dto.ContentProductColumnDTO"></resultMap>

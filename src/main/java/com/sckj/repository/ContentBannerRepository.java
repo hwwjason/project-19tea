@@ -14,4 +14,8 @@ public interface ContentBannerRepository extends JpaRepository<ContentBanner, St
 
     List<ContentBanner> findByIdIn(List<String> ids);
 
+    List<ContentBanner> findByParentid(String parentid);
+
+    List<ContentBanner> findByContentid(String contentid);
+
 }

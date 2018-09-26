@@ -14,4 +14,5 @@ public interface ContentLineRepository extends JpaRepository<ContentLine, String
 
     List<ContentLine> findByIdIn(List<String> ids);
 
+    List<ContentLine> findByContentid(String contentid);
 }

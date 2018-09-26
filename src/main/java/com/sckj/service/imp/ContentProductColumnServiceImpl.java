@@ -41,6 +41,16 @@ public class ContentProductColumnServiceImpl implements IContentProductColumnSer
     }
 
     @Override
+    public  List<ContentProductColumn> findByContentid(String contentid)throws Exception{
+        return contentProductColumnRepository.findByContentid(contentid);
+    }
+
+    @Override
+    public  List<ContentProductColumn> findByParentid(String parentid)throws Exception{
+        return contentProductColumnRepository.findByParentid(parentid);
+    }
+
+    @Override
     public ContentProductColumn findById(String id) throws Exception {
         ContentProductColumn contentProductColumn = contentProductColumnDAO.findById(id);
         return contentProductColumn;

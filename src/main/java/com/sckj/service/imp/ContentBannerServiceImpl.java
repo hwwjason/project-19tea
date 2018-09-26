@@ -41,6 +41,16 @@ public class ContentBannerServiceImpl implements IContentBannerService {
     }
 
     @Override
+    public  List<ContentBanner> findByParentid(String parentid)throws Exception{
+        return contentBannerRepository.findByParentid(parentid);
+    }
+
+    @Override
+    public  List<ContentBanner> findByContentid(String contentid)throws Exception{
+        return contentBannerRepository.findByContentid(contentid);
+    }
+
+    @Override
     public ContentBanner findById(String id) throws Exception {
         ContentBanner contentBanner = contentBannerDAO.findById(id);
         return contentBanner;

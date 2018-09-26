@@ -90,8 +90,14 @@ public class ContentAdvertisement {
     */
 
 
-    @Column(name = "order",columnDefinition = "INTEGER")
-    private int order;
+    @Column(name = "orders",columnDefinition = "VARCHAR")
+    private String orders;
+
+    /**
+     * 层级（1第一层级，2第二层级）
+     */
+    @Column(name = "level",columnDefinition = "VARCHAR")
+    private String level;
 
     /**
     *0永久，1时间配置
@@ -198,12 +204,20 @@ public class ContentAdvertisement {
         this.productName = productName;
     }
 
-    public int getOrder() {
-        return order;
+    public String getOrders() {
+        return orders;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setOrders(String orders) {
+        this.orders = orders;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public String getTimeType() {

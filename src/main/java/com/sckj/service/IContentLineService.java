@@ -1,4 +1,5 @@
 package com.sckj.service;
+import com.sckj.model.ContentBanner;
 import com.sckj.model.ContentLine;
 import com.sckj.model.dto.ContentLineDTO;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,8 @@ public interface IContentLineService  {
     ContentLineDTO findDTOById(String id)throws Exception;
 
     ContentLine findById(String id)throws Exception;
+
+    List<ContentLine> findByContentid(String contentid)throws Exception;
 
     ContentLine saveAndFlush(ContentLine contentLine)throws Exception;
 

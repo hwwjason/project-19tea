@@ -19,6 +19,10 @@ public interface IContentBannerService  {
     */
     ContentBannerDTO findDTOById(String id)throws Exception;
 
+    List<ContentBanner> findByParentid(String parentid)throws Exception;
+
+    List<ContentBanner> findByContentid(String contentid)throws Exception;
+
     ContentBanner findById(String id)throws Exception;
 
     ContentBanner saveAndFlush(ContentBanner contentBanner)throws Exception;

@@ -14,4 +14,8 @@ public interface ContentProductColumnRepository extends JpaRepository<ContentPro
 
     List<ContentProductColumn> findByIdIn(List<String> ids);
 
+    List<ContentProductColumn> findByParentid(String parentid);
+
+    List<ContentProductColumn> findByContentid(String contentid);
+
 }

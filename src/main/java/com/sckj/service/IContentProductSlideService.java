@@ -19,6 +19,10 @@ public interface IContentProductSlideService  {
     */
     ContentProductSlideDTO findDTOById(String id)throws Exception;
 
+    List<ContentProductSlide> findByParentid(String parentid)throws Exception;
+
+    List<ContentProductSlide> findByContentid(String contentid)throws Exception;
+
     ContentProductSlide findById(String id)throws Exception;
 
     ContentProductSlide saveAndFlush(ContentProductSlide contentProductSlide)throws Exception;

@@ -11,10 +11,13 @@
         <result column="jump_type" jdbcType="VARCHAR" property="jumpType" />
         <result column="product_code" jdbcType="VARCHAR" property="productCode" />
         <result column="product_name" jdbcType="VARCHAR" property="productName" />
-        <result column="order" jdbcType="INTEGER" property="order" />
+        <result column="orders" jdbcType="VARCHAR" property="orders" />
+        <result column="orders" jdbcType="VARCHAR" property="orders" />
         <result column="time_type" jdbcType="VARCHAR" property="timeType" />
         <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     </resultMap>
 
     <resultMap id="ContentAdvertisementDTOResultMap" extends="ContentAdvertisementResultMap" type="com.sckj.model.dto.ContentAdvertisementDTO"></resultMap>

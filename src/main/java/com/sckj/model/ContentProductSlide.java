@@ -81,9 +81,12 @@ public class ContentProductSlide {
     *
     */
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @Column(name = "order",columnDefinition = "TIMESTAMP")
-    private Date order;
+    @Column(name = "orders",columnDefinition = "VARCHAR")
+    private String orders;
+
+
+    @Column(name = "level",columnDefinition = "VARCHAR")
+    private String level;
 
 
     /**
@@ -112,106 +115,6 @@ public class ContentProductSlide {
     @Column(name = "end_time",columnDefinition = "TIMESTAMP")
     private Date endTime;
 
-
-
-    public String getId() {
-        return this.id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public String getContentid() {
-        return contentid;
-    }
-
-    public void setContentid(String contentid) {
-        this.contentid = contentid;
-    }
-
-    public String getParentid() {
-        return this.parentid;
-    }
-
-    public void setParentid(String parentid) {
-        this.parentid = parentid;
-    }
-
-
-    public String getProductCode() {
-        return this.productCode;
-    }
-
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
-    }
-
-
-    public String getProductName() {
-        return this.productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-
-    public String getProductPrice() {
-        return this.productPrice;
-    }
-
-    public void setProductPrice(String productPrice) {
-        this.productPrice = productPrice;
-    }
-
-
-    public Date getOrder() {
-        return this.order;
-    }
-
-    public void setOrder(Date order) {
-        this.order = order;
-    }
-
-
-    public String getTimeType() {
-        return this.timeType;
-    }
-
-    public void setTimeType(String timeType) {
-        this.timeType = timeType;
-    }
-
-
-    public Date getStartTime() {
-        return this.startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-
-    public Date getEndTime() {
-        return this.endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-
     /**
      *
      */
@@ -226,6 +129,103 @@ public class ContentProductSlide {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "update_time",columnDefinition = "TIMESTAMP")
     private Date updateTime;
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getContentid() {
+        return contentid;
+    }
+
+    public void setContentid(String contentid) {
+        this.contentid = contentid;
+    }
+
+    public String getParentid() {
+        return parentid;
+    }
+
+    public void setParentid(String parentid) {
+        this.parentid = parentid;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(String productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public String getOrders() {
+        return orders;
+    }
+
+    public void setOrders(String orders) {
+        this.orders = orders;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getTimeType() {
+        return timeType;
+    }
+
+    public void setTimeType(String timeType) {
+        this.timeType = timeType;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public Date getCreateTime() {
         return createTime;

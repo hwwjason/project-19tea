@@ -54,6 +54,25 @@ public class ContentController {
     }
 
     /**
+     * 描述：根据parentd 查询
+     * @param contentid
+     */
+    @RequestMapping(value = "/findByContentid", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData findByContentid(@RequestParam String contentid)throws Exception {
+        try{
+            ResultData resultData = new ResultData();
+            List<Object> contents = contentService.findByContentid(contentid);
+            resultData.setData(contents);
+            return resultData;
+        }catch (BusinessException e){
+            throw e;
+        } catch (Exception e){
+            logger.error("Error 查询失败", e);
+            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+        }
+    }
+
+    /**
     * 描述:创建或更新内容管理
     * @param contentDTO  内容管理DTO
     */

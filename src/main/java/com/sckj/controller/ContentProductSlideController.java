@@ -6,6 +6,7 @@ import com.sckj.common.Query;
 import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
+import com.sckj.model.ContentBanner;
 import com.sckj.model.dto.CouponDTO;
 import com.sckj.service.IContentProductSlideService;
 import com.sckj.model.ContentProductSlide;
@@ -44,6 +45,25 @@ public class ContentProductSlideController {
             ResultData resultData = new ResultData();
             ContentProductSlideDTO contentProductSlideDTO = contentProductSlideService.findDTOById(id);
             resultData.setData(contentProductSlideDTO);
+            return resultData;
+        }catch (BusinessException e){
+            throw e;
+        } catch (Exception e){
+            logger.error("Error 查询失败", e);
+            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+        }
+    }
+
+    /**
+     * 描述：根据parentd 查询
+     * @param parentid
+     */
+    @RequestMapping(value = "/findByParentid", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData findByParentid(@RequestParam String parentid)throws Exception {
+        try{
+            ResultData resultData = new ResultData();
+            List<ContentProductSlide> contentProductSlides = contentProductSlideService.findByParentid(parentid);
+            resultData.setData(contentProductSlides);
             return resultData;
         }catch (BusinessException e){
             throw e;

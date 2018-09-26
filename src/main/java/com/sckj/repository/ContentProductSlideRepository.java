@@ -14,4 +14,7 @@ public interface ContentProductSlideRepository extends JpaRepository<ContentProd
 
     List<ContentProductSlide> findByIdIn(List<String> ids);
 
+    List<ContentProductSlide> findByParentid(String parentid);
+
+    List<ContentProductSlide> findByContentid(String contentid);
 }

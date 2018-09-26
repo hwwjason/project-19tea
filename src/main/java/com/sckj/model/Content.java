@@ -33,6 +33,8 @@ public class Content {
     private String type;
 
 
+    @Column(name = "orders",columnDefinition = "TEXT")
+    private String orders;
 
 
     /**
@@ -123,6 +125,11 @@ public class Content {
         this.status = status;
     }
 
+    public String getOrders() {
+        return orders;
+    }
 
-
+    public void setOrders(String orders) {
+        this.orders = orders;
+    }
 }

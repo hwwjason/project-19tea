@@ -54,6 +54,25 @@ public class ContentProductColumnController {
     }
 
     /**
+     * 描述：根据parentd 查询
+     * @param parentid
+     */
+    @RequestMapping(value = "/findByParentid", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData findByParentid(@RequestParam String parentid)throws Exception {
+        try{
+            ResultData resultData = new ResultData();
+            List<ContentProductColumn> contentProductColumns = contentProductColumnService.findByParentid(parentid);
+            resultData.setData(contentProductColumns);
+            return resultData;
+        }catch (BusinessException e){
+            throw e;
+        } catch (Exception e){
+            logger.error("Error 查询失败", e);
+            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+        }
+    }
+
+    /**
     * 描述:创建或更新商品通栏配置
     * @param contentProductColumnDTO  商品通栏配置DTO
     */

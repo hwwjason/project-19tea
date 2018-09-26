@@ -47,6 +47,11 @@ public class ContentLineServiceImpl implements IContentLineService {
     }
 
     @Override
+    public  List<ContentLine> findByContentid(String contentid)throws Exception{
+        return contentLineRepository.findByContentid(contentid);
+    }
+
+    @Override
     public ContentLine saveAndFlush(ContentLine contentLine)throws Exception{
         return contentLineRepository.saveAndFlush(contentLine);
     }

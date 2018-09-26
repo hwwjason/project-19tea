@@ -41,6 +41,16 @@ public class ContentProductSlideServiceImpl implements IContentProductSlideServi
     }
 
     @Override
+    public  List<ContentProductSlide> findByParentid(String parentid)throws Exception{
+        return contentProductSlideRepository.findByParentid(parentid);
+    }
+
+    @Override
+    public  List<ContentProductSlide> findByContentid(String contentid)throws Exception{
+        return contentProductSlideRepository.findByContentid(contentid);
+    }
+
+    @Override
     public ContentProductSlide findById(String id) throws Exception {
         ContentProductSlide contentProductSlide = contentProductSlideDAO.findById(id);
         return contentProductSlide;

@@ -19,6 +19,8 @@ public interface IContentService  {
     */
     ContentDTO findDTOById(String id)throws Exception;
 
+    List<Object> findByContentid(String contentid)throws Exception;
+
     Content findById(String id)throws Exception;
 
     Content saveAndFlush(Content content)throws Exception;

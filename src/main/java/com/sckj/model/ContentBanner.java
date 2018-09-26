@@ -88,9 +88,11 @@ public class ContentBanner {
     /**
     *
     */
-    @Column(name = "order",columnDefinition = "VARCHAR")
-    private String order;
+    @Column(name = "orders",columnDefinition = "VARCHAR")
+    private String orders;
 
+    @Column(name = "level",columnDefinition = "VARCHAR")
+    private String level;
 
 
 
@@ -99,8 +101,8 @@ public class ContentBanner {
     */
 
 
-    @Column(name = "time_type",columnDefinition = "INTEGER")
-    private int timeType;
+    @Column(name = "time_type",columnDefinition = "VARCHAR")
+    private String timeType;
 
     /**
     *
@@ -119,115 +121,6 @@ public class ContentBanner {
     @Column(name = "end_time",columnDefinition = "TIMESTAMP")
     private Date endTime;
 
-
-
-    public String getId() {
-        return this.id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-
-    public String getContentid() {
-        return contentid;
-    }
-
-    public void setContentid(String contentid) {
-        this.contentid = contentid;
-    }
-
-    public String getParentid() {
-        return this.parentid;
-    }
-
-    public void setParentid(String parentid) {
-        this.parentid = parentid;
-    }
-
-
-    public String getImgurl() {
-        return this.imgurl;
-    }
-
-    public void setImgurl(String imgurl) {
-        this.imgurl = imgurl;
-    }
-
-
-    public String getJumpType() {
-        return this.jumpType;
-    }
-
-    public void setJumpType(String jumpType) {
-        this.jumpType = jumpType;
-    }
-
-
-    public String getProductCode() {
-        return this.productCode;
-    }
-
-    public void setProductCode(String productCode) {
-        this.productCode = productCode;
-    }
-
-
-    public String getProductName() {
-        return this.productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
-
-    public String getOrder() {
-        return this.order;
-    }
-
-    public void setOrder(String order) {
-        this.order = order;
-    }
-
-
-
-
-    public int getTimeType() {
-    return this.timeType;
-    }
-
-    public void setTimeType(int timeType) {
-    this.timeType = timeType;
-    }
-    public Date getStartTime() {
-        return this.startTime;
-    }
-
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-
-    public Date getEndTime() {
-        return this.endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
-
-
     /**
      *
      */
@@ -242,6 +135,110 @@ public class ContentBanner {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @Column(name = "update_time",columnDefinition = "TIMESTAMP")
     private Date updateTime;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getContentid() {
+        return contentid;
+    }
+
+    public void setContentid(String contentid) {
+        this.contentid = contentid;
+    }
+
+    public String getParentid() {
+        return parentid;
+    }
+
+    public void setParentid(String parentid) {
+        this.parentid = parentid;
+    }
+
+    public String getImgurl() {
+        return imgurl;
+    }
+
+    public void setImgurl(String imgurl) {
+        this.imgurl = imgurl;
+    }
+
+    public String getJumpType() {
+        return jumpType;
+    }
+
+    public void setJumpType(String jumpType) {
+        this.jumpType = jumpType;
+    }
+
+    public String getProductCode() {
+        return productCode;
+    }
+
+    public void setProductCode(String productCode) {
+        this.productCode = productCode;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getOrders() {
+        return orders;
+    }
+
+    public void setOrders(String orders) {
+        this.orders = orders;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    public String getTimeType() {
+        return timeType;
+    }
+
+    public void setTimeType(String timeType) {
+        this.timeType = timeType;
+    }
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public Date getCreateTime() {
         return createTime;

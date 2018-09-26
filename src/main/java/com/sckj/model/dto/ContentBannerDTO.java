@@ -1,5 +1,6 @@
 package com.sckj.model.dto;
 
+import com.sckj.enums.ContentTypeEnum;
 import com.sckj.model.ContentBanner;
 
 import java.util.List;
@@ -12,11 +13,21 @@ import java.util.List;
 public class ContentBannerDTO extends ContentBanner{
     private List<String> ids;
 
+    private String type = ContentTypeEnum.CONTENT_BANNER.toString();;
+
     public List<String> getIds() {
         return ids;
     }
 
     public void setIds(List<String> ids) {
         this.ids = ids;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

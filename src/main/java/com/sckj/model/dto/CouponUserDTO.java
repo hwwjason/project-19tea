@@ -20,6 +20,8 @@ public class CouponUserDTO extends CouponUser{
 
     private String isOptimal;//0 否，1是  //最理想的
 
+    private String isInvalid;//是否过期 0是，1否
+
     private List<String> ids;
 
     private String isAllUser;//0否，1是  是否全部用户
@@ -342,5 +344,13 @@ public class CouponUserDTO extends CouponUser{
 
     public void setProductcode(String productcode) {
         this.productcode = productcode;
+    }
+
+    public String getIsInvalid() {
+        return isInvalid;
+    }
+
+    public void setIsInvalid(String isInvalid) {
+        this.isInvalid = isInvalid;
     }
 }

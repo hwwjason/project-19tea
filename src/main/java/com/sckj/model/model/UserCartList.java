@@ -1,4 +1,6 @@
-package com.sckj.model.dto;
+package com.sckj.model.model;
+
+import com.sckj.model.dto.UserCartDTO;
 
 import java.math.BigDecimal;
 import java.util.List;

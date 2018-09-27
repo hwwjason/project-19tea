@@ -13,7 +13,6 @@ import com.sckj.repository.mybatis.CouponUserDAO;
 import com.sckj.utils.DateTimeUtils;
 import com.sckj.utils.UUIDUtils;
 import com.sckj.utils.BeanUtils;
-import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.sckj.model.dto.CouponUserDTO;
@@ -21,11 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import javax.transaction.Transactional;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
 * 描述：优惠券用户表 服务实现层
@@ -154,6 +149,33 @@ public class CouponUserServiceImpl implements ICouponUserService {
     public List<CouponUserDTO> getCouponUserList(Map<String,Object> map) {
         List<CouponUserDTO> lists = couponUserDAO.getCouponUserList(map);
         return lists;
+    }
+
+    @Override
+    public List<CouponUserDTO> getCouponUserIsInvalid(Map<String,Object> map, String isInvalid) {
+        List<CouponUserDTO> couponUserDTOS = getCouponUserList(map);
+        List<CouponUserDTO> couponUser = new ArrayList<>();
+        if("1".equals(isInvalid)){//已经失效(已经过期，已经使用的)
+            for (CouponUserDTO coupon : couponUserDTOS) {
+                if("1".equals(coupon.getIsuse())){//已经使用
+                    couponUser.add(coupon);
+                }else{//未使用
+                    if((coupon.getRealendtime()==null || coupon.getRealstarttime()==null)||(coupon.getRealendtime().getTime()>DateTimeUtils.getCurrentDate().getTime() ||
+                            coupon.getRealstarttime().getTime()<DateTimeUtils.getCurrentDate().getTime())){//已经过期 未到期
+                        couponUser.add(coupon);
+                    }
+                }
+            }
+        }else {//0 未失效
+            for (CouponUserDTO coupon : couponUserDTOS) {
+                if("0".equals(coupon.getIsuse())){//未使用
+                    if(coupon.getRealendtime()!=null && (coupon.getRealendtime().getTime()>= DateTimeUtils.getCurrentDate().getTime())){//未过期,不用管开始时间
+                        couponUser.add(coupon);
+                    }
+                }
+            }
+        }
+        return couponUser;
     }
 }
 

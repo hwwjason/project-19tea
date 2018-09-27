@@ -1,7 +1,7 @@
 package com.sckj.service;
 
 import com.sckj.model.dto.UserCartDTO;
-import com.sckj.model.dto.UserCartList;
+import com.sckj.model.model.UserCartList;
 
 import java.util.List;
 

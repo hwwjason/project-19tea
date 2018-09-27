@@ -5,6 +5,7 @@ import com.sckj.enums.OrderEnums.OrderStatusEnums;
 import com.sckj.exception.BusinessException;
 import com.sckj.model.*;
 import com.sckj.model.dto.*;
+import com.sckj.model.model.UserCartList;
 import com.sckj.repository.*;
 import com.sckj.repository.mybatis.CouponUserDAO;
 import com.sckj.repository.mybatis.ProductListMapper;

@@ -4,7 +4,7 @@ import com.sckj.repository.mybatis.ProductListMapper;
 import com.sckj.repository.mybatis.UserCartMapper;
 import com.sckj.repository.mybatis.UserListDAO;
 import com.sckj.model.dto.UserCartDTO;
-import com.sckj.model.dto.UserCartList;
+import com.sckj.model.model.UserCartList;
 import com.sckj.enums.ProductShelvesEnum;
 import com.sckj.exception.BusinessException;
 import com.sckj.repository.ProductListJpa;

@@ -7,7 +7,6 @@ import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
 import com.sckj.service.ICouponUserService;
-import com.sckj.model.CouponUser;
 import com.sckj.model.dto.CouponUserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
 import com.sckj.common.ResultData;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -137,6 +137,21 @@ public class CouponUserController {
         List<CouponUserDTO> list = couponUserService.getCouponUserList(map);
         PageInfo<CouponUserDTO> pageInfo = new PageInfo<CouponUserDTO>(list);
         resultData.setData(pageInfo);
+        return resultData;
+    }
+
+    /**
+     *
+     * @param couponUserDTO
+     * @return
+     */
+    @RequestMapping(value = "/getCouponUserIsInvalid", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData getCouponUserIsInvalid(@RequestBody CouponUserDTO couponUserDTO){
+        ResultData resultData = new ResultData();
+        Map<String,Object> map = new HashMap<>();
+        map.put("userid",couponUserDTO.getUserid());
+        List<CouponUserDTO> list = couponUserService.getCouponUserIsInvalid(map,couponUserDTO.getIsInvalid());
+        resultData.setData(list);
         return resultData;
     }
 

@@ -35,4 +35,12 @@ public interface ICouponUserService  {
     void deleteByIds(List<String> ids)throws Exception;
 
     List<CouponUserDTO> getCouponUserList(Map<String,Object> couponUserListMap);
+
+    /**
+     *
+     * @param couponUserListMap
+     * @param isInvalid 1 是失效的，0未失效的
+     * @return
+     */
+    List<CouponUserDTO> getCouponUserIsInvalid(Map<String,Object> couponUserListMap, String isInvalid);
 }

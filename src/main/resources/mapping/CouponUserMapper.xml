@@ -128,6 +128,9 @@
                 and (  UPPER(temp.userid) LIKE CONCAT('%',UPPER (#{phoneOrUserId}),'%')
                     or UPPER(temp.tel) LIKE CONCAT('%',UPPER (#{phoneOrUserId}),'%'))
             </if>
+            <if test="null != userid and  '' neq userid">
+                and   temp.userid=#{userid}
+            </if>
             <if test="null != couponid and  '' neq couponid">
                 and temp.couponid = #{couponid}
             </if>

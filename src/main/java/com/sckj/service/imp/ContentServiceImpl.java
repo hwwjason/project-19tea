@@ -63,10 +63,11 @@ public class ContentServiceImpl implements IContentService {
     @Override
     public List<Object> findByContentid(String contentid)throws Exception{
         Content content = findById(contentid);
-        String orders = content.getOrders();
-        String[] orderList =  orders.split(",");
         List<Object> contents = new ArrayList<>();
-
+        String orders = content.getOrders();
+        if(orders==null){
+            return contents;
+        }
         List<ContentAdvertisement> contentAdvertisement = contentAdvertisementService.findByContentid(contentid);
         Map<String,ContentAdvertisement> contentAdvertisementMap = contentAdvertisement.stream().collect(Collectors.toMap(ContentAdvertisement::getId, ContentAdvertisement->ContentAdvertisement));
 
@@ -82,6 +83,7 @@ public class ContentServiceImpl implements IContentService {
 
         List<ContentProductSlide> contentProductSlides = contentProductSlideService.findByContentid(contentid);
         Map<String,ContentProductSlide> contentProductSlideMap = contentProductSlides.stream().collect(Collectors.toMap(ContentProductSlide::getId, ContentProductSlide->ContentProductSlide));
+        String[] orderList =  orders.split(",");
         for (String s : orderList) {
             if(contentAdvertisementMap.get(s)!=null){
                 ContentAdvertisementDTO contentAdvertisementDTO = new ContentAdvertisementDTO();

@@ -64,7 +64,11 @@ public class ContentBanner {
     @Column(name = "jump_type",columnDefinition = "VARCHAR")
     private String jumpType;
 
-
+    /**
+     *
+     */
+    @Column(name = "jump_url",columnDefinition = "VARCHAR")
+    private String jumpUrl;
 
 
     /**
@@ -254,5 +258,13 @@ public class ContentBanner {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getJumpUrl() {
+        return jumpUrl;
+    }
+
+    public void setJumpUrl(String jumpUrl) {
+        this.jumpUrl = jumpUrl;
     }
 }

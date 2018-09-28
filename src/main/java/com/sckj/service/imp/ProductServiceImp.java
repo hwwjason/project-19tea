@@ -1,6 +1,7 @@
 package com.sckj.service.imp;
 
 import com.sckj.enums.ProductShelvesEnum;
+import com.sckj.service.IGJPService;
 import com.sckj.utils.BeanUtils;
 import com.sckj.common.ResultData;
 import com.sckj.repository.mybatis.ProductListMapper;
@@ -30,6 +31,9 @@ public class ProductServiceImp implements IProductService{
 
     @Autowired
     private ProductListMapper productListMapper;
+
+    @Autowired
+    private IGJPService gjpService;
 
     @Override
     public void putProductToStorage(ProductList productList) {
@@ -182,7 +186,8 @@ public class ProductServiceImp implements IProductService{
         return productListDTO;
     }
 
-    public List<ProductList>  synchronousStock(List<ProductList> products){
+    public List<ProductListDTO> synchStock (List<String> codes) throws Exception{
+
         return null;
     }
 }

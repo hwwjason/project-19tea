@@ -57,10 +57,9 @@ public interface IProductService {
 
    /**
     * 同步库存
-    * @param products
     * @return
+    * @throws Exception
     */
-   List<ProductList> synchronousStock(List<ProductList> products);
-
+   List<ProductListDTO>  synchStock (List<String> codes) throws Exception;
 
 }

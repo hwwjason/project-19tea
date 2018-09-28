@@ -1,5 +1,7 @@
 package com.sckj.service;
 
+import com.sckj.model.ProductList;
+import com.sckj.model.dto.ProductListDTO;
 import net.sf.json.JSONObject;
 
 import java.util.List;
@@ -30,6 +32,15 @@ public interface IGJPService {
     String querysaleqty(String code) throws Exception;
 
     /**
+     * 批量查询商品基本资料的库存信息
+     * @param code
+     * @return
+     * @throws Exception
+     */
+    String batchquerysaleqty(String code) throws Exception;
+
+
+    /**
      * 上载商品信息
      * @param uploadproducts
      * @return
@@ -38,11 +49,18 @@ public interface IGJPService {
     String uploadproducts(String uploadproducts) throws Exception;
 
     /**
-     * 查询查库信息
+     * 系统仓库
      * @return
      * @throws Exception
      */
     List<Object> queryktypelist() throws Exception;
+
+    /**
+     * 获取系统仓库id
+     * @return
+     * @throws Exception
+     */
+    List<String> getKtypeids() throws Exception;
 
     /**
      * 查询交易列表信息

@@ -16,8 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
-//import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 
+/**
+ * 商品控制器
+ */
 @RestController
 @RequestMapping("/bak/product")
 public class BakProductController {
@@ -84,10 +86,10 @@ public class BakProductController {
         return resultData;
     }
 
-    @RequestMapping(value = "/synchronousStock", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    ResultData synchronousStock(@RequestBody List<ProductList> products) throws Exception{
+    @RequestMapping(value = "/synchStock", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    ResultData synchStock(@RequestParam List<String> codes) throws Exception{
         ResultData resultData = new ResultData();
-        productService.synchronousStock(products);
+        productService.synchStock(codes);
         return resultData;
     }
 

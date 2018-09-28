@@ -9,6 +9,8 @@ import com.sckj.model.GJP.GJPRequest.GJPProductinfoRequest;
 import com.sckj.model.GJP.GJPSelfbuiltmalleshoporder;
 import com.sckj.model.GJP.GJPSelfbuiltmallproduct;
 import com.sckj.model.GJP.GJPSelfbuiltmallproductsku;
+import com.sckj.model.ProductList;
+import com.sckj.model.dto.ProductListDTO;
 import com.sckj.service.IGJPService;
 import com.sckj.utils.JsonUtils;
 import net.sf.json.util.JSONUtils;
@@ -29,9 +31,10 @@ public class GJPServiceImp implements IGJPService {
     @Override
     public  String getProductinfo()  throws Exception
     {
-        GJPProductinfoRequest productinfo = new GJPProductinfoRequest();
+        GJPBaseRequest baseRequest = new GJPBaseRequest();
+        baseRequest.setApiName(GJPApiConstants.QUERY_PRODUCT_INFO);
         Map<String, String> param = new HashMap<>();
-        String ret = GJPHelp.sendPost(productinfo,param);
+        String ret = GJPHelp.sendPost(baseRequest,param);
         return ret;
     }
 
@@ -58,6 +61,28 @@ public class GJPServiceImp implements IGJPService {
     {
         GJPBaseRequest baseRequest = new GJPBaseRequest();
         baseRequest.setApiName(GJPApiConstants.QUERY_SALE_QTY);
+        Map<String, String> param = new HashMap<>();
+//        List<String> ids = new ArrayList<>();
+//
+//        ids.add(code);
+        //param.put("ktypeids",ids.toString());
+        param.put("numid",code);
+        List<Object> jsonObjects = this.queryktypelist();//((JSONObject) ktypeids.get(0)).get("usercode")
+        List<Object> ktypeids =jsonObjects.stream().map(e->((JSONObject)e).get("ktypeid")).collect(Collectors.toList());
+        param.put("ktypeids",(JsonUtils.List2JSON(ktypeids)).replace("\"",""));
+        param.put("iscalcsaleqty","true");
+        param.put("pagesize","50");
+        param.put("pageno","1");
+        String ret = GJPHelp.sendPost(baseRequest,param);
+
+        return ret;
+    }
+
+    @Override
+    public  String batchquerysaleqty(String code)  throws Exception
+    {
+        GJPBaseRequest baseRequest = new GJPBaseRequest();
+        baseRequest.setApiName(GJPApiConstants.BATCH_QUERY_SALE_QTY);
         Map<String, String> param = new HashMap<>();
 //        List<String> ids = new ArrayList<>();
 //
@@ -115,6 +140,11 @@ public class GJPServiceImp implements IGJPService {
         return ret;
     }
 
+    /**
+     * 系统仓库
+     * @return
+     * @throws Exception
+     */
     @Override
     public   List<Object> queryktypelist() throws Exception{
         GJPBaseRequest baseRequest = new GJPBaseRequest();
@@ -127,6 +157,15 @@ public class GJPServiceImp implements IGJPService {
         Map<String,Object> responseMap = (Map<String, Object>) map.get("response");
         List<Object> jsonObjects= (List<Object>) responseMap.get("ktypelist");
         return jsonObjects;
+    }
+
+    public List<String> getKtypeids() throws Exception {
+        List<Object> objects = this.queryktypelist();
+        List<String> ktypeids = new ArrayList<>();
+        for (Object object : objects) {
+            ktypeids.add((String) ((JSONObject) object).get("ktypeid"));
+        }
+        return ktypeids;
     }
 
     @Override

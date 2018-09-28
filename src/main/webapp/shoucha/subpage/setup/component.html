@@ -67,7 +67,7 @@
                         <button class="layui-btn layui-btn-small" :status="item.status" :productid="item.id" onclick="update(this)">
                             <i class="layui-icon">&#xe63c;</i>{{item.status==0?"启用":"暂停"}}
                         </button>
-                        <a class="layui-btn layui-btn-normal layui-btn-small" href="../../subpage/setup/componentDetailList.html">
+                        <a class="layui-btn layui-btn-normal layui-btn-small" :href="'../../subpage/setup/componentList.html?id='+item.id">
                             <i class="layui-icon">&#xe642;</i>配置
                         </a>
                         <a class="layui-btn layui-btn-danger layui-btn-small" :productid="item.id" onclick="deleteProduct(this)">

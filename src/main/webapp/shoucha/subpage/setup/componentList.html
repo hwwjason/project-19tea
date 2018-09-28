@@ -109,19 +109,19 @@
             <div class="layui-inline">
                 <ul>
                     <li>
-                        <button btnVal="Banner" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event)">Banner</button>
+                        <button btnVal="Banner" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,0)">Banner</button>
                     </li>
                     <li>
-                        <button btnVal="广告长图" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event)">广告长图</button>
+                        <button btnVal="商品滑动栏" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,1)">商品滑动栏</button>
                     </li>
                     <li>
-                        <button btnVal="分割线" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event)">分割线</button>
+                        <button btnVal="分割线" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,2)">分割线</button>
                     </li>
                     <li>
-                        <button btnVal="商品通栏" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event)">商品通栏</button>
+                        <button btnVal="广告长图" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,3)">广告长图</button>
                     </li>
                     <li>
-                        <button btnVal="商品滑动栏" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event)">商品滑动栏</button>
+                        <button btnVal="商品通栏" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,4)">商品通栏</button>
                     </li>
                 </ul>
             </div>
@@ -131,18 +131,14 @@
                     <input type="text" name="title" placeholder="请输入方案名称" autocomplete="off" class="layui-input">
                 </div>
             </div>
+            <button class="layui-btn layuiadmin-btn-list" onclick="window.history.go(-1)">
+                <i class="layui-icon">&#xe65c;</i>返回
+            </button>
         </div>
         <div class="c-list">
             <ul id="ul2" ondrop="drop(event)" ondragover="allowDrop(event)">
-                <li class="ul2-li no-after">
-                    <text class="content-text" ondblclick="modifyName(this)">banner</text>
-                    <text class="layui-btn layui-btn-small" onclick="set(this,'banner-set')">配置</text>
-                    <text class="layui-btn layui-btn-small layui-btn-danger">删除</text>
-                </li>
-                <li class="ul2-li no-after">
-                    <text class="content-text" ondblclick="modifyName(this)">广告长图</text>
-                    <text class="layui-btn layui-btn-small" onclick="set(this,'advertisement-set')">配置</text>
-                    <text class="layui-btn layui-btn-small layui-btn-danger">删除</text>
+                <li class="ul2-li no-after first-content-text">
+                    <text class="content-text ">请拖入组件</text>
                 </li>
             </ul>
         </div>
@@ -151,94 +147,98 @@
             <a class="layui-btn addComponent site-demo-active" lay-submit lay-filter="addComponent" data-type="tabAdd">
                 <i class="fa fa-plus"></i> 添加
             </a>
-            <ul class="layui-tab-title">
-                <li class="layui-this">banner1</li>
-            </ul>
-            <div class="layui-tab-content">
-                <div class="layui-tab-item layui-show banner-content">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">图片</label>
-                        <div class="layui-input-inline">
-                            <div class="addImg">
-                                <i class="fa fa-plus"></i>
-                            </div>
-                            <input type="file" class="input-file" name="username" onchange="preview(this)">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">跳转地址</label>
-                        <div class="layui-input-block">
-                            <input type="radio" lay-filter="urlType" name="bannerurlType" value="频道" title="频道">
-                            <input type="radio" lay-filter="urlType" name="bannerurlType" value="商品" title="商品" checked="">
-                            <input type="radio" lay-filter="urlType" name="bannerurlType" value="链接" title="链接">
-                        </div>
-                    </div>
-                    <div class="product-show">
+            <div v-for="bitem in bannerObj">
+                <ul class="layui-tab-title">
+                    <li class="layui-this">{{bitem.name}}</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show banner-content">
                         <div class="layui-form-item">
-                            <label class="layui-form-label">商品编号</label>
+                            <form id="uploadForm" enctype="multipart/form-data">
+                            <label class="layui-form-label">图片</label>
                             <div class="layui-input-inline">
-                                <input name="121" class="layui-input" placeholder="请输入商品编号搜索">
+                                <div class="addImg">
+                                    <i class="fa fa-plus"></i>
+                                </div>
+                                <input type="file" class="input-file" name="username" onchange="preview(this)">
                             </div>
-                            <div class="layui-input-inline">
-                                <button class="layui-btn layuiadmin-btn-list">
-                                    匹配
-                                </button>
+                            </form>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">跳转地址</label>
+                            <div class="layui-input-block">
+                                <input type="radio" lay-filter="urlType" v-model="bitem.jumpType" class="bannerurlType" name="bannerurlType" value="0" title="频道">
+                                <input type="radio" lay-filter="urlType" v-model="bitem.jumpType" class="bannerurlType" name="bannerurlType" value="1" title="商品" >
+                                <input type="radio" lay-filter="urlType" v-model="bitem.jumpType" class="bannerurlType" name="bannerurlType" value="2" title="链接">
+                            </div>
+                        </div>
+                        <div class="product-show">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">商品编号</label>
+                                <div class="layui-input-inline">
+                                    <input name="121" class="layui-input productCode" :value="bitem.productCode" placeholder="请输入商品编号搜索">
+                                </div>
+                                <div class="layui-input-inline">
+                                    <button class="layui-btn layuiadmin-btn-list">
+                                        匹配
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label">商品标题</label>
+                                    <div class="layui-input-inline">
+                                        <input name="" class="layui-input productName" :value="bitem.productName">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="url-show">
+                            <div class="layui-form-item">
+                                <div class="layui-inline">
+                                    <label class="layui-form-label"></label>
+                                    <div class="layui-input-inline">
+                                        <input name="" class="layui-input jumpUrl" :value="bitem.jumpUrl">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <label class="layui-form-label">商品标题</label>
+                                <label class="layui-form-label">排序</label>
                                 <div class="layui-input-inline">
-                                    <input name="" class="layui-input">
+                                    <input name="" class="layui-input orders" :value="bitem.orders">
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="url-show">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">时效</label>
+                            <div class="layui-input-block">
+                                <input type="radio" lay-filter="timeType" v-model="bitem.timeType" name="bannertimeType" value="0" title="永久" checked="">
+                                <input type="radio" lay-filter="timeType" v-model="bitem.timeType" name="bannertimeType" value="1" title="时间配置">
+                            </div>
+                        </div>
+                        <div class="timeShow">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">开始时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" class="layui-input" id="dateBegin" placeholder="yyyy-MM-dd" :value="bitem.dateBegin">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">结束时间</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" class="layui-input" id="dateEnd" placeholder="yyyy-MM-dd" :value="bitem.dateEnd">
+                                </div>
+                            </div>
+                        </div>
                         <div class="layui-form-item">
                             <div class="layui-inline">
                                 <label class="layui-form-label"></label>
                                 <div class="layui-input-inline">
-                                    <input name="" class="layui-input">
+                                    <button class="layui-btn" onclick="bannerSave(this)">保存</button>
+                                    <button class="layui-btn">关闭</button>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">排序</label>
-                            <div class="layui-input-inline">
-                                <input name="" class="layui-input">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">时效</label>
-                        <div class="layui-input-block">
-                            <input type="radio" lay-filter="timeType" name="bannertimeType" value="永久" title="永久" checked="">
-                            <input type="radio" lay-filter="timeType" name="bannertimeType" value="时间配置" title="时间配置">
-                        </div>
-                    </div>
-                    <div class="timeShow">
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">开始时间</label>
-                            <div class="layui-input-inline">
-                                <input type="text" class="layui-input" id="dateBegin" placeholder="yyyy-MM-dd">
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">结束时间</label>
-                            <div class="layui-input-inline">
-                                <input type="text" class="layui-input" id="dateEnd" placeholder="yyyy-MM-dd">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label"></label>
-                            <div class="layui-input-inline">
-                                <button class="layui-btn">保存</button>
-                                <button class="layui-btn">关闭</button>
                             </div>
                         </div>
                     </div>
@@ -537,15 +537,47 @@
     <script type="text/javascript" src="../../frame/layui/layui.js"></script>
     <script type="text/javascript" src="../../frame/dragsort/jquery.dragsort.js"></script>
     <script type="text/javascript" src="../../frame/static/js/vue.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../frame/static/js/public.js"></script>
     <script type="text/javascript">
+    var contentid = GetRequest().id;
+
+    function initList() {
+        $.post(baseURL + "content/findByContentid", { contentid: contentid }, function(res) {
+            if (res.data.length == 0) {
+                $(".first-content-text").show();
+            } else {
+                var html = "",
+                    className = "";
+                for (var i = 0; i < res.data.length; i++) {
+                    if (res.data[i].type == "0") {
+                        className = "'banner-set'";
+                    }
+                    if (res.data[i].type == '1') {
+                        className = "'product-switch-set '";
+                    }
+                    if (res.data[i].type == '2') {
+                        className = "'border-set'";
+                    }
+                    if (res.data[i].type == '3') {
+                        className = "'advertisement-set'";
+                    }
+                    if (res.data[i].type == '4') {
+                        className = "'product-set'";
+                    }
+                    var theid = res.data[i].id;
+                    var thetype = res.data[i].type;
+                    html += '<li class="ul2-li no-after" theid="' + theid + '" thetype="' + thetype + '"><text class="content-text" ondblclick="modifyName(this)">' + res.data[i].name + '</text><text class="layui-btn layui-btn-small" onclick="set(this,' + className + ')">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" theid="' + theid + '" thetype="' + thetype + '"  onclick="deleteComponent(this)">删除</text></li>'
+                }
+                $("#ul2").append(html);
+                $(".first-content-text").hide();
+            }
+        }, "json")
+    }
     $(function() {
-        // $.post("", {}, function(res) {
-
-        // }, "json");
-        $(".c-list ul").dragsort({
-
-        });
+        $(".c-list ul").dragsort({});
+        initList();
     })
+    
     layui.use(['element', 'layer', 'form', 'laydate'], function() {
         var form = layui.form;
         var layer = layui.layer;
@@ -602,7 +634,7 @@
         });
         // 跳转地址类型切换
         form.on('radio(urlType)', function(data) {
-            if (data.value == "商品") {
+            if (data.value == "1") {
                 $(".product-show").show();
                 $(".url-show").hide();
             } else {
@@ -612,7 +644,7 @@
         });
         // 时效切换
         form.on('radio(timeType)', function(data) {
-            if (data.value == "永久") {
+            if (data.value == "0") {
                 $(".timeShow").hide();
             } else {
                 $(".timeShow").show();
@@ -623,18 +655,14 @@
             elem: '#dateBegin',
             type: 'datetime',
             done: function(value, date, endDate) {
-                console.log(value); //得到日期生成的值，如：2017-08-18
-                console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-                console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+
             }
         });
         laydate.render({
             elem: '#dateEnd',
             type: 'datetime',
             done: function(value, date, endDate) {
-                console.log(value); //得到日期生成的值，如：2017-08-18
-                console.log(date); //得到日期时间对象：{year: 2017, month: 8, date: 18, hours: 0, minutes: 0, seconds: 0}
-                console.log(endDate); //得结束的日期时间对象，开启范围选择（range: true）才会返回。对象成员同上。
+
             }
         });
     });
@@ -643,41 +671,22 @@
         ev.preventDefault();
     }
 
-    function drag(ev) {
+    function drag(ev, type) {
         var btnVal = ev.target.getAttribute("btnVal");
         ev.dataTransfer.setData("Text", btnVal);
+        ev.dataTransfer.setData("type", type);
     }
 
     function drop(ev) {
         ev.preventDefault();
         var data = ev.dataTransfer.getData("Text");
+        var type = ev.dataTransfer.getData("type");
         var className = "";
         var dataArr = ["Banner", "广告长图", "分割线", "商品通栏", "商品滑动栏"];
         if (dataArr.indexOf(data) == -1) {
             return false;
         }
-        if (data == "Banner") {
-            className = "'banner-set'";
-        }
-        if (data == "广告长图") {
-            className = "'advertisement-set'";
-        }
-        if (data == "分割线") {
-            className = "'border-set'";
-        }
-        if (data == "商品通栏") {
-            className = "'product-set'";
-        }
-        if (data == "商品滑动栏") {
-            className = "'product-switch-set'";
-        }
-        var html = '<li class="ul2-li no-after"><text class="content-text" ondblclick="modifyName(this)">' + data + '</text><text class="layui-btn layui-btn-small" onclick="set(this,' + className + ')">配置</text><text class="layui-btn layui-btn-small layui-btn-danger">删除</text></li>'
-        var dropclass = ev.target.getAttribute("class");
-        if (dropclass != "ul2-li") {
-            $(ev.target).parent(".ul2-li").after(html);
-        } else {
-            $(ev.target).after(html)
-        }
+        newComponent(data, ev.target, type);
     }
     //双击修改名称
     function modifyName(argument) {
@@ -689,17 +698,30 @@
     }
 
     function preview(obj) {
-        var f = obj.files;
-        var str = "";
-        for (var i = 0; i < f.length; i++) {
-            var reader = new FileReader();
-            reader.readAsDataURL(f[i]);
-            reader.onload = function(e) {
-                str += "<img class='preview-img' src='" + e.target.result + "'/>";
-                str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
-                $(obj).parent().append(str);
-            }
-        }
+        var formData = new FormData($("#uploadForm")[0]);
+        $.ajax({
+                type:'POST',
+                url:baseURL+"bak/image/uploadImage",
+                data:formData,
+                contentType: "multipart/form-data",
+                processData:false,
+                mimeType:"multipart/form-data",
+                success:function(data){
+                    
+                }
+            });
+
+        // var f = obj.files;
+        // var str = "";
+        // for (var i = 0; i < f.length; i++) {
+        //     var reader = new FileReader();
+        //     reader.readAsDataURL(f[i]);
+        //     reader.onload = function(e) {
+        //         str += "<img class='preview-img' src='" + e.target.result + "'/>";
+        //         str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
+        //         $(obj).parent().append(str);
+        //     }
+        // }
     }
 
     function delimg(obj) {
@@ -707,11 +729,193 @@
         $(obj).siblings(".input-file").val("");
         $(obj).remove();
     }
-
+    var bannerVm = new Vue({
+        el: ".banner-set",
+        data: {
+            bannerObj: [{
+                imgurl: "",
+                productCode: "",
+                name: "banner1",
+                productName: "",
+                jumpUrl: "",
+                jumpType:1,
+                orders: 1,
+                timeType:0,
+                dateBegin:"2018-09-28 10:34:37",
+                dateEnd:"2018-09-27 10:34:37",
+                urlType:1,
+            }]
+        }
+    })
     function set(obj, className) {
+        var type = $(obj).parent(".ul2-li").attr("thetype");
+        var id = $(obj).parent(".ul2-li").attr("theid");
+        $.post(baseURL + "contentBanner/findByParentid", { parentid: id }, function(res) {
+            if(res.status=="1"){
+                if(res.data.length!=0){
+                    bannerVm.bannerObj = res.data;
+                }
+            }
+        }, "json")
         $(obj).parent(".ul2-li").removeClass("no-after").siblings("li").addClass('no-after');
         $(".peizhi").hide();
-        $("." + className).show();
+        $("." + className).show().attr({ thetype: type, theid: id });
+    }
+    var arr = [];
+    var allArr = [];
+
+    function newComponent(val, dom, type) {
+        var url = "";
+        if (type == 0) {
+            url = baseURL + "contentBanner/createOrUpdate"
+        }
+        if (type == 1) {
+            url = baseURL + "contentProductSlide/createOrUpdate"
+        }
+        if (type == 2) {
+            url = baseURL + "contentLine/createOrUpdate"
+        }
+        if (type == 3) {
+            url = baseURL + "contentAdvertisement/createOrUpdate"
+        }
+        if (type == 4) {
+            url = baseURL + "contentProductColumn/createOrUpdate"
+        }
+        var obj = {
+            name: val,
+            contentid: contentid,
+        };
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(obj),
+        }).done(function(res) {
+            if (res.status == "1") {
+                var data = "";
+                if (type == "0") {
+                    className = "'banner-set'";
+                    data = "Banner";
+                }
+                if (type == "1") {
+                    className = "'product-switch-set'";
+                    data = "商品滑动栏";
+                }
+                if (type == "2") {
+                    className = "'border-set'";
+                    data = "分割线";
+                }
+                if (type == "3") {
+                    className = "'advertisement-set'";
+                    data = "广告长图";
+                }
+                if (type == "4") {
+                    className = "'product-set'";
+                    data = "商品通栏";
+                }
+                var theid = res.data.id;
+                var thetype = res.data.type;
+                var html = '<li class="ul2-li no-after" thetype="' + thetype + '" theid="' + theid + '"><text class="content-text" ondblclick="modifyName(this)">' + data + '</text><text class="layui-btn layui-btn-small" onclick="set(this,' + className + ')">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" thetype="' + thetype + '" theid="' + theid + '"  onclick="deleteComponent(this)">删除</text></li>'
+                var dropclass = dom.getAttribute("class");
+                if (dropclass != "ul2-li") {
+                    $(dom).parent(".ul2-li").after(html);
+                    $(".first-content-text").hide();
+                } else {
+                    $(dom).after(html);
+                    $(".first-content-text").hide();
+                }
+                arr = [res.data.id];
+                var arrstring = [];
+                $(".ul2-li").each(function(i, e) {
+                    var theidval = $(this).attr("theid");
+                    if (theidval) {
+                        arrstring.push(theidval);
+                    }
+                })
+                arrstring = arrstring.toString();
+                var obj2 = {
+                    id: contentid,
+                    orders: arrstring
+                };
+                updateParentContent(obj2, dom, type);
+            }
+        }).fail(function() {
+            console.log("error");
+        })
+    }
+
+    function updateParentContent(obj2, dom, type) {
+        $.ajax({
+            url: baseURL + "content/createOrUpdate",
+            type: 'POST',
+            dataType: 'json',
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(obj2),
+        }).done(function(res) {
+            if (res.status == "1") {
+
+            }
+        }).fail(function() {
+
+        })
+    }
+
+    function deleteComponent(dom) {
+        var thetype = $(dom).attr("thetype");
+        var url = "";
+        if (thetype == 0) {
+            url = baseURL + "contentBanner/deleteByIds";
+        }
+        if (thetype == 1) {
+            url = baseURL + "contentProductSlide/deleteByIds";
+        }
+        if (thetype == 2) {
+            url = baseURL + "contentLine/deleteByIds";
+        }
+        if (thetype == 3) {
+            url = baseURL + "contentAdvertisement/deleteByIds";
+        }
+        if (thetype == 4) {
+            url = baseURL + "contentProductColumn/deleteByIds";
+        }
+
+        var data = { ids: $(dom).attr("theid") }
+        $.post(url, data, function(res) {
+            if (res.status == "1") {
+                $(dom).parent(".ul2-li").remove();
+                if ($(".ul2-li").length == 1) {
+                    $(".first-content-text").show();
+                }
+            }
+        }, "json");
+    }
+
+    function bannerSave(dom) {
+        var that = $(dom);
+        var obj = {};
+        obj.name = "banner1";
+        obj.level = 2;
+        obj.parentid = $(dom).parents(".peizhi").attr("theid");
+        obj.imgurl = $(dom).parents(".peizhi").find('.input-file').val();
+        obj.productCode = $(dom).parents(".peizhi").find('.productCode').val();
+        obj.productName = $(dom).parents(".peizhi").find('.productName').val();
+        obj.orders = $(dom).parents(".peizhi").find('.orders').val();
+        obj.startTime = $(dom).parents(".peizhi").find('#dateBegin').val();
+        obj.endTime = $(dom).parents(".peizhi").find('#dateEnd').val();
+        $.ajax({
+            url: baseURL + "contentBanner/createOrUpdate",
+            type: 'POST',
+            dataType: 'json',
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(obj),
+        }).done(function(res) {
+            if (res.status == "1") {
+
+            }
+        }).fail(function() {
+            console.log("error");
+        })
     }
     </script>
 </body>

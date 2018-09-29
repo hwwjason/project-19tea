@@ -56,20 +56,24 @@ public class GJPServiceImp implements IGJPService {
         return ret;
     }
 
+    /**
+     * 获取ERP商品基本资料的库存信息
+     * @param code
+     * @return
+     * @throws Exception
+     */
     @Override
     public  String querysaleqty(String code)  throws Exception
     {
         GJPBaseRequest baseRequest = new GJPBaseRequest();
         baseRequest.setApiName(GJPApiConstants.QUERY_SALE_QTY);
         Map<String, String> param = new HashMap<>();
-//        List<String> ids = new ArrayList<>();
-//
-//        ids.add(code);
-        //param.put("ktypeids",ids.toString());
+        List<Long> ids = getKtypeids();
+        param.put("ktypeids",ids.toString());
         param.put("numid",code);
-        List<Object> jsonObjects = this.queryktypelist();//((JSONObject) ktypeids.get(0)).get("usercode")
-        List<Object> ktypeids =jsonObjects.stream().map(e->((JSONObject)e).get("ktypeid")).collect(Collectors.toList());
-        param.put("ktypeids",(JsonUtils.List2JSON(ktypeids)).replace("\"",""));
+//        List<Object> jsonObjects = this.queryktypelist();//((JSONObject) ktypeids.get(0)).get("usercode")
+//        List<Object> ktypeids =jsonObjects.stream().map(e->((JSONObject)e).get("ktypeid")).collect(Collectors.toList());
+//        param.put("ktypeids",(JsonUtils.List2JSON(ktypeids)).replace("\"",""));
         param.put("iscalcsaleqty","true");
         param.put("pagesize","50");
         param.put("pageno","1");
@@ -78,16 +82,21 @@ public class GJPServiceImp implements IGJPService {
         return ret;
     }
 
+    /**
+     * 批量 获取ERP商品基本资料的库存信息
+     * @param code
+     * @return
+     * @throws Exception
+     */
     @Override
     public  String batchquerysaleqty(String code)  throws Exception
     {
         GJPBaseRequest baseRequest = new GJPBaseRequest();
         baseRequest.setApiName(GJPApiConstants.BATCH_QUERY_SALE_QTY);
         Map<String, String> param = new HashMap<>();
-//        List<String> ids = new ArrayList<>();
-//
-//        ids.add(code);
-        //param.put("ktypeids",ids.toString());
+        List<String> ids = new ArrayList<>();
+        ids.add(code);
+        param.put("ktypeids",ids.toString());
         param.put("numid",code);
         List<Object> jsonObjects = this.queryktypelist();//((JSONObject) ktypeids.get(0)).get("usercode")
         List<Object> ktypeids =jsonObjects.stream().map(e->((JSONObject)e).get("ktypeid")).collect(Collectors.toList());
@@ -159,11 +168,11 @@ public class GJPServiceImp implements IGJPService {
         return jsonObjects;
     }
 
-    public List<String> getKtypeids() throws Exception {
+    public List<Long> getKtypeids() throws Exception {
         List<Object> objects = this.queryktypelist();
-        List<String> ktypeids = new ArrayList<>();
+        List<Long> ktypeids = new ArrayList<>();
         for (Object object : objects) {
-            ktypeids.add((String) ((JSONObject) object).get("ktypeid"));
+            ktypeids.add((Long) ((JSONObject) object).get("ktypeid"));
         }
         return ktypeids;
     }

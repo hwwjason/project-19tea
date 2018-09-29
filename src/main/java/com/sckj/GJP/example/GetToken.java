@@ -1,7 +1,14 @@
 package com.sckj.GJP.example;
 
 import com.sckj.constant.GJPConstants;
+import com.sckj.model.GjpAccesstoken;
+import com.sckj.repository.GjpAccesstokenRepository;
+import com.sckj.utils.DateTimeUtils;
+import com.sckj.utils.JsonUtils;
+import com.sckj.utils.UUIDUtils;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -9,13 +16,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@Service
 public class GetToken {
+	@Autowired
+	private GjpAccesstokenRepository gjpAccesstokenRepository;
+
 	public String DoGetToken(String param) throws Exception
 	{
 		String code = GetAuthCode(param);
-		//String code = Config.auth_code;
-
-
 		//获取p参数
 		JSONObject obj = new JSONObject();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//可以方便地修改日期格式
@@ -51,6 +59,16 @@ public class GetToken {
 		JSONObject jsonObject=JSONObject.fromObject(ret);
 		String resp = jsonObject.getJSONObject("response").get("response").toString();
 		String token = coder.decrypt(resp,  Config.app_secret);
+		Map<String,Object> tokenMap = JsonUtils.parseJSON2Map(token);
+		GjpAccesstoken gjpAccesstoken = new GjpAccesstoken();
+		gjpAccesstoken.setId(UUIDUtils.generate());
+		gjpAccesstoken.setAppkey((String) tokenMap.get("auth_token"));
+		gjpAccesstoken.setAuthToken((String) tokenMap.get("auth_token"));
+		gjpAccesstoken.setExpiresIn(tokenMap.get("expires_in").toString());
+		gjpAccesstoken.setRefreshToken((String) tokenMap.get("refresh_token"));
+		gjpAccesstoken.setReExpiresIn(tokenMap.get("re_expires_in").toString());
+		gjpAccesstoken.setTimestamp(DateTimeUtils.getCurrentDate());
+		//gjpAccesstokenRepository.save(gjpAccesstoken);
 		return token;
 	}
 

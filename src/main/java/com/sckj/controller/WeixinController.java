@@ -47,16 +47,6 @@ public class WeixinController extends WeixinSupport{
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
-//    private static final String appid = MiniAppConstants.APP_ID;	    //微信小程序appid
-//    private static final String secret = MiniAppConstants.APP_SECRET;	//微信小程序密钥
-//    private static final String grant_type = "authorization_code";
-//
-//    @Autowired
-//    private  UserListJpa userListJpa;
-//
-//    @Autowired
-//    private IProductOrderService productOrderService;
-
     @Autowired
     private IWeiXinService weiXinService;
 
@@ -77,7 +67,7 @@ public class WeixinController extends WeixinSupport{
             return resultData;
         }catch (BusinessException e){
             throw e;
-        } catch (Exception e){
+        }catch (Exception e){
             logger.error("Error 登录失败", e);
             return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
         }
@@ -106,7 +96,7 @@ public class WeixinController extends WeixinSupport{
     }
 
     /**
-     * @Description:微信支付
+     * @Description:微信支付回调
      * @return
      * @author dzg
      * @throws Exception
@@ -119,7 +109,7 @@ public class WeixinController extends WeixinSupport{
             weiXinService.wxNotify(request,response);
         }catch (BusinessException e){
             throw e;
-        } catch (Exception e){
+        }catch (Exception e){
             logger.error("Error 微信支付失败", e);
         }
     }

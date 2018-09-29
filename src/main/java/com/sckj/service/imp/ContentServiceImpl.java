@@ -97,17 +97,17 @@ public class ContentServiceImpl implements IContentService {
             }
             if(contentLineMap.get(s)!=null){
                 ContentLineDTO contentLine = new ContentLineDTO();
-                BeanUtils.copyPropertiesWithoutNull(contentLine,contentBannerMap.get(s));
+                BeanUtils.copyPropertiesWithoutNull(contentLine,contentLineMap.get(s));
                 contents.add(contentLine);
             }
             if(contentProductColumnMap.get(s)!=null){
                 ContentProductColumnDTO contentProductColumnDTO = new ContentProductColumnDTO();
-                BeanUtils.copyPropertiesWithoutNull(contentProductColumnDTO,contentBannerMap.get(s));
+                BeanUtils.copyPropertiesWithoutNull(contentProductColumnDTO,contentProductColumnMap.get(s));
                 contents.add(contentProductColumnDTO);
             }
             if(contentProductSlideMap.get(s)!=null){
                 ContentProductSlideDTO ContentProductSlideDTO = new ContentProductSlideDTO();
-                BeanUtils.copyPropertiesWithoutNull(ContentProductSlideDTO,contentBannerMap.get(s));
+                BeanUtils.copyPropertiesWithoutNull(ContentProductSlideDTO,contentProductSlideMap.get(s));
                 contents.add(ContentProductSlideDTO);
             }
         }

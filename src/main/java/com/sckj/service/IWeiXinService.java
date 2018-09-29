@@ -17,7 +17,21 @@ public interface IWeiXinService {
 
     Map<String, Object> login(String code, HttpServletRequest request) throws WeixinException, IOException;
 
+    /**
+     * @Description: 发起微信支付
+     * @param buyuserId
+     * @param cartType
+     * @param couponUserid
+     * @param request
+     * @return
+     */
     Map<String, Object> wxPay(String buyuserId, String cartType, String couponUserid, String userRemark, HttpServletRequest request);
 
+    /**
+     * 微信支付(回调)
+     * @param request
+     * @param response
+     * @throws Exception
+     */
     void wxNotify(HttpServletRequest request,HttpServletResponse response) throws Exception;
 }

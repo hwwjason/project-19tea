@@ -22,10 +22,10 @@ public class GJPConstants {
     public static final String USER_NAME = "周榆";
     public static final String PASSWORD = "zhouyu828..";
 
-    public static final String AUTH_CODE="aDrLi92Bs2TtvM49LagNjcPlYP2DT2mF";//
+    public static final String AUTH_CODE="xoboYkpzTvuBEz1yjhDNQ5smLscwlHBQ";
 
-    public static final String TOKEN = "LQuu2TTCoYrJTFDbMcJn5rfxMagnEpAT8mhDuPPg";
-    public static final String REFRESH_TOKEN = "MC24AxH7AnV1t0uphWs9j9awNszgQDSlQrcWFbpH";
+    public static final String TOKEN = "gjmpK3pa10YoslRRNwzM0YG6wuSHdXYjmNWR38nV";
+    public static final String REFRESH_TOKEN = "p2uCEsIFdJ1MqDkDc8dKH55krKnaGQIAzhBquwvA";
 
 
 }

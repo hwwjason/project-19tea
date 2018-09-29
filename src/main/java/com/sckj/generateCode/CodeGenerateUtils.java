@@ -20,10 +20,10 @@ public class CodeGenerateUtils {
     private final String AUTHOR = "hww";
     private final String CURRENT_DATE = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
     /** 表名称 **/
-    private final String tableName = "sckj_content_banner";
+    private final String tableName = "sckj_gjp_accesstoken";
     private final String packageName = "com.sckj";
-    private final String tableAnnotation = "Banner配置";
-    private final String URL = "jdbc:mysql://192.168.43.94/sckj";
+    private final String tableAnnotation = "管家婆token";
+    private final String URL = "jdbc:mysql://192.168.0.134/sckj";
     private final String USER = "root";
     private final String PASSWORD = "root";
     private final String DRIVER = "com.mysql.jdbc.Driver";
@@ -48,22 +48,22 @@ public class CodeGenerateUtils {
             ResultSet resultSet = null;
             resultSet = databaseMetaData.getColumns(null,"%", tableName,"%");
 
-//            //生成Dao文件
-//            generateDaoFile(resultSet);
-//            //生成Repository文件
-//            generateRepositoryFile(resultSet);
-//            //生成服务层接口文件
-//            generateServiceInterfaceFile(resultSet);
-//            //生成服务实现层文件
-//            generateServiceImplFile(resultSet);
-//            //生成Controller层文件
-//            generateControllerFile(resultSet);
-//            //生成DTO文件
-//            generateDTOFile(resultSet);
-//
+            //生成Dao文件
+            generateDaoFile(resultSet);
+            //生成Repository文件
+            generateRepositoryFile(resultSet);
+            //生成服务层接口文件
+            generateServiceInterfaceFile(resultSet);
+            //生成服务实现层文件
+            generateServiceImplFile(resultSet);
+            //生成Controller层文件
+            generateControllerFile(resultSet);
+            //生成DTO文件
+            generateDTOFile(resultSet);
+
             List<DBColumnDefinition> columnDefinitionList = getCloumnDefinitionList(resultSet);
-//            //生成Mapper文件
-//            generateMapperFile(resultSet,columnDefinitionList);
+            //生成Mapper文件
+            generateMapperFile(resultSet,columnDefinitionList);
             //生成Model文件
             generateModelFile(resultSet,columnDefinitionList);
         } catch (Exception e) {

@@ -27,17 +27,11 @@ public class GJPHelp {
             //post报文
             String postString = "";
             for (String in : param.keySet()) {
-                //postString += in + "=" + param.get(in)  +"&";
                 postString += in + "=" + URLEncoder.encode(param.get(in),"utf-8")  +"&";
-//                if("ktypeids".equals(in)){
-//                    postString += in + "=" + param.get(in)  +"&";
-//                }else{
-//                    postString += in + "=" + URLEncoder.encode(param.get(in),"utf-8")  +"&";
-//                }
             }
             postString = postString.substring(0, postString.length() - 1);
             ret =  HttpRequest.sendPost(Config.api_link, postString);
-            System.out.println("hhhhh");
+            System.out.println("sendPost finish");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }

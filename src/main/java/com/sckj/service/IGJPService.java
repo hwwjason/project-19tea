@@ -60,7 +60,7 @@ public interface IGJPService {
      * @return
      * @throws Exception
      */
-    List<String> getKtypeids() throws Exception;
+    List<Long> getKtypeids() throws Exception;
 
     /**
      * 查询交易列表信息

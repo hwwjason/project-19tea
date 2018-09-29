@@ -56,6 +56,7 @@
     .ul2-li {
         /*overflow: hidden;*/
         position: relative;
+        z-index: 100;
     }
 
     .ul2-li:after {
@@ -75,6 +76,7 @@
 
     .ul2-li text {
         float: left;
+        position: relative;z-index: 10000;
     }
 
     .ul2-li .layui-btn {
@@ -147,14 +149,13 @@
             <a class="layui-btn addComponent site-demo-active" lay-submit lay-filter="addComponent" data-type="tabAdd">
                 <i class="fa fa-plus"></i> 添加
             </a>
-            <div v-for="bitem in bannerObj">
-                <ul class="layui-tab-title">
-                    <li class="layui-this">{{bitem.name}}</li>
-                </ul>
-                <div class="layui-tab-content">
-                    <div class="layui-tab-item layui-show banner-content">
-                        <div class="layui-form-item">
-                            <form id="uploadForm" enctype="multipart/form-data">
+            <ul class="layui-tab-title">
+                <li v-for="(bitem1,index1) in bannerObj" :class="index1==0?'layui-this':''" :index="index1" :thisid="bitem1.id">{{bitem1.name}}</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div v-for="(bitem,index) in bannerObj" class="layui-tab-item  banner-content" :class="[index==0?'layui-show':'','bannerTab'+index]">
+                    <div class="layui-form-item">
+                        <form id="uploadForm" enctype="multipart/form-data">
                             <label class="layui-form-label">图片</label>
                             <div class="layui-input-inline">
                                 <div class="addImg">
@@ -162,83 +163,82 @@
                                 </div>
                                 <input type="file" class="input-file" name="username" onchange="preview(this)">
                             </div>
-                            </form>
+                        </form>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">跳转地址</label>
+                        <div class="layui-input-block">
+                            <input type="radio" lay-filter="urlType" v-model="bitem.jumpType" class="bannerurlType" :name="'bannerurlType'+index" value="0" title="频道">
+                            <input type="radio" lay-filter="urlType" v-model="bitem.jumpType" class="bannerurlType" :name="'bannerurlType'+index" value="1" title="商品">
+                            <input type="radio" lay-filter="urlType" v-model="bitem.jumpType" class="bannerurlType" :name="'bannerurlType'+index" value="2" title="链接">
                         </div>
+                    </div>
+                    <div class="product-show">
                         <div class="layui-form-item">
-                            <label class="layui-form-label">跳转地址</label>
-                            <div class="layui-input-block">
-                                <input type="radio" lay-filter="urlType" v-model="bitem.jumpType" class="bannerurlType" name="bannerurlType" value="0" title="频道">
-                                <input type="radio" lay-filter="urlType" v-model="bitem.jumpType" class="bannerurlType" name="bannerurlType" value="1" title="商品" >
-                                <input type="radio" lay-filter="urlType" v-model="bitem.jumpType" class="bannerurlType" name="bannerurlType" value="2" title="链接">
+                            <label class="layui-form-label">商品编号</label>
+                            <div class="layui-input-inline">
+                                <input name="121" class="layui-input productCode" :value="bitem.productCode" placeholder="请输入商品编号搜索">
                             </div>
-                        </div>
-                        <div class="product-show">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">商品编号</label>
-                                <div class="layui-input-inline">
-                                    <input name="121" class="layui-input productCode" :value="bitem.productCode" placeholder="请输入商品编号搜索">
-                                </div>
-                                <div class="layui-input-inline">
-                                    <button class="layui-btn layuiadmin-btn-list">
-                                        匹配
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-inline">
-                                    <label class="layui-form-label">商品标题</label>
-                                    <div class="layui-input-inline">
-                                        <input name="" class="layui-input productName" :value="bitem.productName">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="url-show">
-                            <div class="layui-form-item">
-                                <div class="layui-inline">
-                                    <label class="layui-form-label"></label>
-                                    <div class="layui-input-inline">
-                                        <input name="" class="layui-input jumpUrl" :value="bitem.jumpUrl">
-                                    </div>
-                                </div>
+                            <div class="layui-input-inline">
+                                <button class="layui-btn layuiadmin-btn-list">
+                                    匹配
+                                </button>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <div class="layui-inline">
-                                <label class="layui-form-label">排序</label>
+                                <label class="layui-form-label">商品标题</label>
                                 <div class="layui-input-inline">
-                                    <input name="" class="layui-input orders" :value="bitem.orders">
+                                    <input name="" class="layui-input productName" :value="bitem.productName">
                                 </div>
                             </div>
                         </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">时效</label>
-                            <div class="layui-input-block">
-                                <input type="radio" lay-filter="timeType" v-model="bitem.timeType" name="bannertimeType" value="0" title="永久" checked="">
-                                <input type="radio" lay-filter="timeType" v-model="bitem.timeType" name="bannertimeType" value="1" title="时间配置">
-                            </div>
-                        </div>
-                        <div class="timeShow">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">开始时间</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" class="layui-input" id="dateBegin" placeholder="yyyy-MM-dd" :value="bitem.dateBegin">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">结束时间</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" class="layui-input" id="dateEnd" placeholder="yyyy-MM-dd" :value="bitem.dateEnd">
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                    <div class="url-show">
                         <div class="layui-form-item">
                             <div class="layui-inline">
                                 <label class="layui-form-label"></label>
                                 <div class="layui-input-inline">
-                                    <button class="layui-btn" onclick="bannerSave(this)">保存</button>
-                                    <button class="layui-btn">关闭</button>
+                                    <input name="" class="layui-input jumpUrl" :value="bitem.jumpUrl">
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">排序</label>
+                            <div class="layui-input-inline">
+                                <input name="" class="layui-input orders" :value="bitem.orders">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">时效</label>
+                        <div class="layui-input-block">
+                            <input type="radio" lay-filter="timeType" class="timeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="0" title="永久" checked="">
+                            <input type="radio" lay-filter="timeType" class="timeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="1" title="时间配置">
+                        </div>
+                    </div>
+                    <div class="timeShow">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">开始时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input dateBegin" placeholder="yyyy-MM-dd" :value="bitem.startTime">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">结束时间</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input dateEnd" placeholder="yyyy-MM-dd" :value="bitem.endTime">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label"></label>
+                            <div class="layui-input-inline">
+                                <button class="layui-btn" :index="index" :thisid="bitem.id" onclick="bannerSave(this)">保存</button>
+                                <button class="layui-btn">关闭</button>
                             </div>
                         </div>
                     </div>
@@ -308,13 +308,13 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">开始时间</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="layui-input" id="dateBegin" placeholder="yyyy-MM-dd">
+                            <input type="text" class="layui-input dateBegin" placeholder="yyyy-MM-dd">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">结束时间</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="layui-input" id="dateEnd" placeholder="yyyy-MM-dd">
+                            <input type="text" class="layui-input dateEnd" placeholder="yyyy-MM-dd">
                         </div>
                     </div>
                 </div>
@@ -323,7 +323,6 @@
                         <label class="layui-form-label"></label>
                         <div class="layui-input-inline">
                             <button class="layui-btn">保存</button>
-                            <button class="layui-btn">关闭</button>
                         </div>
                     </div>
                 </div>
@@ -426,13 +425,13 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">开始时间</label>
                             <div class="layui-input-inline">
-                                <input type="text" class="layui-input" id="dateBegin" placeholder="yyyy-MM-dd">
+                                <input type="text" class="layui-input dateBegin" placeholder="yyyy-MM-dd">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">结束时间</label>
                             <div class="layui-input-inline">
-                                <input type="text" class="layui-input" id="dateEnd" placeholder="yyyy-MM-dd">
+                                <input type="text" class="layui-input dateEnd" placeholder="yyyy-MM-dd">
                             </div>
                         </div>
                     </div>
@@ -509,13 +508,13 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">开始时间</label>
                             <div class="layui-input-inline">
-                                <input type="text" class="layui-input" id="dateBegin" placeholder="yyyy-MM-dd">
+                                <input type="text" class="layui-input dateBegin" placeholder="yyyy-MM-dd">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">结束时间</label>
                             <div class="layui-input-inline">
-                                <input type="text" class="layui-input" id="dateEnd" placeholder="yyyy-MM-dd">
+                                <input type="text" class="layui-input dateEnd" placeholder="yyyy-MM-dd">
                             </div>
                         </div>
                     </div>
@@ -577,35 +576,63 @@
         $(".c-list ul").dragsort({});
         initList();
     })
-    
+    var layer = "";
+    var form = "",element="";
     layui.use(['element', 'layer', 'form', 'laydate'], function() {
-        var form = layui.form;
-        var layer = layui.layer;
+        form = layui.form;
+        layer = layui.layer;
         var laydate = layui.laydate;
-        var $ = layui.jquery,
+        var $ = layui.jquery;
             element = layui.element; //Tab的切换功能，切换事件监听等，需要依赖element模块
 
-        //触发事件
+        //触发事件 添加
         var bannerName = "";
-        var contentHtml = $(".banner-content").html();
         var active = {
             tabAdd: function(e) {
-                contentHtml = '<div class="layui-input-block">' +
-                    '<input type="radio" lay-filter="urlType" name="bannerurlType2" value="频道" title="频道">' +
-                    '<input type="radio" lay-filter="urlType" name="bannerurlType2" value="商品" title="商品" ' +
-                    'checked="">' +
-                    '<input type="radio" lay-filter="urlType" name="bannerurlType2" value="链接" title="链接">' +
-                    '</div>'
-                //新增一个Tab项
-                element.tabAdd('banner', {
-                    title: bannerName,
-                    content: contentHtml,
-                    id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
-                })
-                form.render();
+                bannerVm.bannerObj.push({ name: "banner2", timeType: 0, jumpType: 0 });
+                setTimeout(function() {
+                    element.init();
+                    form.render();
+                }, 0)
             }
-
         };
+        //右侧tab删除的请求
+        $(".layui-tab").on("click",function(e){
+            if($(e.target).is(".layui-tab-close")){
+                var thisid = $(e.target).parent().attr("thisid");
+                var index = $(e.target).parent().attr("index");
+                var thetype = $(e.target).parents(".banner-set").attr("thetype");
+                var data = { ids: thisid }
+                var thetype = "";
+                var url = "";
+                thetype = $(dom).attr("thetype");
+                if (thetype == 0) {
+                    url = baseURL + "contentBanner/deleteByIds";
+                }
+                if (thetype == 1) {
+                    url = baseURL + "contentProductSlide/deleteByIds";
+                }
+                if (thetype == 2) {
+                    url = baseURL + "contentLine/deleteByIds";
+                }
+                if (thetype == 3) {
+                    url = baseURL + "contentAdvertisement/deleteByIds";
+                }
+                if (thetype == 4) {
+                    url = baseURL + "contentProductColumn/deleteByIds";
+                }
+
+                var data = { ids: $(dom).attr("theid") }
+                $.post(url, data, function(res) {
+                    if (res.status == "1") {
+                        $(dom).parent(".ul2-li").remove();
+                        if ($(".ul2-li").length == 1) {
+                            $(".first-content-text").show();
+                        }
+                    }
+                }, "json");
+            }
+        })
         var productName = "";
         var productHtml = $(".product-content").html();
         var productactive = {
@@ -652,14 +679,14 @@
         });
         //时间范围
         laydate.render({
-            elem: '#dateBegin',
+            elem: '.dateBegin',
             type: 'datetime',
             done: function(value, date, endDate) {
 
             }
         });
         laydate.render({
-            elem: '#dateEnd',
+            elem: '.dateEnd',
             type: 'datetime',
             done: function(value, date, endDate) {
 
@@ -700,16 +727,16 @@
     function preview(obj) {
         var formData = new FormData($("#uploadForm")[0]);
         $.ajax({
-                type:'POST',
-                url:baseURL+"bak/image/uploadImage",
-                data:formData,
-                contentType: "multipart/form-data",
-                processData:false,
-                mimeType:"multipart/form-data",
-                success:function(data){
-                    
-                }
-            });
+            type: 'POST',
+            url: baseURL + "bak/image/uploadImage",
+            data: formData,
+            contentType: "multipart/form-data",
+            processData: false,
+            mimeType: "multipart/form-data",
+            success: function(data) {
+
+            }
+        });
 
         // var f = obj.files;
         // var str = "";
@@ -732,29 +759,28 @@
     var bannerVm = new Vue({
         el: ".banner-set",
         data: {
-            bannerObj: [{
-                imgurl: "",
-                productCode: "",
-                name: "banner1",
-                productName: "",
-                jumpUrl: "",
-                jumpType:1,
-                orders: 1,
-                timeType:0,
-                dateBegin:"2018-09-28 10:34:37",
-                dateEnd:"2018-09-27 10:34:37",
-                urlType:1,
-            }]
+            bannerObj: [{}]
         }
     })
+
     function set(obj, className) {
         var type = $(obj).parent(".ul2-li").attr("thetype");
         var id = $(obj).parent(".ul2-li").attr("theid");
         $.post(baseURL + "contentBanner/findByParentid", { parentid: id }, function(res) {
-            if(res.status=="1"){
-                if(res.data.length!=0){
+            if (res.status == "1") {
+                if (res.data.length != 0) {
                     bannerVm.bannerObj = res.data;
+                } else {
+                    bannerVm.bannerObj = [{
+                        name:"banner1",
+                        timeType:0,
+                        jumpType:1
+                    }]
                 }
+                setTimeout(function() {
+                    element.init();
+                    form.render();
+                }, 0)
             }
         }, "json")
         $(obj).parent(".ul2-li").removeClass("no-after").siblings("li").addClass('no-after');
@@ -862,8 +888,9 @@
     }
 
     function deleteComponent(dom) {
-        var thetype = $(dom).attr("thetype");
+        var thetype = "";
         var url = "";
+        thetype = $(dom).attr("thetype");
         if (thetype == 0) {
             url = baseURL + "contentBanner/deleteByIds";
         }
@@ -890,28 +917,57 @@
             }
         }, "json");
     }
-
+    // 右侧banner明细新建和编辑
     function bannerSave(dom) {
         var that = $(dom);
-        var obj = {};
-        obj.name = "banner1";
-        obj.level = 2;
-        obj.parentid = $(dom).parents(".peizhi").attr("theid");
-        obj.imgurl = $(dom).parents(".peizhi").find('.input-file').val();
-        obj.productCode = $(dom).parents(".peizhi").find('.productCode').val();
-        obj.productName = $(dom).parents(".peizhi").find('.productName').val();
-        obj.orders = $(dom).parents(".peizhi").find('.orders').val();
-        obj.startTime = $(dom).parents(".peizhi").find('#dateBegin').val();
-        obj.endTime = $(dom).parents(".peizhi").find('#dateEnd').val();
+        var index = $(dom).attr("index");
+        var thisid = $(dom).attr("thisid");
+        var parentDom = $(dom).parents(".banner-content");
+        var bvmindex = bannerVm.bannerObj[index];
+        var dataObj = {};
+        if (index && thisid) {
+            //有索引和ID代表着更新
+            bvmindex.id = thisid;
+            bvmindex.name = "banner1";
+            bvmindex.level = 2;
+            bvmindex.parentid = parentDom.attr("theid");
+            bvmindex.imgurl = parentDom.find('.input-file').val();
+            bvmindex.productCode = parentDom.find('.productCode').val();
+            bvmindex.productName = parentDom.find('.productName').val();
+            bvmindex.orders = parentDom.find('.orders').val();
+            bvmindex.startTime = parentDom.find('.dateBegin').val();
+            bvmindex.endTime = parentDom.find('.dateEnd').val();
+            bvmindex.jumpUrl = parentDom.find('.jumpUrl').val();
+            bvmindex.timeType = parentDom.find('.timeType').val();
+            bvmindex.jumpType = parentDom.find('.bannerurlType').val();
+            dataObj = bvmindex;
+        } else {
+            //新建
+            var obj = {};
+            obj.name = "banner1";
+            obj.level = 2;
+            obj.parentid = parentDom.attr("theid");
+            obj.imgurl = parentDom.find('.input-file').val();
+            obj.productCode = parentDom.find('.productCode').val();
+            obj.productName = parentDom.find('.productName').val();
+            obj.orders = parentDom.find('.orders').val();
+            obj.startTime = parentDom.find('.dateBegin').val();
+            obj.endTime = parentDom.find('.dateEnd').val();
+            obj.jumpUrl = parentDom.find('.jumpUrl').val();
+            obj.timeType = parentDom.find('.timeType').val();
+            obj.jumpType = parentDom.find('.bannerurlType').val();
+            dataObj = obj
+        }
+        console.log(dataObj);
         $.ajax({
             url: baseURL + "contentBanner/createOrUpdate",
             type: 'POST',
             dataType: 'json',
             contentType: "application/json;charset=UTF-8",
-            data: JSON.stringify(obj),
+            data: JSON.stringify(dataObj),
         }).done(function(res) {
             if (res.status == "1") {
-
+                layer.msg("保存成功")
             }
         }).fail(function() {
             console.log("error");

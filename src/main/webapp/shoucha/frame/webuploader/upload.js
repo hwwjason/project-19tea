@@ -151,7 +151,7 @@
                     swf: '../../dist/Uploader.swf',
                     chunked: false,
                     chunkSize: 512 * 1024,
-                    server: 'https://192.168.0.179/bak/image/uploadImage',
+                    server: baseURL+'/bak/image/uploadImage',
                     // runtimeOrder: 'flash',
 
                     // accept: {

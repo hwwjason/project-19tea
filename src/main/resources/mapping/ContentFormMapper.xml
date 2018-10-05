@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sckj.repository.mybatis.ContentFormDAO">
+
+    <resultMap id="ContentFormResultMap" type="com.sckj.model.ContentForm">
+        <result column="id" jdbcType="VARCHAR" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="contentid" jdbcType="VARCHAR" property="contentid" />
+        <result column="parentid" jdbcType="VARCHAR" property="parentid" />
+        <result column="width" jdbcType="VARCHAR" property="width" />
+        <result column="jump_type" jdbcType="VARCHAR" property="jumpType" />
+        <result column="jump_url" jdbcType="VARCHAR" property="jumpUrl" />
+        <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
+        <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+        <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+        <result column="product_name" jdbcType="VARCHAR" property="productName" />
+        <result column="orders" jdbcType="VARCHAR" property="orders" />
+        <result column="level" jdbcType="VARCHAR" property="level" />
+        <result column="tag_first" jdbcType="VARCHAR" property="tagFirst" />
+        <result column="tag_second" jdbcType="VARCHAR" property="tagSecond" />
+        <result column="time_type" jdbcType="VARCHAR" property="timeType" />
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime" />
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="form_type" jdbcType="VARCHAR" property="formType" />
+    </resultMap>
+
+    <resultMap id="ContentFormDTOResultMap" extends="ContentFormResultMap" type="com.sckj.model.dto.ContentFormDTO"></resultMap>
+
+    <sql id="findDtoSql">
+        select * from (
+        select * from  sckj_content_form temp
+        ) t
+    </sql>
+
+    <select id="findDTOById" parameterType="String" resultMap="ContentFormDTOResultMap">
+        <include refid="findDtoSql"></include>
+        <where>
+            and t.id = #{id}
+        </where>
+    </select>
+
+    <select id="findById" parameterType="String" resultMap="ContentFormResultMap">
+        <include refid="findDtoSql"></include>
+        <where>
+            and t.id = #{id}
+        </where>
+    </select>
+
+    <select id="findContentFormPage" parameterType="com.sckj.model.dto.ContentFormDTO" resultMap="ContentFormDTOResultMap">
+        <include refid="findDtoSql" />
+        <where>
+
+        </where>
+    </select>
+
+    <select id="getContentFormList" parameterType="java.util.Map" resultMap="ContentFormDTOResultMap">
+        select * from sckj_content_form as temp
+        <where>
+
+        </where>
+        ORDER BY temp.create_time DESC
+    </select>
+
+</mapper>

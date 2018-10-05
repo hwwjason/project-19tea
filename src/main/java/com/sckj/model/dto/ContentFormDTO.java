@@ -1,19 +1,17 @@
 package com.sckj.model.dto;
 
-import com.sckj.model.Content;
 import com.sckj.model.ContentForm;
 
 import java.util.List;
 
 /**
-* 描述：内容管理DTO
+* 描述：组件内容配置DTO
 * @author hww
-* @date 2018/09/25
+* @date 2018/10/03
 */
-public class ContentDTO extends Content{
-    private List<ContentForm> contentForms;
+public class ContentFormDTO extends ContentForm{
 
-    private List<ContentFormDTO> contentFormDTOS;
+    List<ContentForm> contentForms;
 
     private List<String> ids;
 
@@ -31,13 +29,5 @@ public class ContentDTO extends Content{
 
     public void setContentForms(List<ContentForm> contentForms) {
         this.contentForms = contentForms;
-    }
-
-    public List<ContentFormDTO> getContentFormDTOS() {
-        return contentFormDTOS;
-    }
-
-    public void setContentFormDTOS(List<ContentFormDTO> contentFormDTOS) {
-        this.contentFormDTOS = contentFormDTOS;
     }
 }

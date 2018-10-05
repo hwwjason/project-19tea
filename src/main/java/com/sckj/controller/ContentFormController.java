@@ -7,9 +7,9 @@ import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
 import com.sckj.model.dto.CouponDTO;
-import com.sckj.service.IContentService;
-import com.sckj.model.Content;
-import com.sckj.model.dto.ContentDTO;
+import com.sckj.service.IContentFormService;
+import com.sckj.model.ContentForm;
+import com.sckj.model.dto.ContentFormDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,33 +17,34 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
 import com.sckj.common.ResultData;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
-* 描述：内容管理控制层
+* 描述：组件内容配置控制层
 * @author hww
-* @date 2018/09/25
+* @date 2018/10/03
 */
 @RestController
-@RequestMapping("/content")
-public class ContentController {
+@RequestMapping("/contentForm")
+public class ContentFormController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ContentController.class);
+    private static final Logger logger = LoggerFactory.getLogger(ContentFormController.class);
 
     @Autowired
-    private IContentService contentService;
+    private IContentFormService contentFormService;
 
     /**
     * 描述：根据Id 查询
-    * @param id  内容管理id
+    * @param id  组件内容配置id
     */
     @RequestMapping(value = "/findById", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData findById(@RequestParam String id)throws Exception {
         try{
             ResultData resultData = new ResultData();
-            ContentDTO contentDTO = contentService.findDTOById(id);
-            resultData.setData(contentDTO);
+            ContentFormDTO contentFormDTO = contentFormService.findDTOById(id);
+            resultData.setData(contentFormDTO);
             return resultData;
         }catch (BusinessException e){
             throw e;
@@ -54,71 +55,56 @@ public class ContentController {
     }
 
     /**
-     * 描述：根据parentd 查询
-     * @param contentid
-     */
-    @RequestMapping(value = "/findByContentid", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData findByContentid(@RequestParam String contentid)throws Exception {
-        try{
-            ResultData resultData = new ResultData();
-            List<Object> contents = contentService.findByContentid(contentid);
-            resultData.setData(contents);
-            return resultData;
-        }catch (BusinessException e){
-            throw e;
-        } catch (Exception e){
-            logger.error("Error 查询失败", e);
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
-        }
-    }
-
-    /**
-     * 描述：根据parentd 查询
-     * @param contentid
-     */
-    @RequestMapping(value = "/findByContentidAndIsContainSecond", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData findByContentidAndIsContainSecond(@RequestParam String contentid,@RequestParam boolean isContainSecondLevel)throws Exception {
-        try{
-            ResultData resultData = new ResultData();
-            Content content = contentService.findByContentidAndIsContainSecond(contentid,isContainSecondLevel);
-            resultData.setData(content);
-            return resultData;
-        }catch (BusinessException e){
-            throw e;
-        } catch (Exception e){
-            logger.error("Error 查询失败", e);
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
-        }
-    }
-
-    /**
-    * 描述:创建或更新内容管理
-    * @param contentDTO  内容管理DTO
+    * 描述:创建或更新组件内容配置
+    * @param contentFormDTO  组件内容配置DTO
     */
     @RequestMapping(value = "/createOrUpdate", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData createOrUpdate(@RequestBody ContentDTO contentDTO) throws Exception {
+    public ResultData createOrUpdate(@RequestBody ContentFormDTO contentFormDTO) throws Exception {
         try {
             ResultData resultData = new ResultData();
-            resultData.setData(contentService.createOrUpdateContent(contentDTO));
+            resultData.setData(contentFormService.createOrUpdateContentForm(contentFormDTO));
             return resultData;
         }catch (BusinessException e){
             throw e;
         } catch (Exception e){
-            logger.error("Error 创建失败", e);
+            logger.error("Error 创建或更新失败", e);
             return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
         }
     }
 
+    /**
+     * 描述：根据 parentid 查询
+     * @param parentid
+     */
+    @RequestMapping(value = "/findByParentid", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData findByParentid(@RequestParam String parentid,@RequestParam(required = false) String formType)throws Exception {
+        try{
+            ResultData resultData = new ResultData();
+            List<ContentForm> contentForms = new ArrayList<>();
+            if (formType!=null){
+                contentForms = contentFormService.findByParentidAndFormType(parentid,formType);
+            }else{
+                contentForms = contentFormService.findByParentid(parentid);
+            }
+            resultData.setData(contentForms);
+            return resultData;
+        }catch (BusinessException e){
+            throw e;
+        } catch (Exception e){
+            logger.error("Error 查询失败", e);
+            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+        }
+    }
 
     /**
-    * 描述：删除内容管理
-    * @param ids 内容管理ids
+    * 描述：删除组件内容配置
+    * @param ids 组件内容配置ids
     */
     @RequestMapping(value = "/deleteByIds", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData deleteByIds(@RequestParam List<String> ids) throws Exception {
         try {
             ResultData resultData = new ResultData();
-            contentService.deleteByIds(ids);
+            contentFormService.deleteByIds(ids);
             return resultData;
         }catch (BusinessException e){
             throw e;
@@ -129,16 +115,16 @@ public class ContentController {
     }
 
     /**
-    * 描述：分页查询内容管理
+    * 描述：分页查询组件内容配置
     * @param
     */
-    @RequestMapping(value = "/getContentList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData getContentList(@RequestBody Query query){
+    @RequestMapping(value = "/getContentFormList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData getContentFormList(@RequestBody Query query){
         ResultData resultData = new ResultData();
         PageHelper.startPage(query.getPageNum(),query.getPageSize());
         Map<String,Object> map = (Map<String, Object>) query.getCondition();
-        List<ContentDTO> list = contentService.getContentList(map);
-        PageInfo<ContentDTO> pageInfo = new PageInfo<ContentDTO>(list);
+        List<ContentFormDTO> list = contentFormService.getContentFormList(map);
+        PageInfo<ContentFormDTO> pageInfo = new PageInfo<ContentFormDTO>(list);
         resultData.setData(pageInfo);
         return resultData;
     }

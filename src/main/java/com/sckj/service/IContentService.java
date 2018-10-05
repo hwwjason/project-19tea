@@ -21,6 +21,8 @@ public interface IContentService  {
 
     List<Object> findByContentid(String contentid)throws Exception;
 
+    Content findByContentidAndIsContainSecond(String contentid,boolean isContainSecondLevel)throws Exception;
+
     Content findById(String id)throws Exception;
 
     Content saveAndFlush(Content content)throws Exception;

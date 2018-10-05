@@ -19,6 +19,8 @@ public interface ContentAdvertisementRepository extends JpaRepository<ContentAdv
 
     List<ContentAdvertisement> findByParentid(String parentid);
 
+    List<ContentAdvertisement> findByParentidIn(List<String> parentids);
+
     List<ContentAdvertisement> findByContentid(String contentid);
 
 }

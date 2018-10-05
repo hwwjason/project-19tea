@@ -46,6 +46,11 @@ public class ContentAdvertisementServiceImpl implements IContentAdvertisementSer
     }
 
     @Override
+    public  List<ContentAdvertisement> findByParentidIn(List<String> parentids)throws Exception{
+        return contentAdvertisementRepository.findByParentidIn(parentids);
+    }
+
+    @Override
     public  List<ContentAdvertisement> findByContentid(String contentid)throws Exception{
         return contentAdvertisementRepository.findByContentid(contentid);
     }

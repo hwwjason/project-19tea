@@ -13,6 +13,8 @@ import java.util.List;
 public class ContentProductColumnDTO extends ContentProductColumn{
     private List<String> ids;
 
+    private List<ContentProductColumn> contentProductColumns;
+
     private String type= ContentTypeEnum.CONTENT_PRODUCT_CLOUMN.toString();
 
     public List<String> getIds() {
@@ -29,5 +31,13 @@ public class ContentProductColumnDTO extends ContentProductColumn{
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public List<ContentProductColumn> getContentProductColumns() {
+        return contentProductColumns;
+    }
+
+    public void setContentProductColumns(List<ContentProductColumn> contentProductColumns) {
+        this.contentProductColumns = contentProductColumns;
     }
 }

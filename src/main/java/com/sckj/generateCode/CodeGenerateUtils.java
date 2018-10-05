@@ -20,10 +20,10 @@ public class CodeGenerateUtils {
     private final String AUTHOR = "hww";
     private final String CURRENT_DATE = new SimpleDateFormat("yyyy/MM/dd").format(new Date());
     /** 表名称 **/
-    private final String tableName = "sckj_gjp_accesstoken";
+    private final String tableName = "sckj_content_form";
     private final String packageName = "com.sckj";
-    private final String tableAnnotation = "管家婆token";
-    private final String URL = "jdbc:mysql://192.168.0.134/sckj";
+    private final String tableAnnotation = "组件内容配置";
+    private final String URL = "jdbc:mysql://192.168.11.139/sckj";
     private final String USER = "root";
     private final String PASSWORD = "root";
     private final String DRIVER = "com.mysql.jdbc.Driver";

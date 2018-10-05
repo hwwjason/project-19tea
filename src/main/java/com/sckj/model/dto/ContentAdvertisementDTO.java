@@ -13,6 +13,8 @@ import java.util.List;
 public class ContentAdvertisementDTO extends ContentAdvertisement{
     private List<String> ids;
 
+    private List<ContentAdvertisement> secondContentAdvertisements;
+
     private String type = ContentTypeEnum.CONTENT_ADVER.toString();
 
     public List<String> getIds() {
@@ -29,5 +31,13 @@ public class ContentAdvertisementDTO extends ContentAdvertisement{
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public List<ContentAdvertisement> getSecondContentAdvertisements() {
+        return secondContentAdvertisements;
+    }
+
+    public void setSecondContentAdvertisements(List<ContentAdvertisement> secondContentAdvertisements) {
+        this.secondContentAdvertisements = secondContentAdvertisements;
     }
 }

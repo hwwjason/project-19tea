@@ -21,6 +21,8 @@ public interface IContentAdvertisementService  {
 
     List<ContentAdvertisement> findByParentid(String parentid)throws Exception;
 
+    List<ContentAdvertisement> findByParentidIn(List<String> parentid)throws Exception;
+
     List<ContentAdvertisement> findByContentid(String contentid)throws Exception;
 
     ContentAdvertisement findById(String id)throws Exception;

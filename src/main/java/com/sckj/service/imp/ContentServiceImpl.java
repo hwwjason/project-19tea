@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import javax.management.AttributeList;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -53,6 +54,9 @@ public class ContentServiceImpl implements IContentService {
 
     @Autowired
     private IContentProductSlideService contentProductSlideService;
+
+    @Autowired
+    private IContentFormService contentFormService;
 
     @Override
     public ContentDTO findDTOById(String id) throws Exception {
@@ -112,6 +116,60 @@ public class ContentServiceImpl implements IContentService {
             }
         }
         return contents;
+    }
+
+    @Override
+    public ContentDTO findByContentidAndIsContainSecond(String contentid,boolean isContainSecondLevel)throws Exception{
+        Content content = findById(contentid);
+        if(content==null){
+            return null;
+        }
+        ContentDTO contentDTO = new ContentDTO();
+        BeanUtils.copyProperties(contentDTO,content);
+        String orders = content.getOrders();
+        if(orders==null){
+            return contentDTO;
+        }
+
+        List<ContentForm> contentForms = contentFormService.findByContentid(contentid);
+        List<ContentFormDTO> contentFormDTOS = new ArrayList<>();//父节点
+        for (ContentForm contentForm : contentForms) {//拷贝
+            ContentFormDTO contentFormDTO = new ContentFormDTO();
+            BeanUtils.copyProperties(contentFormDTO,contentForm);
+            contentFormDTOS.add(contentFormDTO);
+        }
+
+        if (isContainSecondLevel){
+            List<String> contentFormIds = contentForms.stream().map(e->e.getId()).collect(Collectors.toList());
+            List<ContentForm> contentFormChilds = contentFormService.findByParentidIn(contentFormIds);
+            Map<String,List<ContentForm>> contentFormChildMap = new HashMap<>();
+            for (ContentForm contentFormChild : contentFormChilds) {
+                if(contentFormChildMap.get(contentFormChild.getParentid())!=null){
+                    List<ContentForm> contentFormList = contentFormChildMap.get(contentFormChild.getParentid());
+                    contentFormList.add(contentFormChild);
+                }else{
+                    List<ContentForm> contentFormList = new ArrayList<>();
+                    contentFormList.add(contentFormChild);
+                    contentFormChildMap.put(contentFormChild.getParentid(),contentFormList);
+                }
+            }
+            for (ContentFormDTO formDTO : contentFormDTOS) {
+                formDTO.setContentForms(contentFormChildMap.get(formDTO.getId()));
+            }
+        }
+
+        //父节点按 orders 数组排序
+        List<ContentFormDTO> contentFormDTOSByOrder = new ArrayList<>();
+        Map<String,ContentFormDTO> contentFormDTOMap =  contentFormDTOS.stream().collect(Collectors.toMap(ContentFormDTO::getId,ContentFormDTO->ContentFormDTO));
+        String[] orderList =  orders.split(",");
+        for (String s : orderList) {
+            if(contentFormDTOMap.get(s)!=null){
+                contentFormDTOSByOrder.add(contentFormDTOMap.get(s));
+            }
+        }
+
+        contentDTO.setContentFormDTOS(contentFormDTOSByOrder);
+        return contentDTO;
     }
 
     @Override

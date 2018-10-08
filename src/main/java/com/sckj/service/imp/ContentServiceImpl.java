@@ -120,7 +120,13 @@ public class ContentServiceImpl implements IContentService {
 
     @Override
     public ContentDTO findByContentidAndIsContainSecond(String contentid,boolean isContainSecondLevel)throws Exception{
-        Content content = findById(contentid);
+        Content content = null;
+        if(contentid==null){
+            content = this.findByStatus("1");
+        }else{
+            content = findById(contentid);
+        }
+
         if(content==null){
             return null;
         }
@@ -179,6 +185,15 @@ public class ContentServiceImpl implements IContentService {
     }
 
     @Override
+    public Content findByStatus(String status)throws Exception{
+        List<Content> contents = contentRepository.findByStatus(status);
+        if(contents!=null && contents.size()>0){
+            return contents.get(0);
+        }
+        return null;
+    }
+
+    @Override
     public Content saveAndFlush(Content content)throws Exception{
         return contentRepository.saveAndFlush(content);
     }
@@ -204,6 +219,20 @@ public class ContentServiceImpl implements IContentService {
 
         content = contentRepository.saveAndFlush(content);
         return this.findDTOById(content.getId());
+    }
+
+    @Override
+    public String startOrStop(String id,String status) throws Exception{
+        Content content = this.findById(id);
+        List<Content> contents = contentRepository.findAll();
+        if("1".equals(status)){//启用一个配置方案，禁用其他所有配置方案
+            for (Content c : contents) {
+                c.setStatus("0");
+            }
+            content.setStatus(status);
+        }
+        contentRepository.saveAll(contents);
+        return "";
     }
 
 

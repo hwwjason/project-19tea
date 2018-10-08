@@ -111,6 +111,7 @@ public class ContentFormServiceImpl implements IContentFormService {
             ProductList productList = productService.getProductByCode(contentForm.getProductCode());
             if(productList != null){
                 contentForm.setImgUrl(productList.getImg());
+                contentForm.setProductid(productList.getId());
             }
         }
 

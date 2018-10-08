@@ -12,6 +12,7 @@
         <result column="jump_url" jdbcType="VARCHAR" property="jumpUrl" />
         <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
         <result column="product_code" jdbcType="VARCHAR" property="productCode" />
+        <result column="productid" jdbcType="VARCHAR" property="productid" />
         <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
         <result column="product_name" jdbcType="VARCHAR" property="productName" />
         <result column="orders" jdbcType="VARCHAR" property="orders" />

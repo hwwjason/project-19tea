@@ -87,6 +87,12 @@ public class ContentForm {
     @Column(name = "product_code",columnDefinition = "VARCHAR")
     private String productCode;
 
+    /**
+     *商品编码
+     */
+    @Column(name = "productid",columnDefinition = "VARCHAR")
+    private String productid;
+
 
 
 
@@ -378,5 +384,13 @@ public class ContentForm {
 
     public void setFormType(String formType) {
         this.formType = formType;
+    }
+
+    public String getProductid() {
+        return productid;
+    }
+
+    public void setProductid(String productid) {
+        this.productid = productid;
     }
 }

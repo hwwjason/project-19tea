@@ -14,4 +14,6 @@ public interface ContentRepository extends JpaRepository<Content, String> {
 
     List<Content> findByIdIn(List<String> ids);
 
+    List<Content> findByStatus(String status);
+
 }

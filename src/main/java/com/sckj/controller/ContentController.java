@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
 import com.sckj.common.ResultData;
 
+import javax.persistence.Id;
 import java.util.List;
 import java.util.Map;
 
@@ -77,7 +78,7 @@ public class ContentController {
      * @param contentid
      */
     @RequestMapping(value = "/findByContentidAndIsContainSecond", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData findByContentidAndIsContainSecond(@RequestParam String contentid,@RequestParam boolean isContainSecondLevel)throws Exception {
+    public ResultData findByContentidAndIsContainSecond(@RequestParam(required = false) String contentid,@RequestParam(required = false) boolean isContainSecondLevel)throws Exception {
         try{
             ResultData resultData = new ResultData();
             Content content = contentService.findByContentidAndIsContainSecond(contentid,isContainSecondLevel);
@@ -100,6 +101,24 @@ public class ContentController {
         try {
             ResultData resultData = new ResultData();
             resultData.setData(contentService.createOrUpdateContent(contentDTO));
+            return resultData;
+        }catch (BusinessException e){
+            throw e;
+        } catch (Exception e){
+            logger.error("Error 创建失败", e);
+            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+        }
+    }
+
+    /**
+     * 描述:启动禁用配置方案
+     * @param id  内容管理DTO
+     */
+    @RequestMapping(value = "/startOrStop", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData startOrStop(@RequestParam String id , @RequestParam String status) throws Exception {
+        try {
+            ResultData resultData = new ResultData();
+            resultData.setData(contentService.startOrStop(id,status));
             return resultData;
         }catch (BusinessException e){
             throw e;

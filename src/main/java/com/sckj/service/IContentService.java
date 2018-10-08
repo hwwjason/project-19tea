@@ -25,11 +25,15 @@ public interface IContentService  {
 
     Content findById(String id)throws Exception;
 
+    Content findByStatus(String status)throws Exception;
+
     Content saveAndFlush(Content content)throws Exception;
 
     void deleteById(String id)throws Exception;
 
     ContentDTO createOrUpdateContent(ContentDTO contentDTO) throws Exception;
+
+    String startOrStop(String id,String status) throws Exception;
 
 
     Page<ContentDTO> findContentPage(ContentDTO contentDTO, Pageable page) throws Exception;

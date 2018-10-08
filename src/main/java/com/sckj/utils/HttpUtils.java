@@ -43,6 +43,7 @@ public class HttpUtils {
             InetAddress ip = null;
             while (netInterfaces.hasMoreElements()) {
                 NetworkInterface ni = (NetworkInterface) netInterfaces.nextElement();
+                System.out.println(ni.getName());
                 if(!"en0".equals(ni.getName()) && !"Ethernet0".equals(ni.getName()) ){
                     continue;
                 }

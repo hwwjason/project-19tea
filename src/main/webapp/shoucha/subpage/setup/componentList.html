@@ -262,6 +262,7 @@
         <div class="peizhi advertisement-set" lay-filter="advertisement">
             <div class="layui-tab-item layui-show">
                 <div class="layui-form-item">
+                    <form id="uploadForm" enctype="multipart/form-data" method="post" action="">
                     <label class="layui-form-label">图片</label>
                     <div class="layui-input-inline">
                         <div class="addImg">
@@ -269,6 +270,7 @@
                         </div>
                         <input type="file" :value="advertisementVmObj.file" class="input-file" name="file" onchange="preview(this)">
                     </div>
+                </form>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">跳转地址</label>

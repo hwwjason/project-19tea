@@ -45,17 +45,18 @@ public class HttpUtils {
                 NetworkInterface ni = (NetworkInterface) netInterfaces.nextElement();
                 System.out.println(ni.getName());
                 if(!"en0".equals(ni.getName()) && !"Ethernet0".equals(ni.getName()) ){
-                    continue;
+                    //continue;
                 }
                 Enumeration nii = ni.getInetAddresses();
                 while (nii.hasMoreElements()) {
                     ip = (InetAddress) nii.nextElement();
                     if (ip.getHostAddress().indexOf(":") == -1) {
                         en0 = ip.getHostAddress();
-                        break;
+                        //break;
+                        System.out.println(en0);
                     }
                 }
-                break;
+                //break;
             }
         } catch (SocketException e) {
             e.printStackTrace();

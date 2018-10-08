@@ -1,8 +1,11 @@
 package com.sckj.service.imp;
+import com.sckj.enums.FormTypeEnum;
 import com.sckj.model.ContentForm;
+import com.sckj.model.ProductList;
 import com.sckj.repository.ContentFormRepository;
 import com.sckj.service.IContentFormService;
 import com.sckj.repository.mybatis.ContentFormDAO;
+import com.sckj.service.IProductService;
 import com.sckj.utils.DateTimeUtils;
 import com.sckj.utils.StringUtils;
 import com.sckj.utils.UUIDUtils;
@@ -33,6 +36,9 @@ public class ContentFormServiceImpl implements IContentFormService {
 
     @Autowired
     private ContentFormRepository contentFormRepository;
+
+    @Autowired
+    private IProductService productService;
 
     @Override
     public ContentFormDTO findDTOById(String id) throws Exception {
@@ -99,6 +105,13 @@ public class ContentFormServiceImpl implements IContentFormService {
             contentForm = contentFormDAO.findById(id);
             BeanUtils.copyPropertiesWithoutNull(contentForm,contentFormDTO);
             contentForm.setUpdateTime(DateTimeUtils.getCurrentDate());
+        }
+
+        if("2".equals(contentForm.getLevel()) && ( FormTypeEnum.CONTENT_PRODUCT_CLOUMN.toString().equals(contentForm.getFormType()) || FormTypeEnum.CONTENT_PRODUCT_SLIDE.toString().equals(contentForm.getFormType()))){
+            ProductList productList = productService.getProductByCode(contentForm.getProductCode());
+            if(productList != null){
+                contentForm.setImgUrl(productList.getImg());
+            }
         }
 
         contentForm = contentFormRepository.saveAndFlush(contentForm);

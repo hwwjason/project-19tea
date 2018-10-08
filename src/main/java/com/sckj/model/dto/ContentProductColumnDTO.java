@@ -1,6 +1,6 @@
 package com.sckj.model.dto;
 
-import com.sckj.enums.ContentTypeEnum;
+import com.sckj.enums.FormTypeEnum;
 import com.sckj.model.ContentProductColumn;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class ContentProductColumnDTO extends ContentProductColumn{
 
     private List<ContentProductColumn> contentProductColumns;
 
-    private String type= ContentTypeEnum.CONTENT_PRODUCT_CLOUMN.toString();
+    private String type= FormTypeEnum.CONTENT_PRODUCT_CLOUMN.toString();
 
     public List<String> getIds() {
         return ids;

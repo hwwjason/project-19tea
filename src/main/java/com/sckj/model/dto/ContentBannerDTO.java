@@ -1,6 +1,6 @@
 package com.sckj.model.dto;
 
-import com.sckj.enums.ContentTypeEnum;
+import com.sckj.enums.FormTypeEnum;
 import com.sckj.model.ContentBanner;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class ContentBannerDTO extends ContentBanner{
 
     private List<ContentBannerDTO> contentBannerDTOS;
 
-    private String type = ContentTypeEnum.CONTENT_BANNER.toString();;
+    private String type = FormTypeEnum.CONTENT_BANNER.toString();;
 
     public List<String> getIds() {
         return ids;

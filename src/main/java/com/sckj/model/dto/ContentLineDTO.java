@@ -1,6 +1,6 @@
 package com.sckj.model.dto;
 
-import com.sckj.enums.ContentTypeEnum;
+import com.sckj.enums.FormTypeEnum;
 import com.sckj.model.ContentLine;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 public class ContentLineDTO extends ContentLine{
     private List<String> ids;
 
-    private String type = ContentTypeEnum.CONTENT_LINE.toString();
+    private String type = FormTypeEnum.CONTENT_LINE.toString();
 
     public List<String> getIds() {
         return ids;

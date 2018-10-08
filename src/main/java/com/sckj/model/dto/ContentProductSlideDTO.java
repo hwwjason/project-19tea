@@ -1,6 +1,6 @@
 package com.sckj.model.dto;
 
-import com.sckj.enums.ContentTypeEnum;
+import com.sckj.enums.FormTypeEnum;
 import com.sckj.model.ContentProductSlide;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 public class ContentProductSlideDTO extends ContentProductSlide{
     private List<String> ids;
 
-    private String type =  ContentTypeEnum.CONTENT_PRODUCT_SLIDE.toString();
+    private String type =  FormTypeEnum.CONTENT_PRODUCT_SLIDE.toString();
 
     public List<String> getIds() {
         return ids;

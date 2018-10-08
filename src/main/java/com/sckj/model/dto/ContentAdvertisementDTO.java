@@ -1,6 +1,6 @@
 package com.sckj.model.dto;
 
-import com.sckj.enums.ContentTypeEnum;
+import com.sckj.enums.FormTypeEnum;
 import com.sckj.model.ContentAdvertisement;
 
 import java.util.List;
@@ -15,7 +15,7 @@ public class ContentAdvertisementDTO extends ContentAdvertisement{
 
     private List<ContentAdvertisement> secondContentAdvertisements;
 
-    private String type = ContentTypeEnum.CONTENT_ADVER.toString();
+    private String type = FormTypeEnum.CONTENT_ADVER.toString();
 
     public List<String> getIds() {
         return ids;

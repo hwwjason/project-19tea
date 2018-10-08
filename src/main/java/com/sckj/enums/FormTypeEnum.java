@@ -3,7 +3,7 @@ package com.sckj.enums;
 /**
  * 内容管理系统
  */
-public enum ContentTypeEnum {
+public enum FormTypeEnum {
     CONTENT_BANNER("0","Banner配置"),
     CONTENT_PRODUCT_SLIDE("1","商品滑动栏"),
     CONTENT_LINE("2","分割线"),
@@ -12,7 +12,7 @@ public enum ContentTypeEnum {
     private  final String code;
     private final String name;
 
-    ContentTypeEnum(String code, String name) {
+    FormTypeEnum(String code, String name) {
         this.code = code;
         this.name = name;
     }

@@ -362,28 +362,21 @@
     function update(dom) {
         var id = $(dom).attr("productid");
         var status = $(dom).attr("status");
-        if(status==0){
-            status=1
-        }else{
-            status=0
+        if (status == 0) {
+            status = 1
+        } else {
+            status = 0
         }
         var obj = {
             id: id,
             status: status
         }
-        $.ajax({
-            url: baseURL + "/content/createOrUpdate",
-            type: 'POST',
-            dataType: 'json',
-            contentType: "application/json;charset=UTF-8",
-            data: JSON.stringify(obj),
-        }).done(function(res) {
+        $.post(baseURL + "content/startOrStop", obj, function(res) {
             if (res.status == "1") {
                 window.location.reload();
             }
-        }).fail(function() {
-            console.log("error");
-        })
+        }, "json")
+
     }
     </script>
 </body>

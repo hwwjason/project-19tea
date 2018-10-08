@@ -394,6 +394,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">商品价格</label>
+                                <div class="layui-input-inline">
+                                    <input name="productPrice" class="layui-input productPrice" :value="bitem.productPrice">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-inline">
@@ -453,19 +461,19 @@
         <!-- 商品通栏设置结束 -->
         <!-- 商品滑动栏设置开始 -->
         <div class="layui-tab peizhi product-switch-set" lay-allowClose="true" lay-filter="product-switch">
-            <a class="layui-btn addComponent site-product-switch-active" lay-submit lay-filter="productSwitchComponent" data-type="productSwitchAdd">
+            <a class="layui-btn addComponent site-product-switch-active" lay-submit lay-filter="productSwitchComponent" data-type="ppAdd" onclick="ppAdd()">
                 <i class="fa fa-plus"></i> 添加
             </a>
             <ul class="layui-tab-title">
-                <li class="layui-this">商品1</li>
+                <li v-for="(bitem1,index1) in productVmObj" :class="index1==0?'layui-this':''" :index="index1" :thisid="bitem1.id">{{bitem1.name}}</li>
             </ul>
             <div class="layui-tab-content">
-                <div class="layui-tab-item layui-show product-switch-content">
+                <div class="layui-tab-item product-switch-content" v-for="(bitem,index) in productVmObj" :class="[index==0?'layui-show':'','productSwitchTab'+index]">
                     <div class="product-show">
                         <div class="layui-form-item">
                             <label class="layui-form-label">商品编号</label>
                             <div class="layui-input-inline">
-                                <input name="121" class="layui-input" placeholder="请输入商品编号搜索">
+                                <input name="productCode" :value="bitem.productCode" class="layui-input productCode" placeholder="请输入商品编号搜索">
                             </div>
                             <div class="layui-input-inline">
                                 <button class="layui-btn layuiadmin-btn-list">
@@ -477,18 +485,16 @@
                             <div class="layui-inline">
                                 <label class="layui-form-label">商品名称</label>
                                 <div class="layui-input-inline">
-                                    <input name="" class="layui-input">
+                                    <input name="productName" class="layui-input productName" :value="bitem.productName">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="url-show">
-                        <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <label class="layui-form-label"></label>
-                                <div class="layui-input-inline">
-                                    <input name="" class="layui-input">
-                                </div>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">商品价格</label>
+                            <div class="layui-input-inline">
+                                <input name="productPrice" class="layui-input productPrice" :value="bitem.productPrice">
                             </div>
                         </div>
                     </div>
@@ -496,28 +502,28 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">排序</label>
                             <div class="layui-input-inline">
-                                <input name="" class="layui-input">
+                                <input name="orders" class="layui-input orders" :value="bitem.orders">
                             </div>
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">时效</label>
                         <div class="layui-input-block">
-                            <input type="radio" lay-filter="timeType" name="productswitchtimeType" value="永久" title="永久">
-                            <input type="radio" lay-filter="timeType" name="productswitchtimeType" value="时间配置" title="时间配置">
+                            <input type="radio" lay-filter="timeType" class="timeType" name="producttimeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="0" title="永久">
+                            <input type="radio" lay-filter="timeType" class="timeType" name="producttimeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="1" title="时间配置">
                         </div>
                     </div>
                     <div class="timeShow">
                         <div class="layui-form-item">
                             <label class="layui-form-label">开始时间</label>
                             <div class="layui-input-inline">
-                                <input type="text" class="layui-input dateBegin" placeholder="yyyy-MM-dd">
+                                <input type="text" class="layui-input dateBegin" placeholder="yyyy-MM-dd" :value="bitem.startTime">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">结束时间</label>
                             <div class="layui-input-inline">
-                                <input type="text" class="layui-input dateEnd" placeholder="yyyy-MM-dd">
+                                <input type="text" class="layui-input dateEnd" placeholder="yyyy-MM-dd" :value="bitem.endTime">
                             </div>
                         </div>
                     </div>
@@ -525,7 +531,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label"></label>
                             <div class="layui-input-inline">
-                                <button class="layui-btn">保存</button>
+                                <button class="layui-btn" :index="index" :thisid="bitem.id" onclick="productSwitchSave(this)">保存</button>
                                 <button class="layui-btn" onclick="closeTab(this)">关闭</button>
                             </div>
                         </div>
@@ -587,7 +593,36 @@
         }, "json")
     }
     $(function() {
-        $(".c-list ul").dragsort({});
+        //拖动排序
+        $(".c-list ul").dragsort({
+            dragEnd: function(e) {
+                var arrstring = [];
+                $(".ul2-li").each(function(i, e) {
+                    var theidval = $(this).attr("theid");
+                    if (theidval != undefined) {
+                        arrstring.push(theidval);
+                    }
+                })
+                arrstring = arrstring.toString();
+                var obj2 = {
+                    id: contentid,
+                    orders: arrstring
+                }
+                $.ajax({
+                    url: baseURL + "content/createOrUpdate",
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify(obj2),
+                }).done(function(res) {
+                    if (res.status == "1") {
+
+                    }
+                }).fail(function() {
+
+                })
+            }
+        });
         initList();
     })
     var layer = "";
@@ -615,7 +650,7 @@
         element.on('tab(banner)', function(data) {
             if (bannerVm.bannerObj[data.index].timeType == 1) {
                 $(".bannerTab" + data.index).find('.timeShow').show();
-            }else{
+            } else {
                 $(".bannerTab" + data.index).find('.timeShow').hide();
             }
             if (bannerVm.bannerObj[data.index].jumpType == 1) {
@@ -632,11 +667,11 @@
         var productactive = {
             productAdd: function(e) {
                 //新增一个Tab项
-                element.tabAdd('product', {
-                    title: productName,
-                    content: productHtml,
-                    id: new Date().getTime() //实际使用一般是规定好的id，这里以时间戳模拟下
-                })
+                productVm.productVmObj.push({ name: "商品2", timeType: 0 });
+                setTimeout(function() {
+                    element.init();
+                    form.render();
+                }, 0)
             }
         };
         //右侧tab删除的请求
@@ -645,22 +680,14 @@
                 var thisid = $(e.target).parent().attr("thisid");
                 var data = { ids: thisid }
                 var thetype = "";
-                var url = "";
-                if (thetype == 0) {
-                    url = baseURL + "contentBanner/deleteByIds";
-                }
-                if (thetype == 1) {
-                    url = baseURL + "contentProductSlide/deleteByIds";
-                }
-                if (thetype == 2) {
-                    url = baseURL + "contentLine/deleteByIds";
-                }
-                if (thetype == 3) {
-                    url = baseURL + "contentAdvertisement/deleteByIds";
-                }
-                if (thetype == 4) {
-                    url = baseURL + "contentProductColumn/deleteByIds";
-                }
+                // layer.confirm('您是确定删除吗？', {
+                //   btn: ['确定','取消'] //按钮
+                // }, function(){
+
+                // }, function(){
+
+                // });
+                var url = baseURL + "contentForm/deleteByIds";
                 $.post(url, data, function(res) {
                     if (res.status == "1") {
 
@@ -717,6 +744,15 @@
         //     }
         // });
     });
+
+    function ppAdd(argument) {
+        // body...
+        productSwitchVm.productVmObj.push({ name: "商品2", timeType: 0 });
+        setTimeout(function() {
+            element.init();
+            form.render();
+        }, 0)
+    }
 
     function allowDrop(ev) {
         ev.preventDefault();
@@ -785,6 +821,13 @@
             productVmObj: [{}]
         }
     })
+    // 创建商品滑动通栏的vue对象
+    var productSwitchVm = new Vue({
+        el: ".product-switch-set",
+        data: {
+            productVmObj: [{}]
+        }
+    })
     //广告长图的vue对象
     var advertisementVm = new Vue({
         el: ".advertisement-set",
@@ -808,28 +851,35 @@
         }
         if (type == 3) {
             //广告长图
-            var array = initObj.contentFormDTOS;
-            for (var i = 0; i < array.length; i++) {
-                if (array[i].id == id) {
-                    advertisementVm.advertisementVmObj = array[i];
-                    if (array[i].timeType == 1) {
-                        $(".advertisement-set").find('.timeShow').show();
-                    }else{
-                        $(".advertisement-set").find('.timeShow').hide();
+            console.log(initObj)
+            console.log(array)
+            if (initObj == "") {
+
+            } else {
+                var array = initObj.contentFormDTOS;
+                for (var i = 0; i < array.length; i++) {
+                    if (array[i].id == id) {
+                        advertisementVm.advertisementVmObj = array[i];
+                        if (array[i].timeType == 1) {
+                            $(".advertisement-set").find('.timeShow').show();
+                        } else {
+                            $(".advertisement-set").find('.timeShow').hide();
+                        }
+                        if (array[i].jumpType == 1) {
+                            $(".advertisement-set").find('.product-show').show();
+                            $(".advertisement-set").find('.url-show').hide();
+                        } else {
+                            $(".advertisement-set").find('.product-show').hide();
+                            $(".advertisement-set").find('.url-show').show();
+                        }
+                        setTimeout(function() {
+                            form.render();
+                            dateInit();
+                        }, 0)
                     }
-                    if (array[i].jumpType == 1) {
-                        $(".advertisement-set").find('.product-show').show();
-                        $(".advertisement-set").find('.url-show').hide();
-                    } else {
-                        $(".advertisement-set").find('.product-show').hide();
-                        $(".advertisement-set").find('.url-show').show();
-                    }
-                    setTimeout(function() {
-                        form.render();
-                        dateInit();
-                    }, 0)
                 }
             }
+
         }
         if (type == 0) {
             //banner设置
@@ -864,18 +914,17 @@
             }, "json")
         }
         if (type == 4) {
-            //banner设置
+            //商品通栏设置
             $.post(baseURL + "contentForm/findByParentid", { parentid: id }, function(res) {
                 if (res.status == "1") {
+
                     if (res.data.length != 0) {
-                        if (type == 0) {
-                            productVm.productVmObj  = res.data;
-                            for (var i = 0; i < productVm.productVmObj.length; i++) {
-                                if (productVm.productVmObj[i].timeType == "1") {
-                                    $(".productTab" + i).find('.timeShow').show();
-                                } else {
-                                    $(".productTab" + i).find('.timeShow').hide();
-                                }
+                        productVm.productVmObj = res.data;
+                        for (var i = 0; i < productVm.productVmObj.length; i++) {
+                            if (productVm.productVmObj[i].timeType == "1") {
+                                $(".productTab" + i).find('.timeShow').show();
+                            } else {
+                                $(".productTab" + i).find('.timeShow').hide();
                             }
                         }
                     } else {
@@ -895,36 +944,37 @@
                 }
             }, "json")
         }
-        // if (type == 4) {
-        //     //商品通栏设置
-        //     $.post(baseURL + "contentProductColumn/findByParentid", { parentid: id }, function(res) {
-        //         if (res.status == "1") {
-        //             if (res.data.length != 0) {
-        //                 productVm.productVmObj = res.data;
-        //                 for (var i = 0; i < productVm.productVmObj.length; i++) {
-        //                     if (productVm.productVmObj[i].timeType == 1) {
-        //                         $(".productTab" + i).find('.timeShow').show();
-        //                     } else {
-        //                         $(".productTab" + i).find('.timeShow').hide();
-        //                     }
-        //                 }
-        //             } else {
-        //                 productVm.productVmObj = [{
-        //                     name: leftName + '1',
-        //                     timeType: 0
-        //                 }]
-        //             }
-        //             //重新渲染layui的tab组件和form表单,setTimeout是为了让进程最后执行
-        //             setTimeout(function() {
-        //                 element.init();
-        //                 form.render();
-        //             }, 0)
-        //         } else {
-        //             layer.msg(res.message)
-        //         }
-        //     }, "json")
-        // }
+        if (type == 1) {
+            //商品滑动通栏设置
+            $.post(baseURL + "contentForm/findByParentid", { parentid: id }, function(res) {
+                if (res.status == "1") {
 
+                    if (res.data.length != 0) {
+                        productSwitchVm.productVmObj = res.data;
+                        for (var i = 0; i < productSwitchVm.productVmObj.length; i++) {
+                            if (productSwitchVm.productVmObj[i].timeType == "1") {
+                                $(".productTab" + i).find('.timeShow').show();
+                            } else {
+                                $(".productTab" + i).find('.timeShow').hide();
+                            }
+                        }
+                    } else {
+                        productSwitchVm.productVmObj = [{
+                            name: "商品滑动通栏",
+                            timeType: 0,
+                            jumpType: 1
+                        }]
+                    }
+                    setTimeout(function() {
+                        element.init();
+                        form.render();
+                        dateInit();
+                    }, 0)
+                } else {
+                    layer.msg(res.message)
+                }
+            }, "json")
+        }
         $(obj).parent(".ul2-li").removeClass("no-after").siblings("li").addClass('no-after');
         $(".peizhi").hide();
         $("." + className).show().attr({ thetype: type, theid: id, leftName: leftName });
@@ -1023,18 +1073,43 @@
         var thetype = "";
         var url = baseURL + "contentForm/deleteByIds";
         thetype = $(dom).attr("thetype");
+
         var data = { ids: $(dom).attr("theid") }
-        $.post(url, data, function(res) {
-            if (res.status == "1") {
-                $(dom).parent(".ul2-li").remove();
-                if ($(".ul2-li").length == 1) {
-                    $(".first-content-text").show();
+        layer.confirm('您是确定删除吗？', {
+            btn: ['确定', '取消'] //按钮
+        }, function(index) {
+            $.post(url, data, function(res) {
+                if (res.status == "1") {
+                    $(dom).parent(".ul2-li").remove();
+                    if ($(".ul2-li").length == 1) {
+                        $(".first-content-text").show();
+                    }
+                    if (thetype == "0") {
+                        $(".banner-set").hide();
+                    }
+                    if (thetype == "1") {
+                        $(".product-switch-set").hide();
+                    }
+                    if (thetype == "2") {
+                        $(".border-set").hide();
+                    }
+                    if (thetype == "3") {
+                        $(".advertisement-set").hide();
+                    }
+                    if (thetype == "4") {
+                        $(".product-set").hide();
+                    }
+                    layer.close(index);
+                } else {
+                    layer.msg(res.message)
                 }
-            } else {
-                layer.msg(res.message)
-            }
-        }, "json");
+            }, "json");
+        }, function() {
+
+        });
+
     }
+
     // 右侧banner明细新建和编辑
     function bannerSave(dom) {
         var that = $(dom);
@@ -1097,13 +1172,74 @@
             console.log("error");
         })
     }
+    //滑动商品栏
+    function productSwitchSave(dom) {
+        var that = $(dom);
+        var index = $(dom).attr("index");
+        var thisid = $(dom).attr("thisid");
+        var parentDom = $(dom).parents(".product-switch-content");
+        var leftName = parentDom.parents(".product-switch-set").attr("leftName");
+        var bvmindex = productVm.productVmObj[index];
+        var dataObj = {};
+        if (index && thisid) {
+            //有索引和ID代表着更新
+            bvmindex.id = thisid;
+            bvmindex.name = leftName;
+            bvmindex.level = 2;
+            bvmindex.contentid = contentid;
+            bvmindex.parentid = $(dom).parents(".product-switch-set").attr("theid");
+            bvmindex.productCode = parentDom.find('.productCode').val();
+            bvmindex.productName = parentDom.find('.productName').val();
+            bvmindex.orders = parentDom.find('.orders').val();
+            bvmindex.startTime = parentDom.find('.dateBegin').val();
+            bvmindex.endTime = parentDom.find('.dateEnd').val();
+            bvmindex.timeType = parentDom.find('.timeType:checked').val();
+            bvmindex.tagFirst = parentDom.find('.tagFirst').val();
+            bvmindex.productPrice = parentDom.find('.productPrice').val();
+            bvmindex.tagSecond = parentDom.find('.tagSecond').val();
+            dataObj = bvmindex;
+        } else {
+            //新建
+            var obj = {};
+            obj.name = leftName;
+            obj.level = 2;
+            obj.contentid = contentid;
+            obj.parentid = $(dom).parents(".product-switch-set").attr("theid");
+            obj.productCode = parentDom.find('.productCode').val();
+            obj.productName = parentDom.find('.productName').val();
+            obj.orders = parentDom.find('.orders').val();
+            obj.startTime = parentDom.find('.dateBegin').val();
+            obj.endTime = parentDom.find('.dateEnd').val();
+            obj.productPrice = parentDom.find('.productPrice').val();
+            obj.timeType = parentDom.find('.timeType:checked').val();
+            obj.tagFirst = parentDom.find('.tagFirst').val();
+            obj.tagSecond = parentDom.find('.tagSecond').val();
+            dataObj = obj
+        }
+        $.ajax({
+            url: baseURL + "contentForm/createOrUpdate",
+            type: 'POST',
+            dataType: 'json',
+            contentType: "application/json;charset=UTF-8",
+            data: JSON.stringify(dataObj),
+        }).done(function(res) {
+            if (res.status == "1") {
+                layer.msg("保存成功");
+                closeTab(dom);
+            } else {
+                layer.msg(res.message)
+            }
+        }).fail(function(res) {
+            layer.msg(res.message)
+        })
+    }
     //商品通栏编辑
     function productSave(dom) {
         var that = $(dom);
         var index = $(dom).attr("index");
         var thisid = $(dom).attr("thisid");
         var parentDom = $(dom).parents(".product-content");
-        var leftName = parentDom.attr("leftName");
+        var leftName = parentDom.parents(".product-set").attr("leftName");
         var bvmindex = productVm.productVmObj[index];
         var dataObj = {};
         if (index && thisid) {
@@ -1117,6 +1253,7 @@
             bvmindex.productName = parentDom.find('.productName').val();
             bvmindex.orders = parentDom.find('.orders').val();
             bvmindex.startTime = parentDom.find('.dateBegin').val();
+            bvmindex.productPrice = parentDom.find('.productPrice').val();
             bvmindex.endTime = parentDom.find('.dateEnd').val();
             bvmindex.timeType = parentDom.find('.timeType:checked').val();
             bvmindex.tagFirst = parentDom.find('.tagFirst').val();
@@ -1133,6 +1270,7 @@
             obj.productName = parentDom.find('.productName').val();
             obj.orders = parentDom.find('.orders').val();
             obj.startTime = parentDom.find('.dateBegin').val();
+            obj.productPrice = parentDom.find('.productPrice').val();
             obj.endTime = parentDom.find('.dateEnd').val();
             obj.timeType = parentDom.find('.timeType:checked').val();
             obj.tagFirst = parentDom.find('.tagFirst').val();

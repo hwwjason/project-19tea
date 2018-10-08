@@ -258,8 +258,6 @@ public class GJPServiceImp implements IGJPService {
         order.put("orderdetails",orderdetails);
         // orderdetails  end
 
-
-
         Map<String,String> eshopbuyer = new HashMap<>();
         eshopbuyer.put("customerreceiver",productOrder.getAcceptName());
         eshopbuyer.put("customerreceivermobile",productOrder.getAcceptTel());

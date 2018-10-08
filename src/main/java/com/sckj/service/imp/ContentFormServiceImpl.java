@@ -1,5 +1,6 @@
 package com.sckj.service.imp;
 import com.sckj.enums.FormTypeEnum;
+import com.sckj.exception.BusinessException;
 import com.sckj.model.ContentForm;
 import com.sckj.model.ProductList;
 import com.sckj.repository.ContentFormRepository;
@@ -105,6 +106,13 @@ public class ContentFormServiceImpl implements IContentFormService {
             contentForm = contentFormDAO.findById(id);
             BeanUtils.copyPropertiesWithoutNull(contentForm,contentFormDTO);
             contentForm.setUpdateTime(DateTimeUtils.getCurrentDate());
+        }
+
+        if(contentFormDTO.getProductCode()!=null){
+            ProductList productList = productService.getProductByCode(contentFormDTO.getProductCode());
+            if(productList == null){
+                throw new BusinessException("商品Code不存在，请校修正后保存");
+            }
         }
 
         if("2".equals(contentForm.getLevel()) && ( FormTypeEnum.CONTENT_PRODUCT_CLOUMN.toString().equals(contentForm.getFormType()) || FormTypeEnum.CONTENT_PRODUCT_SLIDE.toString().equals(contentForm.getFormType()))){

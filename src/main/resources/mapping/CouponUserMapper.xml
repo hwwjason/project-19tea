@@ -107,7 +107,8 @@
 
     <select id="getCouponUserList" parameterType="java.util.Map" resultMap="CouponUserDTOResultMap">
         select temp.*,
-        c.title as title
+        c.title as title,
+        c.coupon_type as couponType
         from sckj_coupon_user as temp
         left JOIN sckj_coupon c on c.id = temp.couponid
         <where>

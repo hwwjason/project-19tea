@@ -36,6 +36,8 @@ public class CouponUserDTO extends CouponUser{
 
     private String phoneOrUserId;
 
+    private String invalidType;//失效类型 已经使用，已经过期
+
     ///////////////////////////////////////////////coupon
     /**
      * FULL_REDUCE("0","满减"),WAITE_DELIVER("1","现金"),DELIVERED("2","折扣"),TAKED("3","商品");
@@ -352,5 +354,13 @@ public class CouponUserDTO extends CouponUser{
 
     public void setIsInvalid(String isInvalid) {
         this.isInvalid = isInvalid;
+    }
+
+    public String getInvalidType() {
+        return invalidType;
+    }
+
+    public void setInvalidType(String invalidType) {
+        this.invalidType = invalidType;
     }
 }

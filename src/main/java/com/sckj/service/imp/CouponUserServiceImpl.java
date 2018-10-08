@@ -1,4 +1,5 @@
 package com.sckj.service.imp;
+import com.sckj.enums.OrderEnums.CouponInvalidTypeEnums;
 import com.sckj.enums.OrderEnums.CouponTimeTypeEnums;
 import com.sckj.exception.BusinessException;
 import com.sckj.model.Coupon;
@@ -159,10 +160,12 @@ public class CouponUserServiceImpl implements ICouponUserService {
             for (CouponUserDTO coupon : couponUserDTOS) {
                 if("1".equals(coupon.getIsuse())){//已经使用
                     couponUser.add(coupon);
+                    coupon.setInvalidType(CouponInvalidTypeEnums.USED.toString());
                 }else{//未使用
                     if((coupon.getRealendtime()==null || coupon.getRealstarttime()==null)||(coupon.getRealendtime().getTime()>DateTimeUtils.getCurrentDate().getTime() ||
-                            coupon.getRealstarttime().getTime()<DateTimeUtils.getCurrentDate().getTime())){//已经过期 未到期
+                            coupon.getRealstarttime().getTime()<DateTimeUtils.getCurrentDate().getTime())){//已经过期 未使用
                         couponUser.add(coupon);
+                        coupon.setInvalidType(CouponInvalidTypeEnums.TIME_OUT.toString());
                     }
                 }
             }

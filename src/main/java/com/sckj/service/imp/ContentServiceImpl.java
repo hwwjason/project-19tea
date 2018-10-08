@@ -122,7 +122,9 @@ public class ContentServiceImpl implements IContentService {
     public ContentDTO findByContentidAndIsContainSecond(String contentid,boolean isContainSecondLevel)throws Exception{
         Content content = null;
         if(contentid==null){
+            isContainSecondLevel = true;
             content = this.findByStatus("1");
+            contentid = content.getId();
         }else{
             content = findById(contentid);
         }

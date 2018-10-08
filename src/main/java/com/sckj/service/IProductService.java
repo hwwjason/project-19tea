@@ -48,6 +48,8 @@ public interface IProductService {
     */
    ProductList getProductById(String id);
 
+   ProductList getProductByCode(String code);
+
    /**
     * 获取商品
     * @param id

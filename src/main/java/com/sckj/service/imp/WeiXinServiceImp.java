@@ -63,6 +63,9 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
     @Autowired
     private IUserCartService userCartService;
 
+    @Autowired
+    private IGJPService gjpService;
+
     /**
      * 小程序后台登录，向微信平台发送获取access_token请求，并返回openId
      * @param code
@@ -219,7 +222,8 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
                     productList.setSellNum(sellNum + buyNum);
                     productList.setStock(stock - buyNum);
                 }
-                //同步库存到管家婆
+                //同步订单到管家婆 (ProductOrder productOrder, List<ProductSonOrder> productSonOrders, UserList userList
+                gjpService.uploadsaleorders(productOrder,productSonOrders,null);
 
                 //改变优惠券状态
                 String couPonUserid = productOrderDTO.getCouponUserid();

@@ -10,4 +10,8 @@ import java.util.List;
 @Repository
 public interface ProductListJpa extends JpaRepository<ProductList,String> {
     List<ProductList> findByIdIn(List<String> ids);
+
+    List<ProductList> findByCodeIn(List<String> codes);
+
+    List<ProductList> findByCode(String code);
 }

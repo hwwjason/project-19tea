@@ -73,7 +73,7 @@ public class ContentController {
     }
 
     /**
-     * 描述：根据parentd 查询
+     * 描述：根据 contentid 查询
      * @param contentid
      */
     @RequestMapping(value = "/findByContentidAndIsContainSecond", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

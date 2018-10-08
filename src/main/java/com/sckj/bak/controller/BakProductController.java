@@ -86,10 +86,19 @@ public class BakProductController {
         return resultData;
     }
 
+    @RequestMapping(value = "/getProductByCode", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData getProductByCode(@RequestParam("code") String code){
+        ResultData resultData = new ResultData();
+        ProductList productList = productService.getProductByCode(code);
+        resultData.setData(productList);
+        return resultData;
+    }
+
     @RequestMapping(value = "/synchStock", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     ResultData synchStock(@RequestParam List<String> codes) throws Exception{
         ResultData resultData = new ResultData();
-        productService.synchStock(codes);
+        List<ProductListDTO>  productListDTOS = productService.synchStock(codes);
+        resultData.setData(productListDTOS);
         return resultData;
     }
 

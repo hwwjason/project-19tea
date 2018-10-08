@@ -1,6 +1,9 @@
 package com.sckj.service;
 
 import com.sckj.model.ProductList;
+import com.sckj.model.ProductOrder;
+import com.sckj.model.ProductSonOrder;
+import com.sckj.model.UserList;
 import com.sckj.model.dto.ProductListDTO;
 import net.sf.json.JSONObject;
 
@@ -37,7 +40,7 @@ public interface IGJPService {
      * @return
      * @throws Exception
      */
-    String batchquerysaleqty(String code) throws Exception;
+    String batchquerysaleqty(List<String> code) throws Exception;
 
 
     /**
@@ -47,6 +50,8 @@ public interface IGJPService {
      * @throws Exception
      */
     String uploadproducts(String uploadproducts) throws Exception;
+
+    String uploadproducts(ProductList product) throws Exception;
 
     /**
      * 系统仓库
@@ -71,9 +76,16 @@ public interface IGJPService {
 
 
     /**
-     * 订单批量上载/更新接口
+     * 订单批量上载/更新接口（批量）
      * @return
      * @throws Exception
      */
-    List<Object> uploadsaleorders() throws Exception;
+    String uploadsaleorders(ProductOrder productOrder, List<ProductSonOrder> productSonOrders, UserList userList) throws Exception;
+
+    /**
+     * 上载交易
+     * @return
+     * @throws Exception
+     */
+    List<Object> addsaleorder() throws Exception;
 }

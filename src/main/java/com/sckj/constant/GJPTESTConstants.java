@@ -19,8 +19,8 @@ public class GJPTESTConstants {
     public static final String USER_NAME = "test";
     public static final String PASSWORD = "grasp@101";
 
-    public static final String AUTH_CODE="RYeTckSj0GGUVQc3I9UFlYMuHhD9bUQs";//
-    public static final String TOKEN = "OAmszmu8X3KOUtXmbOPus0CgsQ83Kdybp2hGB0Jd";
+    public static final String AUTH_CODE="JREYmerEFmLLDcluTWg2TVYg6aPmBGUS";//
+    public static final String TOKEN = "fXujYq9MHHJwfhaog7fVXWEyzmQQbsetTjoCQsIO";
 
     public static final String temp ="code:RYeTckSj0GGUVQc3I9UFlYMuHhD9bUQs\n" +
             "{\"appkey\":\"68943923115886070418838901844741\",\"auth_token\":\"OAmszmu8X3KOUtXmbOPus0CgsQ83Kdybp2hGB0Jd\",\"profileid\":\"154275374803480431\",\"employee_id\":\"76029669893116591\",\"expires_in\":863999.99599969992,\"refresh_token\":\"2v1lc3lAhrckXrKritOsYcS6IYfE3l4ux6Rjg4tN\",\"re_expires_in\":15551999.9879993,\"timestamp\":\"2018/9/20 11:01:06\"}";

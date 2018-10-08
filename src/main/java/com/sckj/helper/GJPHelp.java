@@ -28,6 +28,7 @@ public class GJPHelp {
             String postString = "";
             for (String in : param.keySet()) {
                 postString += in + "=" + URLEncoder.encode(param.get(in),"utf-8")  +"&";
+//                postString += in + "=" + param.get(in)  +"&";
             }
             postString = postString.substring(0, postString.length() - 1);
             ret =  HttpRequest.sendPost(Config.api_link, postString);
@@ -60,7 +61,7 @@ public class GJPHelp {
     private static   void buildOrderParams(GJPBaseRequest baseRequest, Map<String, String> parameters)
     {
         parameters.put("shopkey", Config.shop_key);
-        parameters.put("orders",  JSONArray.fromObject(baseRequest.baseModels).toString());
+        //parameters.put("orders",  JSONArray.fromObject(baseRequest.baseModels).toString());
     }
 
     public static  GJPProductinfoRequest getProductinfoRequest()

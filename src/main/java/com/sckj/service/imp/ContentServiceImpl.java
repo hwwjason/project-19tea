@@ -225,13 +225,14 @@ public class ContentServiceImpl implements IContentService {
 
     @Override
     public String startOrStop(String id,String status) throws Exception{
-        Content content = this.findById(id);
         List<Content> contents = contentRepository.findAll();
         if("1".equals(status)){//启用一个配置方案，禁用其他所有配置方案
             for (Content c : contents) {
                 c.setStatus("0");
+                if(c.getId().equals(id)){
+                    c.setStatus("1");
+                }
             }
-            content.setStatus(status);
         }
         contentRepository.saveAll(contents);
         return "";

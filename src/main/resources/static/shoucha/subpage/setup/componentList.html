@@ -16,6 +16,7 @@
         width: 540px;
         float: left;
         height: 100%;
+        position: relative;
     }
 
     .layui-form-pane .layui-form-label {
@@ -50,7 +51,7 @@
     }
 
     #ul2 {
-        width: 500px;
+        width: 400px;
     }
 
     .ul2-li {
@@ -111,6 +112,13 @@
         right: 0;
         z-index: 10000;
     }
+
+    .ul2-btn-ul {
+        width: 120px;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
     </style>
 </head>
 
@@ -154,6 +162,8 @@
                 <li class="ul2-li no-after first-content-text">
                     <text class="content-text ">请拖入组件</text>
                 </li>
+            </ul>
+            <ul class="ul2-btn-ul">
             </ul>
         </div>
         <!-- banner设置开始 -->
@@ -561,6 +571,7 @@
                 } else {
                     initObj = res.data;
                     var html = "",
+                        html2 = "",
                         className = "",
                         resdata = res.data.contentFormDTOS;
 
@@ -583,9 +594,12 @@
                         var theid = resdata[i].id;
                         var thetype = resdata[i].formType;
                         var widthpx = resdata[i].width;
-                        html += '<li class="ul2-li no-after" theid="' + theid + '" thetype="' + thetype + '"><text class="content-text" ondblclick="modifyName(this)">' + resdata[i].name + '</text><text class="layui-btn layui-btn-small border-set-li" widthpx=' + widthpx + ' onclick="set(this,' + className + ')">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" theid="' + theid + '" thetype="' + thetype + '"  onclick="deleteComponent(this)">删除</text></li>'
+                        html += '<li class="ul2-li no-after ul2-li-no-first" theid="' + theid + '" thetype="' + thetype + '"><text class="content-text" ondblclick="modifyName(this)">' + resdata[i].name + '</text><text class="layui-btn layui-btn-small border-set-li" widthpx=' + widthpx + ' onclick="set(this)">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" theid="' + theid + '" thetype="' + thetype + '"  onclick="deleteComponent(this)">删除</text></li>'
+                        html2 += '<li><text class="layui-btn layui-btn-small border-set-li" widthpx=' + widthpx + ' onclick="set(this)">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" theid="' + theid + '" thetype="' + thetype + '"  onclick="deleteComponent(this)">删除</text></li>';
                     }
                     $("#ul2").append(html);
+                    $(".ul2-btn-ul").append(html2);
+                    btnSort()
                     $(".first-content-text").hide();
                 }
             } else {
@@ -618,7 +632,7 @@
                     data: JSON.stringify(obj2),
                 }).done(function(res) {
                     if (res.status == "1") {
-
+                        btnSort()
                     }
                 }).fail(function() {
 
@@ -839,9 +853,12 @@
         }
     })
 
-    function set(obj, className) {
-        var type = $(obj).parent(".ul2-li").attr("thetype");
-        var id = $(obj).parent(".ul2-li").attr("theid");
+    function set(obj) {
+        // var type = $(obj).parent(".ul2-li").attr("thetype");
+        // var id = $(obj).parent(".ul2-li").attr("theid");
+        var type = $(obj).attr("thetype");
+        var id = $(obj).attr("theid");
+        var className = $(obj).attr("className");
         var leftName = $(obj).siblings('.content-text').text();
         if (type == 2) {
             //分割线设置
@@ -1025,15 +1042,20 @@
                 var theid = res.data.id;
                 var thetype = res.data.formType;
                 var widthpx = res.data.width;
-                var html = '<li class="ul2-li no-after" thetype="' + thetype + '" theid="' + theid + '"><text class="content-text" ondblclick="modifyName(this)">' + data + '</text><text class="layui-btn layui-btn-small border-set-li" widthpx=' + widthpx + ' onclick="set(this,' + className + ')">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" thetype="' + thetype + '" theid="' + theid + '"  onclick="deleteComponent(this)">删除</text></li>'
+                var html = '<li class="ul2-li no-after ul2-li-no-first" thetype="' + thetype + '" theid="' + theid + '"><text class="content-text" ondblclick="modifyName(this)">' + data + '</text><text class="layui-btn layui-btn-small border-set-li" widthpx=' + widthpx + ' onclick="set(this)">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" thetype="' + thetype + '" theid="' + theid + '"  onclick="deleteComponent(this)">删除</text></li>'
                 var dropclass = dom.getAttribute("class");
+                html2 = '<li><text class="layui-btn layui-btn-small border-set-li" widthpx=' + widthpx + ' onclick="set(this)">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" theid="' + theid + '" thetype="' + thetype + '"  onclick="deleteComponent(this)">删除</text></li>';
 
                 if (dropclass != "ul2-li") {
+                    $(".ul2-btn-ul").append(html2);
                     $(dom).parent(".ul2-li").after(html);
                     $(".first-content-text").hide();
+                    btnSort()
                 } else {
+                    $(".ul2-btn-ul").append(html2);
                     $(dom).after(html);
                     $(".first-content-text").hide();
+                    btnSort()
                 }
                 var arrstring = [];
                 $(".ul2-li").each(function(i, e) {
@@ -1083,6 +1105,7 @@
         }, function(index) {
             $.post(url, data, function(res) {
                 if (res.status == "1") {
+                    $(".ul2-btn-ul li").eq($(".ul2-btn-ul li").length - 1).remove();
                     $(dom).parent(".ul2-li").remove();
                     if ($(".ul2-li").length == 1) {
                         $(".first-content-text").show();

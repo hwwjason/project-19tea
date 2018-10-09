@@ -33,7 +33,7 @@ public class UEditorController {
             //return PublicMsg.UEDITOR_CONFIG;
             String rootPath = "src/main/resources/static";
 //            if(request.getRequestURI().equals("/shoucha/frame/ueditor/ueditorConfig")){
-                rootPath = "src/main/webapp";
+//                rootPath = "src/main/webapp";
 //            }
 
             String exec = new ActionEnter(request, rootPath).exec();

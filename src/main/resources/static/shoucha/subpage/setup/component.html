@@ -81,29 +81,9 @@
         <div class="alert-div layui-form">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <label class="layui-form-label">组件类型</label>
-                    <div class="layui-input-inline">
-                        <select id="selectType">
-                            <option value="1">幻灯片</option>
-                            <option value="2">百宝箱</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-inline">
                     <label class="layui-form-label">组件名称</label>
                     <div class="layui-input-inline">
                         <input type="text" class="layui-input zujian-name">
-                    </div>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <div class="layui-inline">
-                    <label class="layui-form-label">显示分割线</label>
-                    <div class="layui-input-inline">
-                        <input type="radio" class="expressType" lay-filter="expressType" name="expressType" value="0" title="隐藏" checked="">
-                        <input type="radio" class="expressType" lay-filter="expressType" name="expressType" value="1" title="显示">
                     </div>
                 </div>
             </div>
@@ -147,15 +127,17 @@
                     form.on("submit(addComponent)", function(e) {
                         layer.open({
                             type: 1,
-                            area: ['400px', '300px'],
+                            area: ['400px', '180px'],
                             shadeClose: true,
                             btn: ['确定', '取消'],
                             content: $(".alert-div"),
                             yes: function(index) {
                                 var obj = {
-                                    type: $("#selectType").val(),
                                     name: $(".zujian-name").val(),
-                                    status: $(".expressType").val()
+                                }
+                                if($(".zujian-name").val()==""){
+                                    layer.msg("请输入组件名");
+                                    return false;
                                 }
                                 $.ajax({
                                     url: baseURL + "/content/createOrUpdate",
@@ -165,7 +147,7 @@
                                     data: JSON.stringify(obj),
                                 }).done(function(res) {
                                     if (res.status == "1") {
-                                        window.location.reload();
+                                        window.location.href="../../subpage/setup/componentList.html?id="+res.data.id;
                                     }
                                 }).fail(function() {
                                     console.log("error");

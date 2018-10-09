@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="../../frame/static/css/addProduct.css">
     <style type="text/css">
     .c-list {
-        width: 540px;
+        width: 520px;
         float: left;
         height: 100%;
         position: relative;
@@ -27,7 +27,7 @@
         margin-top: 20px;
     }
 
-    .peizhi {
+    .peizhi {margin-left: 20px;
         float: left;
         width: 640px;
         position: relative;
@@ -51,7 +51,7 @@
     }
 
     #ul2 {
-        width: 400px;
+        width: 420px;
     }
 
     .ul2-li {
@@ -70,7 +70,19 @@
         top: 10px;
         right: -47px;
     }
-
+    .ul2-btn-ul li{
+        position: relative;
+    }
+    .ul2-btn-ul li:after {
+        content: "";
+        position: absolute;
+        background: url(../../frame/static/image/right_icon.png) no-repeat;
+        width: 30px;
+        height: 30px;
+        background-size: contain;
+        top: 10px;
+        right: -28px;
+    }
     .no-after:after {
         display: none;
     }
@@ -81,7 +93,7 @@
     }
 
     .ul2-li .content-text {
-        width: 400px;
+        width: 420px;
         display: inline-block;
     }
 
@@ -114,7 +126,7 @@
     }
 
     .ul2-btn-ul {
-        width: 120px;
+        width: 100px;
         position: absolute;
         top: 0;
         right: 0;
@@ -150,9 +162,9 @@
                     <input type="text" name="title" placeholder="请输入方案名称" autocomplete="off" class="layui-input">
                 </div>
             </div>
-            <button class="layui-btn layuiadmin-btn-list" onclick="window.history.go(-1)">
+            <a class="layui-btn layuiadmin-btn-list" href="../../subpage/setup/component">
                 <i class="layui-icon">&#xe65c;</i>返回
-            </button>
+            </a>
             <button class="layui-btn layuiadmin-btn-list" onclick="window.location.reload()">
                 <i class="fa fa-refresh"></i> 刷新
             </button>
@@ -273,14 +285,14 @@
             <div class="layui-tab-item layui-show">
                 <div class="layui-form-item">
                     <form id="uploadForm" enctype="multipart/form-data" method="post" action="">
-                    <label class="layui-form-label">图片</label>
-                    <div class="layui-input-inline">
-                        <div class="addImg">
-                            <i class="fa fa-plus"></i>
+                        <label class="layui-form-label">图片</label>
+                        <div class="layui-input-inline">
+                            <div class="addImg">
+                                <i class="fa fa-plus"></i>
+                            </div>
+                            <input type="file" :value="advertisementVmObj.file" class="input-file" name="file" onchange="preview(this)">
                         </div>
-                        <input type="file" :value="advertisementVmObj.file" class="input-file" name="file" onchange="preview(this)">
-                    </div>
-                </form>
+                    </form>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">跳转地址</label>
@@ -521,8 +533,8 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">时效</label>
                         <div class="layui-input-block">
-                            <input type="radio" lay-filter="timeType" class="timeType" name="producttimeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="0" title="永久">
-                            <input type="radio" lay-filter="timeType" class="timeType" name="producttimeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="1" title="时间配置">
+                            <input type="radio" lay-filter="timeType" class="timeType productSwitchTabRadio" name="producttimeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="0" title="永久">
+                            <input type="radio" lay-filter="timeType" class="timeType productSwitchTabRadio" name="producttimeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="1" title="时间配置">
                         </div>
                     </div>
                     <div class="timeShow">
@@ -594,8 +606,9 @@
                         var theid = resdata[i].id;
                         var thetype = resdata[i].formType;
                         var widthpx = resdata[i].width;
-                        html += '<li class="ul2-li no-after ul2-li-no-first" theid="' + theid + '" thetype="' + thetype + '"><text class="content-text" ondblclick="modifyName(this)">' + resdata[i].name + '</text><text class="layui-btn layui-btn-small border-set-li" widthpx=' + widthpx + ' onclick="set(this)">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" theid="' + theid + '" thetype="' + thetype + '"  onclick="deleteComponent(this)">删除</text></li>'
-                        html2 += '<li><text class="layui-btn layui-btn-small border-set-li" widthpx=' + widthpx + ' onclick="set(this)">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" theid="' + theid + '" thetype="' + thetype + '"  onclick="deleteComponent(this)">删除</text></li>';
+                        // html += '<li class="ul2-li no-after ul2-li-no-first" theid="' + theid + '" thetype="' + thetype + '"><text class="content-text" ondblclick="modifyName(this)">' + resdata[i].name + '</text><text class="layui-btn layui-btn-small border-set-li" widthpx=' + widthpx + ' onclick="set(this)">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" theid="' + theid + '" thetype="' + thetype + '"  onclick="deleteComponent(this)">删除</text></li>'
+                        html += '<li class="ul2-li no-after ul2-li-no-first" theid="' + theid + '" thetype="' + thetype + '"><text class="content-text" ondblclick="modifyName(this)">' + resdata[i].name + '</text></li>'
+                        html2 += '<li class="no-after"><text class="layui-btn layui-btn-small border-set-li" widthpx=' + widthpx + ' onclick="set(this)">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" theid="' + theid + '" thetype="' + thetype + '"  onclick="deleteComponent(this)">删除</text></li>';
                     }
                     $("#ul2").append(html);
                     $(".ul2-btn-ul").append(html2);
@@ -675,6 +688,13 @@
             } else {
                 $(".bannerTab" + data.index).find('.product-show').hide();
                 $(".bannerTab" + data.index).find('.url-show').show();
+            }
+        });
+        element.on('tab(product-switch)', function(data) {
+            if (productSwitchVm.productVmObj[data.index].timeType == 1) {
+                $(".productSwitchTab" + data.index).find('.timeShow').show();
+            } else {
+                $(".productSwitchTab" + data.index).find('.timeShow').hide();
             }
         });
         //商品通栏的tab新增
@@ -781,7 +801,7 @@
     }
 
     function drop(ev) {
-        ev.stopPropagation(); 
+        ev.stopPropagation();
         ev.preventDefault();
         var data = ev.dataTransfer.getData("Text");
         var type = ev.dataTransfer.getData("type");
@@ -859,7 +879,7 @@
         var type = $(obj).attr("thetype");
         var id = $(obj).attr("theid");
         var className = $(obj).attr("className");
-        var leftName = $(obj).siblings('.content-text').text();
+        var leftName = $(obj).attr("dataName");
         if (type == 2) {
             //分割线设置
             var widthpx = $(obj).attr("widthpx");
@@ -949,7 +969,7 @@
                         }
                     } else {
                         productVm.productVmObj = [{
-                            name: "banner1",
+                            name: "商品通栏",
                             timeType: 0,
                             jumpType: 1
                         }]
@@ -968,14 +988,13 @@
             //商品滑动通栏设置
             $.post(baseURL + "contentForm/findByParentid", { parentid: id }, function(res) {
                 if (res.status == "1") {
-
                     if (res.data.length != 0) {
                         productSwitchVm.productVmObj = res.data;
                         for (var i = 0; i < productSwitchVm.productVmObj.length; i++) {
                             if (productSwitchVm.productVmObj[i].timeType == "1") {
-                                $(".productTab" + i).find('.timeShow').show();
+                                $(".productSwitchTab" + i).find('.timeShow').show();
                             } else {
-                                $(".productTab" + i).find('.timeShow').hide();
+                                $(".productSwitchTab" + i).find('.timeShow').hide();
                             }
                         }
                     } else {
@@ -995,7 +1014,7 @@
                 }
             }, "json")
         }
-        $(obj).parent(".ul2-li").removeClass("no-after").siblings("li").addClass('no-after');
+        $(obj).parent("li").removeClass("no-after").siblings("li").addClass('no-after');
         $(".peizhi").hide();
         $("." + className).show().attr({ thetype: type, theid: id, leftName: leftName });
     }
@@ -1042,9 +1061,10 @@
                 var theid = res.data.id;
                 var thetype = res.data.formType;
                 var widthpx = res.data.width;
-                var html = '<li class="ul2-li no-after ul2-li-no-first" thetype="' + thetype + '" theid="' + theid + '"><text class="content-text" ondblclick="modifyName(this)">' + data + '</text><text class="layui-btn layui-btn-small border-set-li" widthpx=' + widthpx + ' onclick="set(this)">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" thetype="' + thetype + '" theid="' + theid + '"  onclick="deleteComponent(this)">删除</text></li>'
+                // var html = '<li class="ul2-li no-after ul2-li-no-first" thetype="' + thetype + '" theid="' + theid + '"><text class="content-text" ondblclick="modifyName(this)">' + data + '</text><text class="layui-btn layui-btn-small border-set-li" widthpx=' + widthpx + ' onclick="set(this)">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" thetype="' + thetype + '" theid="' + theid + '"  onclick="deleteComponent(this)">删除</text></li>'
+                var html = '<li class="ul2-li no-after ul2-li-no-first" thetype="' + thetype + '" theid="' + theid + '"><text class="content-text" ondblclick="modifyName(this)">' + data + '</text></li>'
                 var dropclass = dom.getAttribute("class");
-                html2 = '<li><text class="layui-btn layui-btn-small border-set-li" widthpx=' + widthpx + ' onclick="set(this)">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" theid="' + theid + '" thetype="' + thetype + '"  onclick="deleteComponent(this)">删除</text></li>';
+                html2 = '<li class="no-after"><text class="layui-btn layui-btn-small border-set-li" widthpx=' + widthpx + ' onclick="set(this)">配置</text><text class="layui-btn layui-btn-small layui-btn-danger" theid="' + theid + '" thetype="' + thetype + '"  onclick="deleteComponent(this)">删除</text></li>';
 
                 if (dropclass != "ul2-li") {
                     $(".ul2-btn-ul").append(html2);
@@ -1417,6 +1437,40 @@
 
                 }
             });
+        })
+    }
+    //按钮重新排序
+    function btnSort() {
+        $(".ul2-li-no-first").each(function(index, ele) {
+            var theid = $(ele).attr("theid");
+            var thetype = $(ele).attr("thetype");
+            var className = "",data="";
+            $(".ul2-btn-ul li").each(function(index2, ele2) {
+                if (index == index2) {
+                    if(thetype == "0") {
+                        className = 'banner-set';
+                        data = "Banner";
+                    }
+                    if (thetype == "1") {
+                        className = 'product-switch-set';
+                        data = "商品滑动栏";
+                    }
+                    if (thetype == "2") {
+                        className = 'border-set';
+                        data = "分割线";
+                    }
+                    if (thetype == "3") {
+                        className = 'advertisement-set';
+                        data = "广告长图";
+                    }
+                    if (thetype == "4") {
+                        className = 'product-set';
+                        data = "商品通栏";
+                    }
+                    $(ele2).attr({ "theid": theid, "thetype": thetype,"className":className,"dataName":data});
+                    $(ele2).find("text").attr({ "theid": theid, "thetype": thetype ,"className":className,"dataName":data});
+                }
+            })
         })
     }
     </script>

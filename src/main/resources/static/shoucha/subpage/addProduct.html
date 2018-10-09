@@ -18,9 +18,9 @@
 
 <body class="body">
     <p class="layui-elem-quote">添加商品 &nbsp;&nbsp;
-        <button class="layui-btn layuiadmin-btn-list layui-btn-small" onclick="window.history.go(-1)">
+        <a class="layui-btn layuiadmin-btn-list layui-btn-small" href="../subpage/productList.html">
             <i class="layui-icon">&#xe65c;</i>返回
-        </button>
+        </a>
     </p>
     <form class="layui-form productForm" :action="formUrl" method="post" enctype="multipart/form-data">
         <div >
@@ -48,9 +48,9 @@
                 <div class="layui-input-inline">
                     <input type="text" name="subtitle" lay-verify="subtitle" placeholder="请输入商品副标题" autocomplete="off" class="layui-input" :value="productInfo.subtitle">
                 </div>
-                <div class="layui-input-inline">
+                <!-- <div class="layui-input-inline">
                     <span class="required-red">*</span>
-                </div>
+                </div> -->
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">规格</label>
@@ -206,10 +206,10 @@ layui.use('form', function() {
                 layer.msg('请输入商品标题');
                 return false;
             }
-            if (subtitle == "") {
-                layer.msg('请输入商品副标题');
-                return false;
-            }
+            // if (subtitle == "") {
+            //     layer.msg('请输入商品副标题');
+            //     return false;
+            // }
             if (specification == "") {
                 layer.msg('请输入规格');
                 return false;

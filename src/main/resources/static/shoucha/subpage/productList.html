@@ -231,11 +231,11 @@
 
         }
     })
-   
+
 
     function deleteProduct(argument) {
-         // //删除商品
-    var checkId = [];
+        // //删除商品
+        var checkId = [];
         $(".orderList .childCheck").each(function(index, el) {
             var elchecked = $(el).prop("checked");
             var productId = $(el).attr("productid");
@@ -243,6 +243,10 @@
                 checkId.push(productId)
             }
         });
+        if (checkId.length == 0) {
+            layer.msg("请勾选要删除的优惠券");
+            return false;
+        }
         layer.confirm('确定删除？', {
             btn: ['确定', '取消'] //按钮
         }, function(index) {

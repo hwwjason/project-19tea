@@ -185,7 +185,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">&nbsp;</label>
                 <div class="layui-input-block">
-                    <a class="layui-btn layuiadmin-btn-list" href="../../subpage/coupon/couponList.html">
+                    <a class="layui-btn layuiadmin-btn-list" href="../coupon/couponList.html">
                         <i class="layui-icon">&#xe65c;</i>返回
                     </a>
                     <button class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="formsub">
@@ -232,7 +232,7 @@
                     });
                     // 时间段切换
                     form.on('radio(timeType)', function(data) {
-                        if (data.value == "规定时间段") {
+                        if (data.value == "0") {
                             $(".timeType-div").show();
                             $(".effective-div").hide();
                         } else {

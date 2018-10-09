@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>快递价格配置</title>
+    <link rel="stylesheet" href="../../frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../frame/static/css/style.css">
+    <link rel="icon" href="../../frame/static/image/code.png">
+    <link rel="stylesheet" href="../../frame/font-awesome-4.7.0/css/font-awesome.min.css">
+    <style type="text/css">
+    .alert-div {
+        display: none;
+        padding: 0 20px;
+        padding-top: 20px;
+    }
+
+    .provice {
+        display: none;
+    }
+
+    .alert-div .layui-form-item {
+        margin-bottom: 5px;
+    }
+
+    .remarks {
+        color: red;
+        padding-left: 30px;
+    }
+    </style>
+</head>
+
+<body class="body">
+    <div id="vueDiv" class="layui-form ">
+        <div class="layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-list" onclick="window.location.reload()">
+                        <i class="fa fa-refresh"></i> 刷新
+                    </button>
+                    <button class="layui-btn layuiadmin-btn-list" isEdit="false" lay-submit lay-filter="addExpress">
+                        <i class="fa fa-plus"></i> 添加
+                    </button>
+                    <a class="layui-btn layuiadmin-btn-list">
+                        <i class="fa fa-remove"></i> 删除
+                    </a>
+                </div>
+            </div>
+        </div>
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" lay-filter="checkall" id="checkall" name="checkall" lay-skin="primary" checked>
+                    </th>
+                    <th>备注</th>
+                    <th>收费类型</th>
+                    <th>收件省份</th>
+                    <th>首件运费(元)</th>
+                    <th>续件</th>
+                    <th>运费(元)/件</th>
+                    <th>包邮件数</th>
+                    <th>是否开启</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody class="orderList">
+                <tr v-for="(item,index) in orderList" v-key="orderList">
+                    <td>
+                        <input type="checkbox" lay-filter="childCheck" name="" lay-skin="primary" checked>
+                    </td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.num}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.postage}}</td>
+                    <td>{{item.payprice}}</td>
+                    <td>{{item.vipprice}}</td>
+                    <td>{{item.payprice}}</td>
+                    <td>{{item.vipprice}}</td>
+                    <td>
+                        <a class="layui-btn layui-btn-normal layui-btn-small" :idx="index">
+                            <i class="layui-icon">&#x1006;</i>关闭
+                        </a>
+                        <button class="layui-btn layui-btn-normal layui-btn-small" :idx="index" isEdit="true" lay-submit lay-filter="addExpress">
+                            <i class="layui-icon">&#xe642;</i>编辑
+                        </button>
+                        <a class="layui-btn layui-btn-danger layui-btn-small" :idx="index" lay-submit lay-filter="delete">
+                            <i class="layui-icon">&#xe640;</i>删除
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="pagelist"></div>
+        <div class="alert-div layui-form">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="dateBegin" placeholder="">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">收费类型</label>
+                    <div class="layui-input-block">
+                        <input type="radio" lay-filter="expressType" name="expressType" value="全国统一" title="全国统一" checked="">
+                        <input type="radio" lay-filter="expressType" name="expressType" value="特殊地区" title="特殊地区">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item provice">
+                <div class="layui-inline">
+                    <label class="layui-form-label">收件省份</label>
+                    <div class="layui-input-inline">
+                        <select>
+                            <option>北京</option>
+                            <option>天津</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">首件运费(元)</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="dateBegin" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">续件</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="dateBegin" value="1">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">运费(元)/件</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="dateBegin" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">满N件包邮</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="dateBegin" value="0">
+                    </div>
+                </div>
+            </div>
+            <div class="layui-form-item remarks">
+                注：满N件包邮件数为0时，表示不包邮　*
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../frame/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../../frame/layui/layui.js"></script>
+    <script type="text/javascript" src="../../frame/static/js/vue.min.js"></script>
+    <script type="text/javascript">
+    $(function() {
+        // $.post("", {}, function(res) {
+
+        // }, "json");
+    })
+    var data = {
+        orderList: [{ id: 'xcx_chakarma_038', num: '冷泡水果茶（16袋装）', price: '/pages/product_detail/product_detail?id=P1529988351626', postage: 10, payprice: '亳州市', vipprice: '上架', coupon: '是', actualPrice: 110, state: 1, expressNo: 10000000, info: 'sasdadds' }, { id: 10086, num: 1, price: 100, postage: 10, payprice: 100, vipprice: 7, coupon: 10, actualPrice: 110, state: 1, expressNo: 10000000, info: 'sasdadds' }]
+    }
+    var vm = new Vue({
+        el: "#vueDiv",
+        data: data
+    })
+    layui.use(['form', 'layedit', 'laypage', 'jquery', 'laydate'], function() {
+        var laypage = layui.laypage;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var $ = layui.jquery;
+        // 监听checkbox选中事件，全选
+        form.on('checkbox(checkall)', function(data) {
+            ///data.elem.checked单选框是否选中
+            $(".orderList input[type='checkbox']").each(function(index, el) {
+                el.checked = data.elem.checked;
+            });
+            form.render('checkbox');
+        });
+        //单个checkbox选中事件
+        form.on('checkbox(childCheck)', function(event) {
+            var checkNum = 0;
+            $(".orderList input[type='checkbox']").each(function(index, el) {
+                if (el.checked == false) {
+                    checkNum++
+                    $("#checkall").prop("checked", false);
+                }
+            });
+            if (checkNum == 0) {
+                $("#checkall").prop("checked", true);
+            }
+            form.render('checkbox');
+            /* Act on the event */
+        });
+        form.on("submit(addExpress)", function(e) {
+            var isEdit = $(e.elem).attr("isEdit")
+            if (isEdit == "true") {
+                console.log("编辑")
+            } else {
+                console.log("添加")
+            }
+            layer.open({
+                type: 1,
+                area: ['400px', '490px'],
+                shadeClose: true,
+                btn: ['确定', '取消'],
+                content: $(".alert-div")
+            });
+        })
+        form.on("submit(delete)",function(e){
+            var index = $(e.elem).attr("idx");
+            layer.confirm('您确定删除ID为'+index+'的快递？', {
+              btn: ['确定','取消'] //按钮
+            }, function(){
+              layer.msg('你点击了确定', {icon: 1});
+              data.orderList.splice(index, 1)
+            }, function(){
+              layer.msg('你点击了取消', {
+                time: 20000, //20s后自动关闭
+                btn: ['明白了', '知道了']
+              });
+            });
+        })
+        // 快递类型切换
+        form.on('radio(expressType)', function(data) {
+            if (data.value == "全国统一") {
+                $(".provice").hide();
+            } else if (data.value == "特殊地区") {
+                $(".provice").show();
+            }
+        });
+        //执行一个laypage实例,分页
+        // laypage.render({
+        //     elem: 'pagelist', //注意，这里的 test1 是 ID，不用加 # 号
+        //     count: 500, //数据总数，从服务端得到
+        //     jump: function(obj, first) {
+        //         //obj包含了当前分页的所有参数，比如：
+        //         console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+        //         console.log(obj.limit); //得到每页显示的条数
+        //         //首次不执行
+        //         if (!first) {
+        //             //do something
+        //         }
+        //     }
+        // });
+        //分页
+        laypage.render({
+            elem: 'pagelist',
+            count: 1000,
+            layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip'],
+            jump: function(obj) {
+                console.log(obj)
+            }
+        });
+    });
+    </script>
+</body>
+
+</html>

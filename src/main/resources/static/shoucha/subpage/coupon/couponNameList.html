@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>优惠券名单</title>
+    <link rel="stylesheet" href="../../frame/layui/css/layui.css">
+    <link rel="stylesheet" href="../../frame/static/css/style.css">
+    <link rel="icon" href="../../frame/static/image/code.png">
+    <link rel="stylesheet" href="../../frame/font-awesome-4.7.0/css/font-awesome.min.css">
+    <style type="text/css">
+        .layui-form-pane .layui-form-label{
+            text-overflow: initial;
+        }
+    </style>
+</head>
+
+<body class="body">
+    <div id="vueDiv" class="layui-form layui-form-pane">
+        <p class="layui-elem-quote">优惠券名单管理</p>
+        <div class="layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">优惠券名</label>
+                    <div class="layui-input-inline">
+                        <select class="isuseselect">
+                            <option value="">-请选择-</option>
+                            <option value="1">已使用</option>
+                            <option value="0">未使用</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <label class="layui-form-label">领取日期</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="dateBegin" placeholder="yyyy-MM-dd">
+                    </div>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input" id="dateEnd" placeholder="yyyy-MM-dd">
+                    </div>
+                </div>
+                
+                <div class="layui-inline">
+                    <label class="layui-form-label">手机或用户id</label>
+                    <div class="layui-input-inline">
+                        <input type="text"  placeholder="请输入手机或用户id" autocomplete="off" class="layui-input phoneOrUserId">
+                    </div>
+                </div>
+                <div class="layui-inline">
+                    <button class="layui-btn layuiadmin-btn-list" onclick="search()">
+                        <i class="layui-icon layui-icon-search layuiadmin-button-btn">&#xe615</i>查询
+                    </button>
+                    <button class="layui-btn layuiadmin-btn-list" onclick="window.location.reload()">
+                        <i class="fa fa-refresh"></i> 刷新
+                    </button>
+                    <a class="layui-btn layuiadmin-btn-list" href="../../subpage/coupon/sendCoupon.html">
+                        <i class="fa fa-plus"></i> 发放
+                    </a>
+                    <button class="layui-btn layuiadmin-btn-list" onclick="window.history.go(-1)">
+                        <i class="layui-icon">&#xe65c;</i>返回
+                    </button>
+                </div>
+            </div>
+        </div>
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th>标题</th>
+                    <th>用户ID</th>
+                    <th>手机</th>
+                    <th>有效期开始时间</th>
+                    <th>有效期结束时间</th>
+                    <th>领取时间</th>
+                    <th>是否使用</th>
+                </tr>
+            </thead>
+            <tbody class="orderList">
+                <tr v-for="item in orderList" v-key="orderList">
+                    <td>{{item.title}}</td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.tel}}</td>
+                    <td>{{item.realstarttime}}</td>
+                    <td>{{item.realendtime}}</td>
+                    <td>{{item.receivetime}}</td>
+                    <td>
+                       {{item.isuse=="0"?"否":"是"}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div id="pagelist"></div>
+    </div>
+    <script type="text/javascript" src="../../frame/static/js/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="../../frame/layui/layui.js"></script>
+    <script type="text/javascript" src="../../frame/static/js/vue.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../../frame/static/js/public.js"></script>
+    <script type="text/javascript">
+    var couponid = GetRequest().id;    
+    var orderList = "",
+        layer = "",
+        form = "",
+        laypage = "",
+        count = 0,
+        pageNum = 1,
+        pageSize = 10,
+        pagecurr = 1,
+        getListData = {
+            "pageNum": pageNum,
+            "pageSize": pageSize,
+            "condition": {
+                "isuse": "",
+                "receiveStarttime": "",
+                "receiveEndtime": "",
+                "phoneOrUserId":""
+            }
+        };
+        getListData.condition.couponid = couponid
+    var vm = new Vue({
+        el: "#vueDiv",
+        data: {
+            orderList: ""
+        },
+        mounted: function() {
+            this.getMakerList(getListData);
+        },
+        methods: {
+            layuiInit: function() {
+                layui.use(['form', 'layedit', 'laypage', 'jquery', 'laydate', 'layer'], function() {
+                    laypage = layui.laypage;
+                    form = layui.form;
+                    layer = layui.layer;
+                    var laydate = layui.laydate;
+                    var $ = layui.jquery;
+                    //时间范围
+                    laydate.render({
+                        elem: '#dateBegin'
+                    });
+                    //时间范围
+                    laydate.render({
+                        elem: '#dateEnd'
+                    });
+                    //分页
+                    laypage.render({
+                        elem: 'pagelist',
+                        count: count,
+                        limit: pageSize,
+                        layout: ['count', 'prev', 'page', 'next', 'refresh', 'skip'],
+                        jump: function(obj, first) {
+                            if (!first) {
+                                pagecurr = obj.curr
+                                $.ajax({
+                                    url: baseURL + "bak/couponUser/getCouponUserList",
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    contentType: "application/json;charset=UTF-8",
+                                    data: JSON.stringify({ "pageNum": obj.curr, "pageSize": pageSize }),
+                                }).done(function(res) {
+                                    if (res.status == "1") {
+                                        orderList = res.data.list;
+                                        vm.orderList = orderList;
+                                        setTimeout(function() {
+                                            form.render();
+                                        }, 0)
+                                    }
+                                }).fail(function() {
+                                    console.log("error");
+                                })
+                            }
+                        }
+                    });
+                    setTimeout(function() {
+                        form.render();
+                    }, 0)
+                })
+            },
+            getMakerList: function(obj) {
+                var that = this;
+                $.ajax({
+                    url: baseURL + "bak/couponUser/getCouponUserList",
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify(obj),
+                }).done(function(res) {
+                    if (res.status == "1") {
+                        orderList = res.data.list;
+                        that.orderList = orderList;
+                        count = res.data.total
+                        that.layuiInit();
+                    }
+                }).fail(function() {
+                    console.log("error");
+                })
+            },
+            watch: function() {
+                this.layuiInit();
+            }
+
+        }
+    })
+    //查询商品
+    function search() {
+        var isuse = $(".isuseselect").val();
+        var phoneOrUserId = $(".phoneOrUserId").val();
+        var input_title = $(".input_title").val();
+        var dateBegin = $("#dateBegin").val();
+        var dateEnd = $("#dateEnd").val();
+        getListData.condition.isuse = isuse;
+        getListData.condition.phoneOrUserId = phoneOrUserId;
+        getListData.condition.receiveStarttime = dateBegin;
+        getListData.condition.receiveEndtime = dateEnd;
+        vm.getMakerList(getListData);
+    }
+    </script>
+</body>
+
+</html>

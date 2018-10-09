@@ -1,0 +1,45 @@
+.layui-card {
+    margin-bottom: 15px;
+    border-radius: 2px;
+    background-color: #fff;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
+}
+
+.layui-card-header {
+    height: 42px;
+    line-height: 42px;
+    padding: 0 15px;
+    border-bottom: 1px solid #f6f6f6;
+    color: #333;
+    border-radius: 2px 2px 0 0;
+    font-size: 14px;
+}
+
+.layui-card-body {
+    padding: 10px 15px;
+    line-height: 24px;
+}
+
+.welcome-div ul {
+    display: flex;
+}
+
+.welcome-div ul li {
+    flex: 1;
+    -webkit-flex: 1;
+    -moz-flex: 1;
+    padding: 10px 15px;
+    background-color: #f8f8f8;
+    color: #999;
+    border-radius: 2px;
+    transition: all .3s;
+    -webkit-transition: all .3s;
+}
+.welcome-div .num{
+	font-style: normal;
+    font-size: 30px;
+    font-weight: 300;
+    color: #009688;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}

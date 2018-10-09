@@ -117,13 +117,15 @@ public class ContentController {
     @RequestMapping(value = "/startOrStop", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData startOrStop(@RequestParam String id , @RequestParam String status) throws Exception {
         try {
+            logger.info("启动或暂停配置方案");
             ResultData resultData = new ResultData();
             resultData.setData(contentService.startOrStop(id,status));
             return resultData;
         }catch (BusinessException e){
+            logger.error("启动或暂停配置方案失败/n", e);
             throw e;
         } catch (Exception e){
-            logger.error("Error 创建失败", e);
+            logger.error("启动或暂停配置方案失败/n", e);
             return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
         }
     }

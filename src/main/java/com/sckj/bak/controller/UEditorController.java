@@ -3,9 +3,12 @@ package com.sckj.bak.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.baidu.ueditor.ActionEnter;
+import com.sckj.controller.ContentController;
 import com.sckj.model.dto.Ueditor;
 import com.sckj.utils.DateTimeUtils;
 import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,41 +25,42 @@ import java.util.UUID;
 
 
 @RestController
-//@RequestMapping("shoucha/frame/ueditor")
 public class UEditorController {
+    private static final Logger logger = LoggerFactory.getLogger(ContentController.class);
 
     @RequestMapping("/shoucha/frame/ueditor/ueditorConfig")
     @ResponseBody
     public String ueditor(@RequestParam("action") String param,MultipartFile upfile,HttpServletRequest request) {
-        Ueditor ueditor = new Ueditor();
-        if(param!=null&&param.equals("config")){
-            //return PublicMsg.UEDITOR_CONFIG;
-            String rootPath = "src/main/resources/static";
-//            if(request.getRequestURI().equals("/shoucha/frame/ueditor/ueditorConfig")){
-//                rootPath = "src/main/webapp";
-//            }
-
-            String exec = new ActionEnter(request, rootPath).exec();
-            return exec;
-        }else if(param!=null&&param.equals("uploadimage")||param.equals("uploadscrawl")){
-            if(upfile!=null){
-                //{state：”数据状态信息”，url：”图片回显路径”，title：”文件title”，original：”文件名称”，···}
-                try {
-                    return uploadImg(upfile,request);
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                    ueditor.setState("出现异常");
+        try{
+            Ueditor ueditor = new Ueditor();
+            if(param!=null&&param.equals("config")){
+                String rootPath = "src/main/resources/static";
+                String exec = new ActionEnter(request, rootPath).exec();
+                return exec;
+            }else if(param!=null&&param.equals("uploadimage")||param.equals("uploadscrawl")){
+                if(upfile!=null){
+                    //{state：”数据状态信息”，url：”图片回显路径”，title：”文件title”，original：”文件名称”，···}
+                    try {
+                        return uploadImg(upfile,request);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                        ueditor.setState("出现异常");
+                        return JSON.toJSONString(ueditor);
+                    }
+                }else{
+                    ueditor.setState("文件为空");
                     return JSON.toJSONString(ueditor);
                 }
             }else{
-                ueditor.setState("文件为空");
+                ueditor.setState("不支持该操作");
                 return JSON.toJSONString(ueditor);
             }
-        }else{
-            ueditor.setState("不支持该操作");
-            return JSON.toJSONString(ueditor);
+        }catch (Exception e){
+            logger.error("获取富文本配置信息出错,e.toString()："+e.toString());
+            logger.error("获取富文本配置信息出错,e："+e);
         }
+        return null;
     }
 
     @RequestMapping(value="/imgUpload")

@@ -43,21 +43,24 @@ public class UEditorController {
                     try {
                         return uploadImg(upfile,request);
                     } catch (IOException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                         ueditor.setState("出现异常");
+                        logger.error("文件上传,出现异常：",JSON.toJSONString(ueditor));
                         return JSON.toJSONString(ueditor);
                     }
                 }else{
                     ueditor.setState("文件为空");
+                    logger.error("文件上传,文件为空：",JSON.toJSONString(ueditor));
                     return JSON.toJSONString(ueditor);
                 }
             }else{
-                ueditor.setState("不支持该操作");
+                ueditor.setState("文件上传,不支持该操作");
+                logger.error("不支持该操作：",JSON.toJSONString(ueditor));
                 return JSON.toJSONString(ueditor);
             }
         }catch (Exception e){
             logger.error("获取富文本配置信息出错,e.toString()："+e.toString());
+            logger.error("获取富文本配置信息出错,e.toString()：",e.toString());
             logger.error("获取富文本配置信息出错,e："+e);
         }
         return null;
@@ -121,16 +124,10 @@ public class UEditorController {
     }
 
 
-    @RequestMapping(value = "/jsp/config",headers = "Accept=application/json")
+    //@RequestMapping(value = "/jsp/config",headers = "Accept=application/json")
+    @RequestMapping("/shoucha/subpage")
     public String imgUpload(HttpServletRequest request,HttpServletResponse response) {
         response.setContentType("application/json;charset=utf-8");
-
-//        try{
-//            Map<String, MultipartFile> files = ((MultipartHttpServletRequest) request).getFileMap();
-//            FileUtils.upload(files,request);
-//        }catch (Exception e){
-//        }
-
 
         String config = "/* 前后端通信相关的配置,注释只允许使用多行方式 */\n" +
                 "{\n" +

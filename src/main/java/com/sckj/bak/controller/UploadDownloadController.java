@@ -34,41 +34,6 @@ public class UploadDownloadController {
     @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
     public ResultData uploadImage(@RequestParam(value = "file") MultipartFile file,HttpServletRequest request) throws RuntimeException {
         return FileUtils.uploadImage(file,request);
-//        ResultData resultData = new ResultData();
-//        if (file.isEmpty()) {
-//            resultData.setMessage("文件不能为空");
-//            resultData.setStatus(ResultStatusEnum.FAIL.toString());
-//            return resultData;
-//        }
-//        // 获取文件名
-//        String fileName = file.getOriginalFilename();
-//        logger.info("上传的文件名为：" + fileName);
-//        // 获取文件的后缀名
-//        String suffixName = fileName.substring(fileName.lastIndexOf("."));
-//        logger.info("上传的后缀名为：" + suffixName);
-//        // 文件上传后的路径
-//        String filePath = uploadDir+"/";
-//        // 解决中文问题，liunx下中文路径，图片显示问题
-//        fileName = DateTimeUtils.getCurDate2()+"/"+DateTimeUtils.getCurTime2() + UUIDUtils.generate()+suffixName;
-//        File dest = new File(filePath + fileName);
-//        // 检测是否存在目录
-//        if (!dest.getParentFile().exists()) {
-//            dest.getParentFile().mkdirs();
-//        }
-//        try {
-//            file.transferTo(dest);
-//            resultData.setPath(fileName);
-//            resultData.setMessage("文件"+fileName+"上传成功");
-//            return resultData;
-//        } catch (IllegalStateException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        resultData.setPath(fileName);
-//        resultData.setMessage("文件上传失败");
-//        resultData.setStatus(ResultStatusEnum.FAIL.toString());
-//        return resultData;
     }
  
     //文件下载相关代码

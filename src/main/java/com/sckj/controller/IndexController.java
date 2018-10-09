@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class IndexController {
     @RequestMapping("/index")
     public String index()  {
-        return "shoucha/index.html";
+//        return "shoucha/index.html";
 //        return "index.jsp";
+        return "image.html";
     }
 
 }

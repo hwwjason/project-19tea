@@ -120,19 +120,19 @@
             <div class="layui-inline">
                 <ul>
                     <li>
-                        <button btnVal="Banner" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,0)">Banner</button>
+                        <div btnVal="Banner" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,0)">Banner</div>
                     </li>
                     <li>
-                        <button btnVal="商品滑动栏" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,1)">商品滑动栏</button>
+                        <div btnVal="商品滑动栏" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,1)">商品滑动栏</div>
                     </li>
                     <li>
-                        <button btnVal="分割线" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,2)">分割线</button>
+                        <div btnVal="分割线" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,2)">分割线</div>
                     </li>
                     <li>
-                        <button btnVal="广告长图" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,3)">广告长图</button>
+                        <div btnVal="广告长图" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,3)">广告长图</div>
                     </li>
                     <li>
-                        <button btnVal="商品通栏" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,4)">商品通栏</button>
+                        <div btnVal="商品通栏" class="layui-btn layuiadmin-btn-list" draggable="true" ondragstart="drag(event,4)">商品通栏</div>
                     </li>
                 </ul>
             </div>
@@ -596,7 +596,7 @@
     }
     $(function() {
         //拖动排序
-        $(".c-list ul").dragsort({
+        $(".c-list #ul2").dragsort({
             dragEnd: function(e) {
                 var arrstring = [];
                 $(".ul2-li").each(function(i, e) {
@@ -767,6 +767,7 @@
     }
 
     function drop(ev) {
+        ev.stopPropagation(); 
         ev.preventDefault();
         var data = ev.dataTransfer.getData("Text");
         var type = ev.dataTransfer.getData("type");

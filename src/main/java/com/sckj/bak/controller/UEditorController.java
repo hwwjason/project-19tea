@@ -34,9 +34,10 @@ public class UEditorController {
         try{
             Ueditor ueditor = new Ueditor();
             if(param!=null&&param.equals("config")){
-                String rootPath = "src/main/resources/static";
-                String exec = new ActionEnter(request, rootPath).exec();
-                return exec;
+//                String rootPath = "src/main/resources/static";
+//                String exec = new ActionEnter(request, rootPath).exec();
+//                return exec;
+                return this.getconfig(null,null);
             }else if(param!=null&&param.equals("uploadimage")||param.equals("uploadscrawl")){
                 if(upfile!=null){
                     //{state：”数据状态信息”，url：”图片回显路径”，title：”文件title”，original：”文件名称”，···}
@@ -125,9 +126,9 @@ public class UEditorController {
 
 
     //@RequestMapping(value = "/jsp/config",headers = "Accept=application/json")
-    @RequestMapping("/shoucha/subpage")
-    public String imgUpload(HttpServletRequest request,HttpServletResponse response) {
-        response.setContentType("application/json;charset=utf-8");
+//    @RequestMapping("/shoucha/subpage")
+    private String getconfig(HttpServletRequest request,HttpServletResponse response) {
+//        response.setContentType("application/json;charset=utf-8");
 
         String config = "/* 前后端通信相关的配置,注释只允许使用多行方式 */\n" +
                 "{\n" +

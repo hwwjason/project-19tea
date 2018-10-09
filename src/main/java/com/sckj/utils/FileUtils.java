@@ -117,7 +117,11 @@ public class FileUtils {
         }
         try {
             file.transferTo(dest);
-            fileName = "https://"+HttpUtils.getEn0()+"/image/"+fileName;
+            if(HttpUtils.getEn0().equals("172.19.60.150")){
+                fileName = "https://sowtea.com:2433/image/"+fileName;
+            }else{
+                fileName = "https://"+HttpUtils.getEn0()+"/image/"+fileName;
+            }
             resultData.setPath(fileName);
             resultData.setMessage("文件"+fileName+"上传成功");
             return resultData;

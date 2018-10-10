@@ -197,8 +197,7 @@ layui.use('form', function() {
             var price = $("input[name='price']").val();
             var originalPrice = $("input[name='originalPrice']").val();
             var stock = $("input[name='stock']").val();
-            var img = $("input[name='img']").val();
-            var img = $("input[name='img']").val();
+            var img = $(".preview-img").attr("src");
             var lunbo = $(".list1SortOrder").val();
             console.log(img,lunbo)
             if (code == "") {
@@ -241,6 +240,10 @@ layui.use('form', function() {
                 layer.msg('请选择封面图');
                 return false;
             }
+            if(lunbo==undefined||lunbo==""){
+                layer.msg('请选择轮播图');
+                return false;
+            }
         });
     }
     fromSb();
@@ -270,7 +273,6 @@ $(function() {
                         productInfo: resdata
                     }
                 })
-                $(".input-file").val(res.data.img);
                 ue.addListener("ready", function() {
                     ue.setContent(resdata.introduce)
                 });

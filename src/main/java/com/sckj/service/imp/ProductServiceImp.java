@@ -70,6 +70,9 @@ public class ProductServiceImp implements IProductService{
 
         //上传其他属性
         Map requestMap = multipartRequest.getParameterMap();
+        if(!requestMap.containsKey("slideImg")){
+            requestMap.put("slideImg","");
+        }
         Map<String,Object> hashMap = new HashMap<>();
         Iterator iterator = requestMap.entrySet().iterator();
         while (iterator.hasNext()){

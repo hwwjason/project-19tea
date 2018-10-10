@@ -96,6 +96,9 @@ public class ContentFormServiceImpl implements IContentFormService {
 
     @Override
     public ContentFormDTO createOrUpdateContentForm(ContentFormDTO contentFormDTO) throws Exception {
+        if(contentFormDTO.getFormType()==null){
+            throw new BusinessException("控件类型未指定");
+        }
         ContentForm contentForm = new ContentForm();
         String id = contentFormDTO.getId();
         if(StringUtils.isEmpty(id)){

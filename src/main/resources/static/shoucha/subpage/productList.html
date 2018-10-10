@@ -83,7 +83,7 @@
             <tbody class="orderList">
                 <tr v-for="item in orderList" v-key="orderList">
                     <td>
-                        <input :productid="item.id" class="childCheck" type="checkbox" lay-filter="childCheck" name="" lay-skin="primary">
+                        <input :productid="item.id" :code="item.code" class="childCheck" type="checkbox" lay-filter="childCheck" name="" lay-skin="primary">
                     </td>
                     <td>{{item.code}}</td>
                     <td>{{item.title}}</td>
@@ -235,7 +235,7 @@ function updateStock(argument) {
     var checkId = [];
         $(".orderList .childCheck").each(function(index, el) {
             var elchecked = $(el).prop("checked");
-            var productId = $(el).attr("productid");
+            var productId = $(el).attr("code");
             if (elchecked == true) {
                 checkId.push(productId)
             }
@@ -247,6 +247,7 @@ function updateStock(argument) {
 
         $.post(baseURL+"bak/product/synchStock",{codes:checkId.toString()},function(res){
             if(res.status==1){
+                layer.msg("同步成功");
                 window.location.reload();
             }
         },"json");
@@ -273,54 +274,54 @@ function updateStock(argument) {
             var data = checkId.toString();
             $.post(url, { ids: data }, function(res) {
                 if (res.status == 1) {
-                    //window.location.reload();
-                    for (var i = 0; i < checkId.length; i++) {
-                        for (var j = 0; j < vm.orderList.length; j++) {
-                            if (checkId[i] == vm.orderList[j].id) {
-                                vm.orderList.splice(j, 1)
-                                count = count - 1;
-                            }
-                        }
-                    }
-                    laypage.render({
-                        elem: 'pagelist',
-                        count: count,
-                        limit: pageSize,
-                        curr: pagecurr,
-                        layout: ['count', 'prev', 'page', 'next', 'refresh', 'skip'],
-                        jump: function(obj, first) {
-                            if (!first) {
-                                $.ajax({
-                                    url: baseURL + "bak/product/getProductList",
-                                    type: 'POST',
-                                    dataType: 'json',
-                                    contentType: "application/json;charset=UTF-8",
-                                    data: JSON.stringify({ "pageNum": obj.curr, "pageSize": pageSize }),
-                                }).done(function(res) {
-                                    if (res.status == "1") {
-                                        orderList = res.data.list;
-                                        vm.orderList = orderList;
-                                        $(".orderList .childCheck").each(function(index, el) {
-                                            $(el).prop("checked", false)
-                                        });
-                                        $("#checkall").prop("checked", false);
-                                        setTimeout(function() {
-                                            form.render();
-                                        }, 0)
-                                    }
-                                }).fail(function() {
-                                    console.log("error");
-                                })
-                            }
-                        }
-                    });
-                    setTimeout(function() {
-                        $(".orderList .childCheck").each(function(index, el) {
-                            $(el).prop("checked", false)
-                        });
-                        form.render();
-                    }, 0)
-                    checkId = [];
+                    window.location.reload();
+                    // for (var i = 0; i < checkId.length; i++) {
+                    //     for (var j = 0; j < vm.orderList.length; j++) {
+                    //         if (checkId[i] == vm.orderList[j].id) {
+                    //             vm.orderList.splice(j, 1)
+                    //             count = count - 1;
+                    //         }
+                    //     }
+                    // }
+                    // laypage.render({
+                    //     elem: 'pagelist',
+                    //     count: count,
+                    //     limit: pageSize,
+                    //     curr: pagecurr,
+                    //     layout: ['count', 'prev', 'page', 'next', 'refresh', 'skip'],
+                    //     jump: function(obj, first) {
+                    //         if (!first) {
+                    //             $.ajax({
+                    //                 url: baseURL + "bak/product/getProductList",
+                    //                 type: 'POST',
+                    //                 dataType: 'json',
+                    //                 contentType: "application/json;charset=UTF-8",
+                    //                 data: JSON.stringify({ "pageNum": obj.curr, "pageSize": pageSize }),
+                    //             }).done(function(res) {
+                    //                 if (res.status == "1") {
+                    //                     orderList = res.data.list;
+                    //                     vm.orderList = orderList;
+                    //                     $(".orderList .childCheck").each(function(index, el) {
+                    //                         $(el).prop("checked", false)
+                    //                     });
+                    //                     $("#checkall").prop("checked", false);
+                    //                     setTimeout(function() {
+                    //                         form.render();
+                    //                     }, 0)
+                    //                 }
+                    //             }).fail(function() {
+                    //                 console.log("error");
+                    //             })
+                    //         }
+                    //     }
+                    // });
+                    // setTimeout(function() {
+                    //     $(".orderList .childCheck").each(function(index, el) {
+                    //         $(el).prop("checked", false)
+                    //     });
+                    //     form.render();
+                    // }, 0)
+                    // checkId = [];
                 }
             }, "json")
         }, function() {

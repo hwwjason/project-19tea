@@ -57,15 +57,17 @@
                 <div class="layui-input-inline">
                     <input type="text" name="specification" lay-verify="specification" placeholder="请输入规格" autocomplete="off" class="layui-input" :value="productInfo.specification">
                 </div>
-                <span class="required-red">*</span>
+                <span class="required-red" style="float: left;">*</span>
                 <label class="layui-form-label">产地</label>
                 <div class="layui-input-inline">
                     <input type="text" name="supplier" lay-verify="supplier" placeholder="请输入产地" autocomplete="off" class="layui-input" :value="productInfo.supplier">
                 </div>
+                <span class="required-red" style="float: left;">*</span>
                 <label class="layui-form-label">保质期</label>
                 <div class="layui-input-inline">
                     <input type="text" name="shelflife" lay-verify="shelflife" placeholder="请输入保质期" autocomplete="off" class="layui-input" :value="productInfo.shelflife">
                 </div>
+                <span class="required-red">*</span>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">售价</label>
@@ -88,7 +90,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">库存</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="stock" lay-verify="stock" placeholder="请输入库存" autocomplete="off" class="layui-input" :value="productInfo.stock">
+                    <input type="text" name="stock" lay-verify="stock" placeholder="请输入库存" autocomplete="off" class="layui-input layui-disabled" :value="productInfo.stock" disabled style="background: #f0f0f0;">
                 </div>
                 <div class="layui-input-inline">
                     <span class="required-red">*</span>

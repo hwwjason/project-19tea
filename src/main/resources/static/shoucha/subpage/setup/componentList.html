@@ -1129,27 +1129,28 @@
         }, function(index) {
             $.post(url, data, function(res) {
                 if (res.status == "1") {
-                    $(".ul2-btn-ul li").eq($(".ul2-btn-ul li").length - 1).remove();
-                    $(dom).parent(".ul2-li").remove();
-                    if ($(".ul2-li").length == 1) {
-                        $(".first-content-text").show();
-                    }
-                    if (thetype == "0") {
-                        $(".banner-set").hide();
-                    }
-                    if (thetype == "1") {
-                        $(".product-switch-set").hide();
-                    }
-                    if (thetype == "2") {
-                        $(".border-set").hide();
-                    }
-                    if (thetype == "3") {
-                        $(".advertisement-set").hide();
-                    }
-                    if (thetype == "4") {
-                        $(".product-set").hide();
-                    }
-                    layer.close(index);
+                    window.location.reload();
+                    // $(".ul2-btn-ul li").eq($(".ul2-btn-ul li").length - 1).remove();
+                    // $(dom).parent(".ul2-li").remove();
+                    // if ($(".ul2-li").length == 1) {
+                    //     $(".first-content-text").show();
+                    // }
+                    // if (thetype == "0") {
+                    //     $(".banner-set").hide();
+                    // }
+                    // if (thetype == "1") {
+                    //     $(".product-switch-set").hide();
+                    // }
+                    // if (thetype == "2") {
+                    //     $(".border-set").hide();
+                    // }
+                    // if (thetype == "3") {
+                    //     $(".advertisement-set").hide();
+                    // }
+                    // if (thetype == "4") {
+                    //     $(".product-set").hide();
+                    // }
+                    // layer.close(index);
                 } else {
                     layer.msg(res.message)
                 }

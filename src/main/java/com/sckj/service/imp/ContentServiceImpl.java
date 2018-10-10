@@ -233,8 +233,13 @@ public class ContentServiceImpl implements IContentService {
                     c.setStatus("1");
                 }
             }
+            contentRepository.saveAll(contents);
+        }else if("0".equals(status)){
+            Content content = contentRepository.getOne(id);
+            content.setStatus("0");
+            contentRepository.save(content);
         }
-        contentRepository.saveAll(contents);
+
         return "";
     }
 

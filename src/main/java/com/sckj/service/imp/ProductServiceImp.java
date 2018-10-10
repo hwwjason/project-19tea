@@ -1,6 +1,7 @@
 package com.sckj.service.imp;
 
 import com.sckj.enums.ProductShelvesEnum;
+import com.sckj.exception.BusinessException;
 import com.sckj.service.IGJPService;
 import com.sckj.utils.BeanUtils;
 import com.sckj.common.ResultData;
@@ -50,6 +51,11 @@ public class ProductServiceImp implements IProductService{
         if(StringUtils.isNotEmpty(product.getId())){//修改
             updateProduct(product);
         }else{//新增
+            //校验不能重复
+             List<ProductList>  productLists = productListJpa.findByCode(product.getCode());
+             if(productLists!=null && productLists.size()>0){
+                 throw  new BusinessException("商品编码重复");
+             }
             product.setId(UUIDUtils.generate());
             product.setAddtime(DateTimeUtils.getCurrentDate());
             product.setUpdatetime(DateTimeUtils.getCurrentDate());
@@ -70,8 +76,8 @@ public class ProductServiceImp implements IProductService{
 
         //上传其他属性
         Map requestMap = multipartRequest.getParameterMap();
-        if(!requestMap.containsKey("slideImg")){
-            requestMap.put("slideImg","");
+        if(!requestMap.containsKey("slideImg[]")){
+            requestMap.put("slideImg[]",null);
         }
         Map<String,Object> hashMap = new HashMap<>();
         Iterator iterator = requestMap.entrySet().iterator();
@@ -81,16 +87,20 @@ public class ProductServiceImp implements IProductService{
             Object value = entry.getValue();
             Object object = new Object();
              if ("slideImg[]".equals(key)){
-                 String objstr = "";
-                 Object[] objArr = (Object[])value;
-                 for (Object o : objArr) {
-                     if(StringUtils.isEmpty(String.valueOf(objstr))){
-                         objstr = (String)o;
-                     }else{
-                         objstr = objstr +"," +  (String)o;
+                 if(value == null){
+                     hashMap.put("slideImg",null);
+                 }else{
+                     String objstr = "";
+                     Object[] objArr = (Object[])value;
+                     for (Object o : objArr) {
+                         if(StringUtils.isEmpty(String.valueOf(objstr))){
+                             objstr = (String)o;
+                         }else{
+                             objstr = objstr +"," +  (String)o;
+                         }
                      }
+                     hashMap.put("slideImg",objstr);
                  }
-                 hashMap.put("slideImg",objstr);
                  continue;
             }
             for (Object obj : (Object[])value) {

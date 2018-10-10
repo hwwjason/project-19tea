@@ -215,7 +215,7 @@
                                 <input name="121" class="layui-input productCode" :value="bitem.productCode" placeholder="请输入商品编号搜索">
                             </div>
                             <div class="layui-input-inline">
-                                <button class="layui-btn layuiadmin-btn-list">
+                                <button class="layui-btn layuiadmin-btn-list" onclick="getProductByCode(this)">
                                     匹配
                                 </button>
                             </div>
@@ -1176,7 +1176,7 @@
             bvmindex.level = 2;
             bvmindex.formType = 0;
             bvmindex.parentid = $(dom).parents(".banner-set").attr("theid");
-            bvmindex.imgurl = parentDom.find('.img-hidden').val();
+            bvmindex.imgUrl = parentDom.find('.img-hidden').val();
             bvmindex.productCode = parentDom.find('.productCode').val();
             bvmindex.productName = parentDom.find('.productName').val();
             bvmindex.orders = parentDom.find('.orders').val();
@@ -1194,7 +1194,7 @@
             obj.formType = 0;
             obj.contentid = contentid;
             obj.parentid = $(dom).parents(".banner-set").attr("theid");
-            obj.imgurl = parentDom.find('.img-hidden').val();
+            obj.imgUrl = parentDom.find('.img-hidden').val();
             obj.productCode = parentDom.find('.productCode').val();
             obj.productName = parentDom.find('.productName').val();
             obj.orders = parentDom.find('.orders').val();
@@ -1392,7 +1392,7 @@
         bvmindex.level = 2;
         bvmindex.formType = 3;
         bvmindex.contentid = contentid;
-        bvmindex.imgurl = parentDom.find('.img-hidden').val();
+        bvmindex.imgUrl = parentDom.find('.img-hidden').val();
         bvmindex.productCode = parentDom.find('.productCode').val();
         bvmindex.productName = parentDom.find('.productName').val();
         bvmindex.startTime = parentDom.find('.dateBegin').val();
@@ -1482,6 +1482,15 @@
                 }
             })
         })
+    }
+    function getProductByCode(obj){
+        var code = $(obj).parents(".product-show").find(".productCode").val();
+        $.post(baseURL + "bak/product/getProductByCode",{code:code},function(res){
+            if(res.status==1){
+
+            }
+        },"json");
+
     }
     </script>
 </body>

@@ -151,7 +151,7 @@
                     swf: '../../dist/Uploader.swf',
                     chunked: false,
                     chunkSize: 512 * 1024,
-                    server: baseURL+'/bak/image/uploadImage',
+                    server: 'https://www.sowtea.com:2433/bak/image/uploadImage',
                     // runtimeOrder: 'flash',
 
                     // accept: {

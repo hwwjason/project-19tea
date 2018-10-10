@@ -195,6 +195,7 @@
                                 <div class="addImg">
                                     <i class="fa fa-plus"></i>
                                 </div>
+                                <input type="hidden" name="" class="img-hidden" >
                                 <input type="file" class="input-file" name="file" onchange="preview(this)">
                             </div>
                         </form>
@@ -290,6 +291,7 @@
                             <div class="addImg">
                                 <i class="fa fa-plus"></i>
                             </div>
+                            <input type="hidden" name="" class="img-hidden" >
                             <input type="file" :value="advertisementVmObj.file" class="input-file" name="file" onchange="preview(this)">
                         </div>
                     </form>
@@ -832,6 +834,7 @@
                     str += "<img class='preview-img' src='" + res.path + "'/>";
                     str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
                     $(obj).parent().append(str);
+                    $(obj).siblings('.img-hidden').val(res.path);
                 } else {
                     layer.msg(res.message)
                 }
@@ -842,6 +845,7 @@
     function delimg(obj) {
         $(obj).siblings(".preview-img").remove();
         $(obj).siblings(".input-file").val("");
+        $(obj).siblings(".img-hidden").val("");
         $(obj).remove();
     }
     // 创建banner的vue对象
@@ -1172,7 +1176,7 @@
             bvmindex.level = 2;
             bvmindex.formType = 0;
             bvmindex.parentid = $(dom).parents(".banner-set").attr("theid");
-            bvmindex.imgurl = parentDom.find('.input-file').val();
+            bvmindex.imgurl = parentDom.find('.img-hidden').val();
             bvmindex.productCode = parentDom.find('.productCode').val();
             bvmindex.productName = parentDom.find('.productName').val();
             bvmindex.orders = parentDom.find('.orders').val();
@@ -1190,7 +1194,7 @@
             obj.formType = 0;
             obj.contentid = contentid;
             obj.parentid = $(dom).parents(".banner-set").attr("theid");
-            obj.imgurl = parentDom.find('.input-file').val();
+            obj.imgurl = parentDom.find('.img-hidden').val();
             obj.productCode = parentDom.find('.productCode').val();
             obj.productName = parentDom.find('.productName').val();
             obj.orders = parentDom.find('.orders').val();
@@ -1232,6 +1236,7 @@
             bvmindex.id = thisid;
             bvmindex.name = leftName;
             bvmindex.level = 2;
+            bvmindex.formType = 1;
             bvmindex.contentid = contentid;
             bvmindex.parentid = $(dom).parents(".product-switch-set").attr("theid");
             bvmindex.productCode = parentDom.find('.productCode').val();
@@ -1249,6 +1254,7 @@
             var obj = {};
             obj.name = leftName;
             obj.level = 2;
+            obj.formType = 1;
             obj.contentid = contentid;
             obj.parentid = $(dom).parents(".product-switch-set").attr("theid");
             obj.productCode = parentDom.find('.productCode').val();
@@ -1294,6 +1300,7 @@
             bvmindex.name = leftName;
             bvmindex.level = 2;
             bvmindex.contentid = contentid;
+            bvmindex.formType = 4;
             bvmindex.parentid = $(dom).parents(".product-set").attr("theid");
             bvmindex.productCode = parentDom.find('.productCode').val();
             bvmindex.productName = parentDom.find('.productName').val();
@@ -1310,6 +1317,7 @@
             var obj = {};
             obj.name = leftName;
             obj.level = 2;
+            obj.formType = 4;
             obj.contentid = contentid;
             obj.parentid = $(dom).parents(".product-set").attr("theid");
             obj.productCode = parentDom.find('.productCode').val();
@@ -1348,6 +1356,7 @@
             "id": theid,
             "name": "分割线",
             "width": px,
+            "formType":2
             "level": 2,
         };
         $.ajax({
@@ -1381,8 +1390,9 @@
         bvmindex.id = thisid;
         bvmindex.name = leftName;
         bvmindex.level = 2;
+        bvmindex.formType = 3;
         bvmindex.contentid = contentid;
-        bvmindex.imgurl = parentDom.find('.input-file').val();
+        bvmindex.imgurl = parentDom.find('.img-hidden').val();
         bvmindex.productCode = parentDom.find('.productCode').val();
         bvmindex.productName = parentDom.find('.productName').val();
         bvmindex.startTime = parentDom.find('.dateBegin').val();

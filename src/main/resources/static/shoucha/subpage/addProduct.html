@@ -198,6 +198,9 @@ layui.use('form', function() {
             var originalPrice = $("input[name='originalPrice']").val();
             var stock = $("input[name='stock']").val();
             var img = $("input[name='img']").val();
+            var img = $("input[name='img']").val();
+            var lunbo = $(".list1SortOrder").val();
+            console.log(img,lunbo)
             if (code == "") {
                 layer.msg('请输入商品编号');
                 return false;
@@ -267,6 +270,7 @@ $(function() {
                         productInfo: resdata
                     }
                 })
+                $(".input-file").val(res.data.img);
                 ue.addListener("ready", function() {
                     ue.setContent(resdata.introduce)
                 });

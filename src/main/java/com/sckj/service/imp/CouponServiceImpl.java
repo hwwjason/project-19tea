@@ -67,6 +67,7 @@ public class CouponServiceImpl implements ICouponService {
             coupon.setId(UUIDUtils.generate());
         }else{
             coupon = couponDAO.findById(id);
+            coupon.setStatus("1");
             BeanUtils.copyPropertiesWithoutNull(coupon,couponDTO);
         }
         coupon = couponRepository.saveAndFlush(coupon);

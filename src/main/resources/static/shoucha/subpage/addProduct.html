@@ -22,7 +22,7 @@
             <i class="layui-icon">&#xe65c;</i>返回
         </a>
     </p>
-    <form class="layui-form productForm" :action="formUrl" method="post" enctype="multipart/form-data">
+    <form class="layui-form productForm" action="https://sowtea.com:2433/bak/product/putProductToStorage" method="post" enctype="multipart/form-data">
         <div >
             <div class="layui-form-item">
                 <input type="hidden" name="id" :value="productInfo.id">

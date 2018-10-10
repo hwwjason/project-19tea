@@ -24,8 +24,8 @@ public class GJPConstants {
 
     public static final String AUTH_CODE="cALEpPPhiQeiQ6zB8HtRaSuppv2Wfvcr";
 
-    public static final String TOKEN = "7pnY6oFON1PJVfVDIIj7mjXfYGXLPvKgxqOUgk9r";
-    public static final String REFRESH_TOKEN = "3vi1mQYw9E0So7ADKCTucxtPjGCWXnnsTuv2xXnn";
+    public static final String TOKEN = "GFNXPPQAz7iMUOn1X9YSNieWkPM5LsktWOH44cDD";
+    public static final String REFRESH_TOKEN = "QyhiDHbHgiLqdynzbP78yNBhtWUy4A3nhHR9pCSA";
 
 
 }

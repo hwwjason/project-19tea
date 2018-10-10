@@ -28,7 +28,7 @@
             <button class="layui-btn layuiadmin-btn-list" onclick="updateState(0)">
                 <i class="fa fa-file-text"></i> 下架
             </button>
-            <button class="layui-btn layuiadmin-btn-list">
+            <button class="layui-btn layuiadmin-btn-list" onclick="updateStock()">
                 <i class="fa fa-file-text"></i> 同步库存
             </button>
         </p>
@@ -231,8 +231,26 @@
 
         }
     })
+function updateStock(argument) {
+    var checkId = [];
+        $(".orderList .childCheck").each(function(index, el) {
+            var elchecked = $(el).prop("checked");
+            var productId = $(el).attr("productid");
+            if (elchecked == true) {
+                checkId.push(productId)
+            }
+        });
+        if (checkId.length == 0) {
+            layer.msg("请勾选要同步的商品");
+            return false;
+        }
 
-
+        $.post(baseURL+"bak/product/synchStock",{codes:checkId.toString()},function(res){
+            if(res.status==1){
+                window.location.reload();
+            }
+        },"json");
+}
     function deleteProduct(argument) {
         // //删除商品
         var checkId = [];

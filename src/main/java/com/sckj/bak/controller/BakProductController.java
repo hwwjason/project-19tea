@@ -4,10 +4,16 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.sckj.common.Query;
 import com.sckj.common.ResultData;
+import com.sckj.constant.MessageConstants;
+import com.sckj.controller.ContentController;
+import com.sckj.enums.ResultStatusEnum;
+import com.sckj.exception.BusinessException;
 import com.sckj.model.dto.ProductListDTO;
 import com.sckj.model.ProductList;
 import com.sckj.service.IProductService;
 import com.sckj.utils.UUIDUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +29,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/bak/product")
 public class BakProductController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ContentController.class);
 
     @Autowired
     private IProductService productService;
@@ -88,10 +96,24 @@ public class BakProductController {
 
     @RequestMapping(value = "/getProductByCode", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData getProductByCode(@RequestParam("code") String code){
-        ResultData resultData = new ResultData();
-        ProductList productList = productService.getProductByCode(code);
-        resultData.setData(productList);
-        return resultData;
+        try {
+            logger.info("匹配商品");
+            ResultData resultData = new ResultData();
+            ProductList productList = productService.getProductByCode(code);
+            if(productList == null){
+                resultData.setStatus(ResultStatusEnum.FAIL.toString());
+                resultData.setMessage("商品不存在");
+            }
+            resultData.setData(productList);
+            return resultData;
+        }catch (BusinessException e){
+            logger.error("匹配商品出错/n", e);
+            throw e;
+        } catch (Exception e){
+            logger.error("匹配商品出错/n", e);
+            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+        }
+
     }
 
     @RequestMapping(value = "/synchStock", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

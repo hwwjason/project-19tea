@@ -2,7 +2,9 @@ package com.sckj.service.imp;
 
 import com.sckj.enums.ProductShelvesEnum;
 import com.sckj.exception.BusinessException;
+import com.sckj.model.model.UploadDownloadModel;
 import com.sckj.service.IGJPService;
+import com.sckj.service.IUploadDownloadService;
 import com.sckj.utils.BeanUtils;
 import com.sckj.common.ResultData;
 import com.sckj.repository.mybatis.ProductListMapper;
@@ -38,6 +40,9 @@ public class ProductServiceImp implements IProductService{
     @Autowired
     private IGJPService gjpService;
 
+    @Autowired
+    private IUploadDownloadService uploadDownloadService;
+
     @Override
     public void putProductToStorage(ProductList productList) {
         productList.setId(UUIDUtils.generate());
@@ -68,11 +73,11 @@ public class ProductServiceImp implements IProductService{
 
     private ProductList createProductList(HttpServletRequest request) throws Exception {
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-        //上传图片
+        //上传封面图片
         Map map =multipartRequest.getFileMap();
         MultipartFile multipartFile = (MultipartFile) map.get("img");
-        ResultData resultDataFile = FileUtils.uploadImage(multipartFile,request);
-        String imgFilePath = resultDataFile.getPath();
+        UploadDownloadModel uploadDownloadModel =  uploadDownloadService.uploadImage(multipartFile,request);
+        String imgFilePath = uploadDownloadModel == null?null:uploadDownloadModel.getFilePath();
 
         //上传其他属性
         Map requestMap = multipartRequest.getParameterMap();

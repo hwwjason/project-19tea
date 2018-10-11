@@ -1,10 +1,13 @@
 package com.sckj.utils;
 
 import com.sckj.common.ResultData;
+import com.sckj.controller.ContentController;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,9 +23,14 @@ import java.util.Map;
 @Slf4j
 public class FileUtils {
 
-    //@Value("${uploadDir}")
-    private static String uploadDir = "/Users/hww/Documents/IMAGE/";
+    @Value("${uploadDir}")
+    private static String uploadDir;
 
+    private static final Logger logger = LoggerFactory.getLogger(ContentController.class);
+
+//    public static ResultData uploadImage(MultipartFile file,HttpServletRequest request) throws RuntimeException {
+//        return null;
+//    }
 
 
     public static ResultData upload(  Map<String, MultipartFile> files,HttpServletRequest request) {
@@ -57,8 +65,8 @@ public class FileUtils {
 //							new FileOutputStream(new File(getPath(request) + UUID.randomUUID() + "-" +files[i].getOriginalFilename())));
                     File dest = new File(filePath+fileName);
                     if (!dest.getParentFile().exists()) {
-						dest.getParentFile().mkdirs();
-					}
+                        dest.getParentFile().mkdirs();
+                    }
                     BufferedOutputStream out = new BufferedOutputStream(
                             new FileOutputStream(dest));
                     if(StringUtils.isEmpty(fileNames)){

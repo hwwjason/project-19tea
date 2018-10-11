@@ -26,7 +26,8 @@ pagehelper:
   support-methods-arguments: true
   params: count=countSql
 #上传位置
-uploadDir: /Users/hww/Documents/IMAGE/
+uploadDir: D:/19tea/image/
+#uploadDir: /Users/hww/Documents/IMAGE/
 localurl: https://localhost/
 
 weixin4j:

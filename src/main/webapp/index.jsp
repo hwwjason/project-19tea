@@ -67,7 +67,7 @@
     <tr>
         <td>path</td>
         <td>
-            <%=path%>
+            <img src="https://127.0.0.1/bak/image/showImg?imgFile=1.jpg">
         </td>
     </tr>
 

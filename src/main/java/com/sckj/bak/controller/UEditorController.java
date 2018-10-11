@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSON;
 import com.baidu.ueditor.ActionEnter;
 import com.sckj.controller.ContentController;
 import com.sckj.model.dto.Ueditor;
+import com.sckj.model.model.UploadDownloadModel;
+import com.sckj.service.IUploadDownloadService;
 import com.sckj.utils.DateTimeUtils;
 import com.sckj.utils.UUIDUtils;
 import org.json.JSONException;
@@ -33,21 +35,21 @@ public class UEditorController {
     @Value("${uploadDir}")
     private String uploadDir;
 
+    @Autowired
+    private IUploadDownloadService uploadDownloadService;
+
     @RequestMapping("/shoucha/frame/ueditor/ueditorConfig")
     @ResponseBody
     public String ueditor(@RequestParam("action") String param,MultipartFile upfile,HttpServletRequest request) {
         try{
             Ueditor ueditor = new Ueditor();
             if(param!=null&&param.equals("config")){
-//                String rootPath = "src/main/resources/static";
-//                String exec = new ActionEnter(request, rootPath).exec();
-//                return exec;
-                return this.getconfig(null,null);
+                return this.getconfig();
             }else if(param!=null&&param.equals("uploadimage")||param.equals("uploadscrawl")){
                 if(upfile!=null){
                     //{state：”数据状态信息”，url：”图片回显路径”，title：”文件title”，original：”文件名称”，···}
                     try {
-                        return uploadImg(upfile,request);
+                        return uploadImg2(upfile,request);
                     } catch (IOException e) {
                         e.printStackTrace();
                         ueditor.setState("出现异常");
@@ -72,14 +74,7 @@ public class UEditorController {
         return null;
     }
 
-    @RequestMapping(value="/imgUpload")
-    @ResponseBody
-    public Ueditor imgUpload(@RequestParam("action") String param,MultipartFile upfile,HttpServletRequest request) {
-        Ueditor ueditor = new Ueditor();
-        return ueditor;
-    }
-
-    public String uploadImg(MultipartFile file, HttpServletRequest request) throws IOException {
+    private String uploadImg(MultipartFile file, HttpServletRequest request) throws IOException {
         Ueditor ueditor = new Ueditor();
         String path = uploadDir;
         //String path = request.getSession().getServletContext().getRealPath("./image")+ "/"+ DateTimeUtils.getCurDate2();
@@ -105,38 +100,29 @@ public class UEditorController {
             e.printStackTrace();
         }
 
+
         ueditor.setState("SUCCESS");
         ueditor.setTitle(fileName);
         ueditor.setOriginal(fileName);
-        ueditor.setUrl("/image/"+DateTimeUtils.getCurDate2()+File.separator+fileName);
+        ueditor.setUrl("/image/"+DateTimeUtils.getCurDate2()+File.separator+fileName);//  /image/20181011/e254ef7c25fe411cb4d2f116b56a4131.jpeg
         System.out.println( JSON.toJSONString(ueditor));
         return JSON.toJSONString(ueditor);
     }
 
-//======================================================================================================================================================
-
-    @Autowired
-    private HttpServletRequest request;
-    @RequestMapping("/ueditorConfig_")
-    public void getUEditorConfig(HttpServletResponse response){
-        String rootPath = "src/main/resources/static";
-        try {
-            String exec = new ActionEnter(request, rootPath).exec();
-            PrintWriter writer = response.getWriter();
-            writer.write(exec);
-            writer.flush();
-            writer.close();
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
+    private String uploadImg2(MultipartFile file, HttpServletRequest request) throws Exception {
+        Ueditor ueditor = new Ueditor();
+        UploadDownloadModel  uploadDownloadModel = uploadDownloadService.uploadImage(file,request);
+        ueditor.setState("SUCCESS");
+        ueditor.setTitle(uploadDownloadModel.getFileName());
+        ueditor.setOriginal(uploadDownloadModel.getOriginFileName());
+        ueditor.setUrl(uploadDownloadModel.getFilePath());
+        System.out.println( JSON.toJSONString(ueditor));
+        return JSON.toJSONString(ueditor);
     }
 
 
-    //@RequestMapping(value = "/jsp/config",headers = "Accept=application/json")
-//    @RequestMapping("/shoucha/subpage")
-    private String getconfig(HttpServletRequest request,HttpServletResponse response) {
-//        response.setContentType("application/json;charset=utf-8");
 
+    private String getconfig() {
         String config = "/* 前后端通信相关的配置,注释只允许使用多行方式 */\n" +
                 "{\n" +
                 "    /* 上传图片配置项 */\n" +

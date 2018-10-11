@@ -6,10 +6,12 @@ import com.baidu.ueditor.ActionEnter;
 import com.sckj.controller.ContentController;
 import com.sckj.model.dto.Ueditor;
 import com.sckj.utils.DateTimeUtils;
+import com.sckj.utils.UUIDUtils;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,6 +29,9 @@ import java.util.UUID;
 @RestController
 public class UEditorController {
     private static final Logger logger = LoggerFactory.getLogger(ContentController.class);
+
+    @Value("${uploadDir}")
+    private String uploadDir;
 
     @RequestMapping("/shoucha/frame/ueditor/ueditorConfig")
     @ResponseBody
@@ -76,18 +81,20 @@ public class UEditorController {
 
     public String uploadImg(MultipartFile file, HttpServletRequest request) throws IOException {
         Ueditor ueditor = new Ueditor();
-        String path = request.getSession().getServletContext().getRealPath("./image")+ "/"+ DateTimeUtils.getCurDate2();
+        String path = uploadDir;
+        //String path = request.getSession().getServletContext().getRealPath("./image")+ "/"+ DateTimeUtils.getCurDate2();
+        path = path  + DateTimeUtils.getCurDate2()+ "/";
         String ct = file.getContentType() ;
         String fileType = "";
         if (ct.indexOf("/")>0) {
             fileType = ct.substring(ct.indexOf("/")+1);
         }
-        String fileName = UUID.randomUUID() + "." + fileType;
+        String fileName = UUIDUtils.generate() + "." + fileType;
         File targetFile = new File(path);
         if (!targetFile.exists()) {
             targetFile.mkdirs();
         }
-        File targetFile2 = new File(path+"/"+fileName);
+        File targetFile2 = new File(path + fileName);
         if (!targetFile2.exists()) {
             targetFile2.createNewFile();
         }

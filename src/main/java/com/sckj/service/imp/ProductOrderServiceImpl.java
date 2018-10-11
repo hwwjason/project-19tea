@@ -349,9 +349,11 @@ public class ProductOrderServiceImpl implements IProductOrderService {
                 }
             }else if(CouponTypeEnums.CASH.toString().equals(couponType)){
                 couponUsersCanUser.add(coupon);
-                reduceMoney = coupon.getReduceMoney();
-                if(reduceMoney.compareTo(productPrice)>0){
-                    reduceMoney = productPrice;
+                if(coupon.getReduceMoney()!=null){
+                    reduceMoney = coupon.getReduceMoney();
+                    if(reduceMoney.compareTo(productPrice)>0){
+                        reduceMoney = productPrice;
+                    }
                 }
             }else if(CouponTypeEnums.DISCOUNT.toString().equals(couponType)){
                 couponUsersCanUser.add(coupon);
@@ -424,6 +426,9 @@ public class ProductOrderServiceImpl implements IProductOrderService {
      * @return
      */
     private BigDecimal getOneCouponUserReduceMoney(CouponUserDTO coupon,BigDecimal productPrice){
+        if(coupon == null){
+            return new BigDecimal(0);
+        }
         String couponType = coupon.getCouponType();
         BigDecimal reduceMoney = new BigDecimal(0);
         if(CouponTypeEnums.FULL_REDUCE.toString().equals(couponType)){

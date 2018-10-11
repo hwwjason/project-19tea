@@ -238,7 +238,11 @@ public class GJPServiceImp implements IGJPService {
         order.put("refundstatus","0");
         order.put("tradetotal",productOrder.getProductPrice().toString());       ////
         order.put("total",productOrder.getTotalPrice().toString());
-        order.put("preferentialtotal",productOrder.getCouponPrice().toString());
+        if(productOrder.getCouponPrice()==null){
+            order.put("preferentialtotal","0");
+        }else{
+            order.put("preferentialtotal",productOrder.getCouponPrice().toString());
+        }
 
         //orderdetails   begin
         List<Map<String, String>>  orderdetails  = new ArrayList<>();

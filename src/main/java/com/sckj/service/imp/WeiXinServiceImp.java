@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sckj.common.ResultData;
 import com.sckj.constant.MiniAppConstants;
+import com.sckj.enums.OrderEnums.OrderStatusEnums;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
 import com.sckj.model.*;
@@ -113,22 +114,22 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
      * @param request
      * @return
      */
-    public  Map<String, Object> wxPay(String buyuserId, String cartType, String couponUserid, String userRemark,HttpServletRequest request)  {
+    public  Map<String, Object> wxPay(String buyuserId, String cartType, String couponUserid, String userRemark,HttpServletRequest request)  throws Exception{
         ProductOrderDTO productOrderDTO = new ProductOrderDTO();
         productOrderDTO.setBuyuserId(buyuserId);
         productOrderDTO.setCartType(cartType);
         productOrderDTO.setCouponUserid(couponUserid);
         productOrderDTO.setUserRemark(userRemark);
-        try {
-            productOrderDTO = productOrderService.createTempProductOrder(productOrderDTO);
-        } catch (Exception e) {
-            throw new BusinessException("创建订单失败，请联系管理员");
-        }
+//        try {
+        productOrderDTO = productOrderService.createTempProductOrder(productOrderDTO);
+//        } catch (Exception e) {
+//            throw new BusinessException("创建订单失败，请联系管理员");
+//        }
 
         List<UserList> userLists = userListJpa.findByUserId(buyuserId);
         String openid = userLists.get(0).getOpenid();
 
-        try{
+//        try{
             //生成的随机字符串
             String nonce_str = StringUtils.getRandomStringByLength(32);
             //商品名称
@@ -205,6 +206,7 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
                 //保存订单和子订单的
                 ProductOrder productOrder = new ProductOrder();
                 BeanUtils.copyProperties(productOrder,productOrderDTO);
+                productOrder.setOrderStatus(OrderStatusEnums.NO_PAY.toString());
                 productOrderRepository.saveAndFlush(productOrder);
                 List<ProductSonOrder> productSonOrders = productOrderDTO.getProductSonOrder();
                 productSonOrderRepository.saveAll(productSonOrders);
@@ -242,10 +244,10 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
 
             //resultData.setData(response);
             return response;
-        }catch(Exception e){
-            e.printStackTrace();
-            throw new BusinessException("发起支付失败,请联系管理员:"+e);
-        }
+//        }catch(Exception e){
+//            e.printStackTrace();
+//            throw new BusinessException("发起支付失败,请联系管理员:"+e);
+//        }
     }
 
     /**
@@ -255,6 +257,7 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
      * @throws Exception
      */
     public void wxNotify(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        logger.info("微信接支付接口回调");
         BufferedReader br = new BufferedReader(new InputStreamReader((ServletInputStream)request.getInputStream()));
         String line = null;
         StringBuilder sb = new StringBuilder();
@@ -274,20 +277,23 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
             //验证签名是否正确
             if(PayUtil.verify(PayUtil.createLinkString(map), (String)map.get("sign"), WxPayConfig.key, "utf-8")){
                 /**此处添加自己的业务逻辑代码start**/
-
+                //修改订单状态
 
                 /**此处添加自己的业务逻辑代码end**/
+                logger.info("支付成功");
 
                 //通知微信服务器已经支付成功
                 resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"
                         + "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
             }
+
         }else{
             resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"
                     + "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
+            logger.info("支付成功");
         }
-        System.out.println(resXml);
-        System.out.println("微信支付回调数据结束");
+        logger.info(resXml);
+        logger.info("微信支付回调数据结束");
 
         BufferedOutputStream out = new BufferedOutputStream(
                 response.getOutputStream());

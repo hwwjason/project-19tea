@@ -25,7 +25,7 @@ public interface IWeiXinService {
      * @param request
      * @return
      */
-    Map<String, Object> wxPay(String buyuserId, String cartType, String couponUserid, String userRemark, HttpServletRequest request);
+    Map<String, Object> wxPay(String buyuserId, String cartType, String couponUserid, String userRemark, HttpServletRequest request) throws Exception;
 
     /**
      * 微信支付(回调)

@@ -691,7 +691,7 @@ public class ProductOrder {
     }
 
     public void setAcceptTel(String acceptTel) {
-        this.code = acceptTel;
+        this.acceptTel = acceptTel;
     }
 
     public String getCode() {

@@ -64,10 +64,10 @@ public class CouponServiceImpl implements ICouponService {
         if(StringUtils.isEmpty(id)){
             BeanUtils.copyProperties(coupon,couponDTO);
             coupon.setCreatetime(DateTimeUtils.getCurrentDate());
+            coupon.setStatus("1");
             coupon.setId(UUIDUtils.generate());
         }else{
             coupon = couponDAO.findById(id);
-            coupon.setStatus("1");
             BeanUtils.copyPropertiesWithoutNull(coupon,couponDTO);
         }
         coupon = couponRepository.saveAndFlush(coupon);

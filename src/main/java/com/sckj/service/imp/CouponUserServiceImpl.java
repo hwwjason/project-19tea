@@ -70,7 +70,7 @@ public class CouponUserServiceImpl implements ICouponUserService {
 
     @Override
     public CouponUserDTO createCouponUser(CouponUserDTO couponUserDTO) throws Exception {
-        Coupon coupon = couponDAO.findDTOById(couponUserDTO.getCouponid());
+        Coupon coupon = couponDAO.findById(couponUserDTO.getCouponid());
         if("1".equals(couponUserDTO.getIsAllUser())){//发放给所有用户
             List<UserList> userLists = userListJpa.findAll();
             addCouponUser(userLists,coupon);
@@ -110,15 +110,17 @@ public class CouponUserServiceImpl implements ICouponUserService {
             couponUser.setTel(list.getTel());
             //根据时间类型设置开始和结束时间
             if(CouponTimeTypeEnums.DSYS.toString().equals(coupon.getTimeType())){
-                couponUser.setRealendtime(DateTimeUtils.getCurrentDate());
-                couponUser.setRealstarttime(DateTimeUtils.getDate(coupon.getDays()));
+                couponUser.setRealstarttime(DateTimeUtils.getCurrentDate());
+                couponUser.setRealendtime(DateTimeUtils.getDate(coupon.getDays()));
             }else{
-                couponUser.setRealendtime(coupon.getStarttime());
-                couponUser.setRealstarttime(coupon.getEndtime());
+                couponUser.setRealstarttime(coupon.getStarttime());
+                couponUser.setRealendtime(coupon.getEndtime());
             }
             couponUser.setUserid(list.getUserId());
             couponUsers.add(couponUser);
         }
+        coupon.setGive(coupon.getGive()+userLists.size());
+        couponRepository.saveAndFlush(coupon);
         couponUserRepository.saveAll(couponUsers);
     }
 

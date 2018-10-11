@@ -27,7 +27,8 @@
         margin-top: 20px;
     }
 
-    .peizhi {margin-left: 20px;
+    .peizhi {
+        margin-left: 20px;
         float: left;
         width: 640px;
         position: relative;
@@ -70,9 +71,11 @@
         top: 10px;
         right: -47px;
     }
-    .ul2-btn-ul li{
+
+    .ul2-btn-ul li {
         position: relative;
     }
+
     .ul2-btn-ul li:after {
         content: "";
         position: absolute;
@@ -83,6 +86,7 @@
         top: 10px;
         right: -28px;
     }
+
     .no-after:after {
         display: none;
     }
@@ -189,13 +193,13 @@
             <div class="layui-tab-content">
                 <div v-for="(bitem,index) in bannerObj" class="layui-tab-item  banner-content" :class="[index==0?'layui-show':'','bannerTab'+index]">
                     <div class="layui-form-item">
-                        <form id="uploadForm" enctype="multipart/form-data" method="post" action="">
+                        <form class="uploadForm" enctype="multipart/form-data" method="post" action="">
                             <label class="layui-form-label">图片</label>
                             <div class="layui-input-inline">
                                 <div class="addImg">
                                     <i class="fa fa-plus"></i>
                                 </div>
-                                <input type="hidden" name="" class="img-hidden" >
+                                <input type="hidden" name="" class="img-hidden">
                                 <input type="file" class="input-file" name="file" onchange="preview(this)">
                             </div>
                         </form>
@@ -203,19 +207,19 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">跳转地址</label>
                         <div class="layui-input-block">
-                            <input type="radio" lay-filter="urlType" v-model="bitem.jumpType" class="bannerurlType" :name="'bannerurlType'+index" value="0" title="频道">
-                            <input type="radio" lay-filter="urlType" v-model="bitem.jumpType" class="bannerurlType" :name="'bannerurlType'+index" value="1" title="商品">
-                            <input type="radio" lay-filter="urlType" v-model="bitem.jumpType" class="bannerurlType" :name="'bannerurlType'+index" value="2" title="链接">
+                            <input type="radio" lay-filter="urlType1" v-model="bitem.jumpType" class="bannerurlType" :name="'bannerurlType'+index" value="0" title="频道">
+                            <input type="radio" lay-filter="urlType1" v-model="bitem.jumpType" class="bannerurlType" :name="'bannerurlType'+index" value="1" title="商品">
+                            <input type="radio" lay-filter="urlType1" v-model="bitem.jumpType" class="bannerurlType" :name="'bannerurlType'+index" value="2" title="链接">
                         </div>
                     </div>
-                    <div class="product-show">
+                    <div class="product-show product-show1">
                         <div class="layui-form-item">
                             <label class="layui-form-label">商品编号</label>
                             <div class="layui-input-inline">
                                 <input name="121" class="layui-input productCode" :value="bitem.productCode" placeholder="请输入商品编号搜索">
                             </div>
                             <div class="layui-input-inline">
-                                <button class="layui-btn layuiadmin-btn-list" onclick="getProductByCode(this)">
+                                <button class="layui-btn layuiadmin-btn-list" onclick="getProductByCode4(this)">
                                     匹配
                                 </button>
                             </div>
@@ -229,7 +233,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="url-show">
+                    <div class="url-show url-show1">
                         <div class="layui-form-item">
                             <div class="layui-inline">
                                 <label class="layui-form-label"></label>
@@ -250,11 +254,11 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">时效</label>
                         <div class="layui-input-block">
-                            <input type="radio" lay-filter="timeType" class="timeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="0" title="永久">
-                            <input type="radio" lay-filter="timeType" class="timeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="1" title="时间配置">
+                            <input type="radio" lay-filter="timeType1" class="timeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="0" title="永久">
+                            <input type="radio" lay-filter="timeType1" class="timeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="1" title="时间配置">
                         </div>
                     </div>
-                    <div class="timeShow">
+                    <div class="timeShow timeShow1">
                         <div class="layui-form-item">
                             <label class="layui-form-label">开始时间</label>
                             <div class="layui-input-inline">
@@ -285,33 +289,33 @@
         <div class="peizhi advertisement-set" lay-filter="advertisement">
             <div class="layui-tab-item layui-show">
                 <div class="layui-form-item">
-                    <form id="uploadForm" enctype="multipart/form-data" method="post" action="">
+                    <form class="uploadForm" enctype="multipart/form-data" method="post" action="">
                         <label class="layui-form-label">图片</label>
                         <div class="layui-input-inline">
                             <div class="addImg">
                                 <i class="fa fa-plus"></i>
                             </div>
-                            <input type="hidden" name="" class="img-hidden" >
-                            <input type="file" :value="advertisementVmObj.file" class="input-file" name="file" onchange="preview(this)">
+                            <input type="hidden" name="" class="img-hidden">
+                            <input type="file" class="input-file" name="file" onchange="preview(this)">
                         </div>
                     </form>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">跳转地址</label>
                     <div class="layui-input-block">
-                        <input type="radio" lay-filter="urlType" class="bannerurlType" v-model="advertisementVmObj.jumpType" name="advertisementurlType" value="0" title="频道">
-                        <input type="radio" lay-filter="urlType" class="bannerurlType" v-model="advertisementVmObj.jumpType" name="advertisementurlType" value="1" title="商品">
-                        <input type="radio" lay-filter="urlType" class="bannerurlType" v-model="advertisementVmObj.jumpType" name="advertisementurlType" value="2" title="链接">
+                        <input type="radio" lay-filter="urlType2" class="bannerurlType" v-model="advertisementVmObj.jumpType" name="advertisementurlType" value="0" title="频道">
+                        <input type="radio" lay-filter="urlType2" class="bannerurlType" v-model="advertisementVmObj.jumpType" name="advertisementurlType" value="1" title="商品">
+                        <input type="radio" lay-filter="urlType2" class="bannerurlType" v-model="advertisementVmObj.jumpType" name="advertisementurlType" value="2" title="链接">
                     </div>
                 </div>
-                <div class="product-show">
+                <div class="product-show product-show2">
                     <div class="layui-form-item">
                         <label class="layui-form-label">商品编号</label>
                         <div class="layui-input-inline">
                             <input class="layui-input productCode" :value="advertisementVmObj.productCode" placeholder="请输入商品编号搜索">
                         </div>
                         <div class="layui-input-inline">
-                            <button class="layui-btn layuiadmin-btn-list">
+                            <button class="layui-btn layuiadmin-btn-list" onclick="getProductByCode2(this)">
                                 匹配
                             </button>
                         </div>
@@ -325,7 +329,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="url-show">
+                <div class="url-show url-show2">
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label"></label>
@@ -338,11 +342,11 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">时效</label>
                     <div class="layui-input-block">
-                        <input type="radio" lay-filter="timeType" class="timeType" v-model="advertisementVmObj.timeType" name="advertisementtimeType" value="0" title="永久">
-                        <input type="radio" lay-filter="timeType" class="timeType" v-model="advertisementVmObj.timeType" name="advertisementtimeType" value="1" title="时间配置">
+                        <input type="radio" lay-filter="timeType2" class="timeType" v-model="advertisementVmObj.timeType" name="advertisementtimeType" value="0" title="永久">
+                        <input type="radio" lay-filter="timeType2" class="timeType" v-model="advertisementVmObj.timeType" name="advertisementtimeType" value="1" title="时间配置">
                     </div>
                 </div>
-                <div class="timeShow">
+                <div class="timeShow timeShow2">
                     <div class="layui-form-item">
                         <label class="layui-form-label">开始时间</label>
                         <div class="layui-input-inline">
@@ -407,7 +411,7 @@
                                 <input name="productCode" :value="bitem.productCode" class="layui-input productCode" placeholder="请输入商品编号搜索">
                             </div>
                             <div class="layui-input-inline">
-                                <button class="layui-btn layuiadmin-btn-list">
+                                <button class="layui-btn layuiadmin-btn-list" onclick="getProductByCode3(this)">
                                     匹配
                                 </button>
                             </div>
@@ -424,7 +428,7 @@
                             <div class="layui-inline">
                                 <label class="layui-form-label">商品价格</label>
                                 <div class="layui-input-inline">
-                                    <input name="productPrice" class="layui-input productPrice" :value="bitem.productPrice">
+                                    <input name="productPrice" class="layui-input productPrice  layui-disabled" :value="bitem.productPrice" disabled>
                                 </div>
                             </div>
                         </div>
@@ -454,11 +458,11 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">时效</label>
                         <div class="layui-input-block">
-                            <input type="radio" lay-filter="timeType" class="timeType" name="producttimeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="0" title="永久">
-                            <input type="radio" lay-filter="timeType" class="timeType" name="producttimeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="1" title="时间配置">
+                            <input type="radio" lay-filter="timeType3" class="timeType" name="producttimeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="0" title="永久">
+                            <input type="radio" lay-filter="timeType3" class="timeType" name="producttimeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="1" title="时间配置">
                         </div>
                     </div>
-                    <div class="timeShow">
+                    <div class="timeShow timeShow3">
                         <div class="layui-form-item">
                             <label class="layui-form-label">开始时间</label>
                             <div class="layui-input-inline">
@@ -502,7 +506,7 @@
                                 <input name="productCode" :value="bitem.productCode" class="layui-input productCode" placeholder="请输入商品编号搜索">
                             </div>
                             <div class="layui-input-inline">
-                                <button class="layui-btn layuiadmin-btn-list">
+                                <button class="layui-btn layuiadmin-btn-list" onclick="getProductByCode(this)">
                                     匹配
                                 </button>
                             </div>
@@ -520,7 +524,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">商品价格</label>
                             <div class="layui-input-inline">
-                                <input name="productPrice" class="layui-input productPrice" :value="bitem.productPrice">
+                                <input name="productPrice" class="layui-input productPrice layui-disabled" :value="bitem.productPrice" disabled>
                             </div>
                         </div>
                     </div>
@@ -535,11 +539,11 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">时效</label>
                         <div class="layui-input-block">
-                            <input type="radio" lay-filter="timeType" class="timeType productSwitchTabRadio" name="producttimeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="0" title="永久">
-                            <input type="radio" lay-filter="timeType" class="timeType productSwitchTabRadio" name="producttimeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="1" title="时间配置">
+                            <input type="radio" lay-filter="timeType4" class="timeType productSwitchTabRadio" name="producttimeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="0" title="永久">
+                            <input type="radio" lay-filter="timeType4" class="timeType productSwitchTabRadio" name="producttimeType" v-model="bitem.timeType" :name="'bannertimeType'+index" value="1" title="时间配置">
                         </div>
                     </div>
-                    <div class="timeShow">
+                    <div class="timeShow timeShow4">
                         <div class="layui-form-item">
                             <label class="layui-form-label">开始时间</label>
                             <div class="layui-input-inline">
@@ -749,21 +753,51 @@
             productactive[type] ? productactive[type].call(this, othis) : '';
         });
         // 跳转地址类型切换
-        form.on('radio(urlType)', function(data) {
+        form.on('radio(urlType1)', function(data) {
             if (data.value == "1") {
-                $(".product-show").show();
-                $(".url-show").hide();
+                $(".product-show1").show();
+                $(".url-show1").hide();
             } else {
-                $(".product-show").hide();
-                $(".url-show").show();
+                $(".product-show1").hide();
+                $(".url-show1").show();
+            }
+        });
+        form.on('radio(urlType2)', function(data) {
+            if (data.value == "1") {
+                $(".product-show2").show();
+                $(".url-show2").hide();
+            } else {
+                $(".product-show2").hide();
+                $(".url-show2").show();
             }
         });
         // 时效切换
-        form.on('radio(timeType)', function(data) {
+        form.on('radio(timeType1)', function(data) {
             if (data.value == "0") {
-                $(".timeShow").hide();
+                $(".timeShow1").hide();
             } else {
-                $(".timeShow").show();
+                $(".timeShow1").show();
+            }
+        });
+        form.on('radio(timeType2)', function(data) {
+            if (data.value == "0") {
+                $(".timeShow2").hide();
+            } else {
+                $(".timeShow2").show();
+            }
+        });
+        form.on('radio(timeType3)', function(data) {
+            if (data.value == "0") {
+                $(".timeShow3").hide();
+            } else {
+                $(".timeShow3").show();
+            }
+        });
+        form.on('radio(timeType4)', function(data) {
+            if (data.value == "0") {
+                $(".timeShow4").hide();
+            } else {
+                $(".timeShow4").show();
             }
         });
         //时间范围
@@ -824,8 +858,8 @@
     }
     //图片预览
     function preview(obj) {
-        var formData = new FormData($("#uploadForm")[0]);
-        $("#uploadForm").ajaxSubmit({
+        var formData = new FormData($(obj).parents(".uploadForm")[0]);
+        $(obj).parents(".uploadForm").ajaxSubmit({
             url: baseURL + "bak/image/uploadImage",
             type: "post",
             success: function(res) {
@@ -896,7 +930,7 @@
         if (type == 3) {
             //广告长图
             console.log(initObj)
-            console.log(array)
+
             if (initObj == "") {
 
             } else {
@@ -904,6 +938,11 @@
                 for (var i = 0; i < array.length; i++) {
                     if (array[i].id == id) {
                         advertisementVm.advertisementVmObj = array[i];
+                        var str = "";
+                                str += "<img class='preview-img' src='" + array[i].imgUrl + "'/>";
+                                str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
+                                $(".advertisement-set").find(".input-file").after(str);
+                                $(".advertisement-set").find('.img-hidden').val(array[i].imgUrl);
                         if (array[i].timeType == 1) {
                             $(".advertisement-set").find('.timeShow').show();
                         } else {
@@ -938,6 +977,11 @@
                                 } else {
                                     $(".bannerTab" + i).find('.timeShow').hide();
                                 }
+                                var str = "";
+                                str += "<img class='preview-img' src='" + bannerVm.bannerObj[i].imgUrl + "'/>";
+                                str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
+                                $(".bannerTab" + i).find(".input-file").after(str);
+                                $(".bannerTab" + i).find('.img-hidden').val(bannerVm.bannerObj[i].imgUrl);
                             }
                         }
                     } else {
@@ -1230,8 +1274,10 @@
         var thisid = $(dom).attr("thisid");
         var parentDom = $(dom).parents(".product-switch-content");
         var leftName = parentDom.parents(".product-switch-set").attr("leftName");
-        var bvmindex = productVm.productVmObj[index];
+        var bvmindex = productSwitchVm.productVmObj[index];
         var dataObj = {};
+        console.log(thisid)
+        console.log(bvmindex)
         if (index && thisid) {
             //有索引和ID代表着更新
             bvmindex.id = thisid;
@@ -1357,7 +1403,7 @@
             "id": theid,
             "name": "分割线",
             "width": px,
-            "formType":2,
+            "formType": 2,
             "level": 2
         };
         $.ajax({
@@ -1455,10 +1501,11 @@
         $(".ul2-li-no-first").each(function(index, ele) {
             var theid = $(ele).attr("theid");
             var thetype = $(ele).attr("thetype");
-            var className = "",data="";
+            var className = "",
+                data = "";
             $(".ul2-btn-ul li").each(function(index2, ele2) {
                 if (index == index2) {
-                    if(thetype == "0") {
+                    if (thetype == "0") {
                         className = 'banner-set';
                         data = "Banner";
                     }
@@ -1478,20 +1525,71 @@
                         className = 'product-set';
                         data = "商品通栏";
                     }
-                    $(ele2).attr({ "theid": theid, "thetype": thetype,"className":className,"dataName":data});
-                    $(ele2).find("text").attr({ "theid": theid, "thetype": thetype ,"className":className,"dataName":data});
+                    $(ele2).attr({ "theid": theid, "thetype": thetype, "className": className, "dataName": data });
+                    $(ele2).find("text").attr({ "theid": theid, "thetype": thetype, "className": className, "dataName": data });
                 }
             })
         })
     }
-    function getProductByCode(obj){
+    //商品滑动匹配
+    function getProductByCode(obj) {
         var code = $(obj).parents(".product-show").find(".productCode").val();
-        $.post(baseURL + "bak/product/getProductByCode",{code:code},function(res){
-            if(res.status==1){
-
+        $.post(baseURL + "bak/product/getProductByCode", { code: code }, function(res) {
+            if (res.status == 1) {
+                layer.msg("匹配成功");
+                $(obj).parents(".product-switch-content").find(".productName").val(res.data.title);
+                $(obj).parents(".product-switch-content").find(".productPrice").val(res.data.price);
+            } else {
+                layer.msg(res.message);
             }
-        },"json");
-
+        }, "json");
+    }
+    //广告长图匹配
+    function getProductByCode2(obj) {
+        var code = $(obj).parents(".product-show").find(".productCode").val();
+        $.post(baseURL + "bak/product/getProductByCode", { code: code }, function(res) {
+            if (res.status == 1) {
+                layer.msg("匹配成功");
+                $(obj).parents(".advertisement-set").find(".productName").val(res.data.title);
+                var str = "";
+                str += "<img class='preview-img' src='" + res.data.img + "'/>";
+                str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
+                $(obj).parents(".advertisement-set").find(".input-file").after(str);
+                $(obj).parents(".advertisement-set").find('.img-hidden').val(res.data.img);
+            } else {
+                layer.msg(res.message);
+            }
+        }, "json");
+    }
+    //商品通栏匹配
+    function getProductByCode3(obj) {
+        var code = $(obj).parents(".product-show").find(".productCode").val();
+        $.post(baseURL + "bak/product/getProductByCode", { code: code }, function(res) {
+            if (res.status == 1) {
+                layer.msg("匹配成功");
+                $(obj).parents(".product-content").find(".productName").val(res.data.title);
+                $(obj).parents(".product-content").find(".productPrice").val(res.data.price);
+            } else {
+                layer.msg(res.message);
+            }
+        }, "json");
+    }
+    //banner 匹配
+    function getProductByCode4(obj) {
+        var code = $(obj).parents(".product-show").find(".productCode").val();
+        $.post(baseURL + "bak/product/getProductByCode", { code: code }, function(res) {
+            if (res.status == 1) {
+                layer.msg("匹配成功");
+                $(obj).parents(".banner-content").find(".productName").val(res.data.title);
+                var str = "";
+                str += "<img class='preview-img' src='" + res.data.img + "'/>";
+                str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
+                $(obj).parents(".banner-content").find(".input-file").after(str);
+                $(obj).parents(".banner-content").find('.img-hidden').val(res.data.img);
+            } else {
+                layer.msg(res.message);
+            }
+        }, "json");
     }
     </script>
 </body>

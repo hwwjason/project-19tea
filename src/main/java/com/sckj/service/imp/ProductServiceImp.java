@@ -77,7 +77,7 @@ public class ProductServiceImp implements IProductService{
         Map map =multipartRequest.getFileMap();
         MultipartFile multipartFile = (MultipartFile) map.get("img");
         UploadDownloadModel uploadDownloadModel =  uploadDownloadService.uploadImage(multipartFile,request);
-        String imgFilePath = uploadDownloadModel == null?null:uploadDownloadModel.getFilePath();
+        String imgFilePath = uploadDownloadModel == null?null:uploadDownloadModel.getUrl();
 
         //上传其他属性
         Map requestMap = multipartRequest.getParameterMap();

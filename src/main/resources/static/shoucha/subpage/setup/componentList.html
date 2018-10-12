@@ -938,11 +938,15 @@
                 for (var i = 0; i < array.length; i++) {
                     if (array[i].id == id) {
                         advertisementVm.advertisementVmObj = array[i];
-                        var str = "";
+                        if ($(".advertisement-set").find('.preview-img').length == 0) {
+                            if (array[i].imgUrl != undefined) {
+                                var str = "";
                                 str += "<img class='preview-img' src='" + array[i].imgUrl + "'/>";
                                 str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
                                 $(".advertisement-set").find(".input-file").after(str);
-                                $(".advertisement-set").find('.img-hidden').val(array[i].imgUrl);
+                            }
+                        }
+                        $(".advertisement-set").find('.img-hidden').val(array[i].imgUrl);
                         if (array[i].timeType == 1) {
                             $(".advertisement-set").find('.timeShow').show();
                         } else {
@@ -959,6 +963,13 @@
                             form.render();
                             dateInit();
                         }, 0)
+                    } else {
+                        advertisementVm.advertisementVmObj = {
+                            timeType: 1,
+                            jumpType: 1
+                        }
+                        $(".advertisement-set").find('.product-show').show();
+                        $(".advertisement-set").find('.url-show').hide();
                     }
                 }
             }
@@ -977,10 +988,12 @@
                                 } else {
                                     $(".bannerTab" + i).find('.timeShow').hide();
                                 }
-                                var str = "";
-                                str += "<img class='preview-img' src='" + bannerVm.bannerObj[i].imgUrl + "'/>";
-                                str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
-                                $(".bannerTab" + i).find(".input-file").after(str);
+                                if ($(".bannerTab" + i).find(".preview-img").length == 0) {
+                                    var str = "";
+                                    str += "<img class='preview-img' src='" + bannerVm.bannerObj[i].imgUrl + "'/>";
+                                    str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
+                                    $(".bannerTab" + i).find(".input-file").after(str);
+                                }
                                 $(".bannerTab" + i).find('.img-hidden').val(bannerVm.bannerObj[i].imgUrl);
                             }
                         }

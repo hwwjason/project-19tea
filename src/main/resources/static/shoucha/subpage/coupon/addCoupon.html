@@ -64,18 +64,12 @@
                         <input type="text" name="fullMoney" placeholder="请输入满金额" :value="couponInfo.fullMoney" class="layui-input">
                     </div>
                 </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">减金额(元)</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="reduceMoney" placeholder="请输入减金额" :value="couponInfo.reduceMoney" class="layui-input">
-                    </div>
-                </div>
             </div>
             <div class="moneyHide couponType">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">金额(元)</label>
+                    <label class="layui-form-label couponTypelabel">减金额(元)</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="money" placeholder="请输入金额" :value="couponInfo.reduceMoney" autocomplete="off" class="layui-input">
+                        <input type="text" name="reduceMoney" placeholder="请输入金额" :value="couponInfo.reduceMoney" class="layui-input">
                     </div>
                 </div>
             </div>
@@ -220,12 +214,15 @@
                         $(".couponType").hide();
                         if (data.value == "0") {
                             $(".showHide").show();
+                            $(".moneyHide").show();
+                            $(".moneyHide .couponTypelabel").text('减金额(元)');
                         }
                         if (data.value == "2") {
                             $(".discount").show();
                         }
                         if (data.value == "1") {
                             $(".moneyHide").show();
+                            $(".moneyHide .couponTypelabel").text('金额(元)');
                         }
                         if (data.value == "3") {
                             $(".productdiv").show();
@@ -303,6 +300,22 @@
                             var timeType = resdata.timeType;
                             var applyType = resdata.applyType;
                             var jumpType = resdata.jumpType;
+                            $(".couponType").hide();
+                            if (couponType == "0") {
+                                $(".showHide").show();
+                                $(".moneyHide").show();
+                                $(".moneyHide .couponTypelabel").text('减金额(元)');
+                            }
+                            if (couponType == "2") {
+                                $(".discount").show();
+                            }
+                            if (couponType == "1") {
+                                $(".moneyHide").show();
+                                $(".moneyHide .couponTypelabel").text('金额(元)');
+                            }
+                            if (couponType == "3") {
+                                $(".productdiv").show();
+                            }
                             $(".couponType" + couponType).prop("checked", "checked");
                             $(".timeType" + timeType).prop("checked", "checked");
                             $(".applyType" + applyType).prop("checked", "checked");
@@ -311,8 +324,8 @@
                             that.layuiInit()
                         }
                     }, "json")
-                } else{
-                     that.layuiInit()
+                } else {
+                    that.layuiInit()
                 }
             }
         }

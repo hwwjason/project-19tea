@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
 * 描述：优惠券用户表 服务实现层
@@ -71,9 +72,9 @@ public class CouponUserServiceImpl implements ICouponUserService {
     @Override
     public CouponUserDTO createCouponUser(CouponUserDTO couponUserDTO) throws Exception {
         Coupon coupon = couponDAO.findById(couponUserDTO.getCouponid());
+        List<UserList> allUserLists = userListJpa.findAll();
         if("1".equals(couponUserDTO.getIsAllUser())){//发放给所有用户
-            List<UserList> userLists = userListJpa.findAll();
-            addCouponUser(userLists,coupon);
+            addCouponUser(allUserLists,coupon);
         }else{//发放给指定用户
             String userPhoneStr = couponUserDTO.getUserPhoneStr();
             List<String> userPhoneStrList = new ArrayList<>();
@@ -83,6 +84,17 @@ public class CouponUserServiceImpl implements ICouponUserService {
             }else{//通过读取文件
                 //todo
             }
+            List<String> userPhoneNotFindStrList = new ArrayList<>();
+            List<String> userTels = allUserLists.stream().map(e->e.getTel()).collect(Collectors.toList());
+            for (String s : userPhoneStrList) {
+                if(!userTels.contains(s)){
+                    userPhoneNotFindStrList.add(s);
+                }
+            }
+            if(userPhoneNotFindStrList!=null && userPhoneNotFindStrList.size()>0){
+                throw new BusinessException("发放失败，请校验"+ userPhoneNotFindStrList.toString() +"电话号码");
+            }
+
             //todo 优化提示
             List<UserList> userLists = userListJpa.findByTelIn(userPhoneStrList);
             addCouponUser(userLists,coupon);

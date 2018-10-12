@@ -179,7 +179,7 @@
     <script type="text/javascript" src="../frame/ueditor/ueditor.all.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../frame/ueditor/lang/zh-cn/zh-cn.js"></script>
     <script type="text/javascript" charset="utf-8" src="../frame/static/js/public.js"></script>
-    <script type="text/javascript" src="../frame/webuploader/upload.js?v=15"></script>
+    <script type="text/javascript" src="../frame/webuploader/upload.js?v=21"></script>
 </body>
 <script type="text/javascript">
 layui.use('form', function() {
@@ -253,7 +253,7 @@ layui.use('form', function() {
 var fileList = [];
 $(function() {
     var $list = $('#uploader .fileList');
-    var ue = UE.getEditor('UEcontainer');
+    //var ue = UE.getEditor('UEcontainer');
     $("#uploader .filelist").dragsort({
         dragSelector: "li",
         dragEnd: function(ex) {
@@ -263,23 +263,7 @@ $(function() {
 
     //编辑状态
     if (GetRequest().id != undefined) {
-        var idobj = {
-            id: GetRequest().id
-        };
-        $.post(baseURL + "bak/product/getProductById", idobj, function(res) {
-            if (res.status == "1") {
-                var resdata = res.data;
-                var vm = new Vue({
-                    el: '.productForm',
-                    data: {
-                        productInfo: resdata
-                    }
-                })
-                ue.addListener("ready", function() {
-                    ue.setContent(resdata.introduce)
-                });
-            }
-        }, "json")
+        
     } else {
         var vm = new Vue({
             el: '.productForm',

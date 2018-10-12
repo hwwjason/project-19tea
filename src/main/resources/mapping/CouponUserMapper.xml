@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sckj.repository.mybatis.CouponUserDAO">
 
-    <resultMap id="CouponUserDTOResultMap" type="com.sckj.model.dto.CouponUserDTO">
+    <resultMap id="CouponUserResultMap" type="com.sckj.model.CouponUser">
         <id column="id" jdbcType="VARCHAR" property="id" />
         <result column="couponid" jdbcType="VARCHAR" property="couponid" />
         <result column="product_orderid" jdbcType="VARCHAR" property="productOrderid" />
@@ -15,7 +15,9 @@
         <result column="status" jdbcType="CHAR" property="status" />
         <result column="Isremind" jdbcType="CHAR" property="isremind" />
         <result column="usertime" jdbcType="TIMESTAMP" property="usertime" />
+    </resultMap>
 
+    <resultMap id="CouponUserDTOResultMap"  extends="CouponUserResultMap" type="com.sckj.model.dto.CouponUserDTO">
         <result column="title" jdbcType="VARCHAR" property="title" />
         <result column="coupon_type" jdbcType="CHAR" property="couponType" />
         <result column="full_money" jdbcType="DECIMAL" property="fullMoney" />
@@ -69,7 +71,7 @@
         </where>
     </select>
 
-    <select id="findById" parameterType="String" resultMap="CouponUserDTOResultMap">
+    <select id="findById" parameterType="String" resultMap="CouponUserResultMap">
         <include refid="findDtoSql"></include>
         <where>
             and t.id = #{id}

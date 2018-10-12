@@ -229,7 +229,7 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
                 //改变优惠券状态
                 String couPonUserid = productOrderDTO.getCouponUserid();
                 if(com.sckj.utils.StringUtils.isNotEmpty(couponUserid)){
-                    CouponUser couponUser = couponUserService.findDTOById(couPonUserid);
+                    CouponUser couponUser = couponUserService.findById(couPonUserid);
                     couponUser.setIsuse("1");
                     couponUserService.saveAndFlush(couponUser);
                 }

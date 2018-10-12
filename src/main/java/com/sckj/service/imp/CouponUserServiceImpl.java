@@ -58,15 +58,15 @@ public class CouponUserServiceImpl implements ICouponUserService {
     }
 
     @Override
+    public CouponUser findById(String id) throws Exception {
+        CouponUser couponUser = couponUserDAO.findById(id);
+        return couponUser;
+    }
+
+    @Override
     public CouponUser saveAndFlush(CouponUser couponUser)throws Exception{
        return couponUserRepository.saveAndFlush(couponUser);
     }
-
-//    @Override
-//    public CouponUser findById(String id) throws Exception {
-//        CouponUser couponUser = couponUserDAO.findById(id);
-//        return couponUser;
-//    }
 
     @Override
     public void deleteById(String id) throws Exception {

@@ -53,7 +53,7 @@ public class ContentAdvertisementController {
     }
 
     /**
-     * 描述：根据parentd 查询
+     * 描述：根据parentid 查询
      * @param parentid
      */
     @RequestMapping(value = "/findByParentid", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

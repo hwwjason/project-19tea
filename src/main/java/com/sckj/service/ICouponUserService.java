@@ -20,9 +20,9 @@ public interface ICouponUserService  {
     */
     CouponUserDTO findDTOById(String id)throws Exception;
 
-    CouponUser saveAndFlush(CouponUser couponUser)throws Exception;
+    CouponUser findById(String id)throws Exception;
 
-    //CouponUser findById(String id)throws Exception;
+    CouponUser saveAndFlush(CouponUser couponUser)throws Exception;
 
     void deleteById(String id)throws Exception;
 

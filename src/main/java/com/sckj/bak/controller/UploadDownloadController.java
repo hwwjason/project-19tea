@@ -51,7 +51,7 @@ public class UploadDownloadController {
                 return resultData;
             }
             UploadDownloadModel uploadDownloadModel = uploadDownloadService.uploadImage(file,request);
-            resultData.setPath(uploadDownloadModel.getFilePath());
+            resultData.setPath(uploadDownloadModel.getUrl());
         }catch (Exception e){
             resultData.setMessage("文件上传失败");
             resultData.setStatus(ResultStatusEnum.FAIL.toString());

@@ -115,7 +115,7 @@ public class UEditorController {
         ueditor.setState("SUCCESS");
         ueditor.setTitle(uploadDownloadModel.getFileName());
         ueditor.setOriginal(uploadDownloadModel.getOriginFileName());
-        ueditor.setUrl(uploadDownloadModel.getFilePath());
+        ueditor.setUrl(uploadDownloadModel.getUrl());
         System.out.println( JSON.toJSONString(ueditor));
         return JSON.toJSONString(ueditor);
     }

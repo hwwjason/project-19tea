@@ -4,6 +4,7 @@ public class UploadDownloadModel {
     private String originFileName;
     private String fileName;
     private String filePath;
+    private String urlWithoutIp;
     private String url;
 
     public String getOriginFileName() {
@@ -38,5 +39,11 @@ public class UploadDownloadModel {
         this.url = url;
     }
 
+    public String getUrlWithoutIp() {
+        return urlWithoutIp;
+    }
 
+    public void setUrlWithoutIp(String urlWithoutIp) {
+        this.urlWithoutIp = urlWithoutIp;
+    }
 }

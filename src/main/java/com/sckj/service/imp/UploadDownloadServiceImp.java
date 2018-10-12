@@ -41,25 +41,27 @@ public class UploadDownloadServiceImp implements IUploadDownloadService{
 
         String fileName = DateTimeUtils.getCurDate2() + "/" + UUIDUtils.generate()+suffixName;// 解决中文问题，liunx下中文路径，图片显示问题
         uploadDownloadModel.setFileName(fileName);
-        String fullFileName = uploadDir + fileName;
-        File dest = new File(fullFileName);
+        String filePath = uploadDir + fileName;
+        File dest = new File(filePath);
 
-        logger.info("图片的物理径为:"+fullFileName );
+        uploadDownloadModel.setFilePath(filePath);
+        logger.info("图片的物理径为:"+filePath );
 
         if (!dest.getParentFile().exists()) {// 检测是否存在目录,不存在创建目录
             dest.getParentFile().mkdirs();
         }
 
-        String filePath = "";
+        String url = "";
         try {
             file.transferTo(dest);// ???
             if(HttpUtils.getEn0().equals("172.19.60.150")){
-                filePath = "https://sowtea.com:2433/bak/image/showImg?imgFile=" + fileName;
+                url = "https://sowtea.com:2433/bak/image/showImg?imgFile=" + fileName;
             }else{
-                filePath = "https://"+HttpUtils.getEn0()+"/bak/image/showImg?imgFile=" +fileName;
+                url = "https://"+HttpUtils.getEn0()+"/bak/image/showImg?imgFile=" +fileName;
             }
-            uploadDownloadModel.setFilePath(filePath);
-            logger.info("图片访问路径:"+filePath);
+            uploadDownloadModel.setUrlWithoutIp("bak/image/showImg?imgFile=" + fileName);
+            uploadDownloadModel.setUrl(url);
+            logger.info("图片访问路径:"+url);
             return uploadDownloadModel;
         } catch (IllegalStateException e) {
             e.printStackTrace();

@@ -94,7 +94,7 @@
                     <td>{{item.isshelves==1?"上架":"下架"}}</td>
                     <td>{{item.addTimeStr}}</td>
                     <td>
-                        <a :href="'../subpage/addProduct.html?id='+item.id+'&slideImg='+item.slideImg" class="layui-btn layui-btn-normal layui-btn-small" lay-event="edit">
+                        <a :href="'../subpage/addProduct.html?id='+item.id" class="layui-btn layui-btn-normal layui-btn-small" lay-event="edit">
                             <i class="layui-icon">&#xe642;</i>编辑
                         </a>
                     </td>
@@ -263,7 +263,7 @@ function updateStock(argument) {
             }
         });
         if (checkId.length == 0) {
-            layer.msg("请勾选要删除的商品吗");
+            layer.msg("请勾选要删除的商品");
             return false;
         }
         layer.confirm('确定删除？', {

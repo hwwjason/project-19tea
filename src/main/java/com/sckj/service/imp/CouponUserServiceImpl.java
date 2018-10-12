@@ -109,7 +109,7 @@ public class CouponUserServiceImpl implements ICouponUserService {
      */
     private void addCouponUser(List<UserList> userLists, Coupon coupon ){
         int couponNum = coupon.getStock()-coupon.getGive();
-        if(couponNum < userLists.size()){
+        if( couponNum != 0 && couponNum < userLists.size()){
             throw new BusinessException("优惠券数量不足! 当前人数"+userLists.size()+"(人)，优惠券数量"+couponNum+"(张)");
         }
         List<CouponUser> couponUsers = new ArrayList<>();

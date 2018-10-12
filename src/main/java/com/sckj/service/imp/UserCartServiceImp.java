@@ -56,7 +56,7 @@ public class UserCartServiceImp implements IUserCartService {
             throw new BusinessException("商品已被删除，无法加入购物车");
         }
 
-        //查询用户是否已经收藏这个商品了
+        //用户是否存在
         List<UserList> userList =  userListJpa.findByUserId(userId);
         if(userList ==null || userList.size()==0){
             throw new BusinessException("用户信息出错，请联系管理员");
@@ -67,6 +67,11 @@ public class UserCartServiceImp implements IUserCartService {
         if(count<0 && userCart.getNum()<=1){
             throw new BusinessException("无法继续减少数量");
         }
+        //查询库存是否充足
+        if( count > 0 && (productList.getStock() == null || (count + userCart.getNum()) > productList.getStock())){
+            throw new BusinessException("库存不足");
+        }
+
         if(userCart!=null){
             userCart.setNum(userCart.getNum()+count);
         }else {

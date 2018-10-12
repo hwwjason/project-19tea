@@ -49,10 +49,15 @@ public class UserServiceImpl implements IUserService {
         personalInformationDTO.setWaitForReceivingNum(waitForReceivingNum);
         personalInformationDTO.setAfterSalingNum(afterSalingNum);
 
-        //购物车熟练
+        //购物车数量
         UserCartList userCartList = userCartService.getUserCart(userId,cartType);
         List<UserCartDTO> userCarts = userCartList.getUserCarts();
-        int userCartNum = userCarts==null?0:userCarts.size();
+        int userCartNum = 0 ;
+        if(userCarts!=null){
+            for (UserCartDTO cart : userCarts) {
+                userCartNum +=  cart.getNum();
+            }
+        }
         personalInformationDTO.setUsetCartNum(userCartNum);
 
         //优惠券

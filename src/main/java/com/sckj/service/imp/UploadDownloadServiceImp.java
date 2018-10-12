@@ -1,7 +1,6 @@
 package com.sckj.service.imp;
 
 import com.sckj.bak.controller.UploadDownloadController;
-import com.sckj.enums.ResultStatusEnum;
 import com.sckj.model.model.UploadDownloadModel;
 import com.sckj.service.IUploadDownloadService;
 import com.sckj.utils.DateTimeUtils;

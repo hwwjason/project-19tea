@@ -1,26 +1,28 @@
 package com.sckj.service.imp;
+
 import com.sckj.enums.FormTypeEnum;
 import com.sckj.exception.BusinessException;
 import com.sckj.model.ContentForm;
 import com.sckj.model.ProductList;
+import com.sckj.model.dto.ContentFormDTO;
 import com.sckj.repository.ContentFormRepository;
-import com.sckj.service.IContentFormService;
 import com.sckj.repository.mybatis.ContentFormDAO;
+import com.sckj.service.IContentFormService;
 import com.sckj.service.IProductService;
+import com.sckj.utils.BeanUtils;
 import com.sckj.utils.DateTimeUtils;
 import com.sckj.utils.StringUtils;
 import com.sckj.utils.UUIDUtils;
-import com.sckj.utils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.sckj.model.dto.ContentFormDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
 * 描述：组件内容配置 服务实现层

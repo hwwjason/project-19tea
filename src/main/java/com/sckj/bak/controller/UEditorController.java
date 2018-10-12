@@ -2,14 +2,12 @@ package com.sckj.bak.controller;
 
 
 import com.alibaba.fastjson.JSON;
-import com.baidu.ueditor.ActionEnter;
 import com.sckj.controller.ContentController;
 import com.sckj.model.dto.Ueditor;
 import com.sckj.model.model.UploadDownloadModel;
 import com.sckj.service.IUploadDownloadService;
 import com.sckj.utils.DateTimeUtils;
 import com.sckj.utils.UUIDUtils;
-import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.UUID;
 
 
 @RestController

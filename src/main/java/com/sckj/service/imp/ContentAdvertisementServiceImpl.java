@@ -1,22 +1,24 @@
 package com.sckj.service.imp;
+
 import com.sckj.model.ContentAdvertisement;
+import com.sckj.model.dto.ContentAdvertisementDTO;
 import com.sckj.repository.ContentAdvertisementRepository;
-import com.sckj.service.IContentAdvertisementService;
 import com.sckj.repository.mybatis.ContentAdvertisementDAO;
+import com.sckj.service.IContentAdvertisementService;
+import com.sckj.utils.BeanUtils;
 import com.sckj.utils.DateTimeUtils;
 import com.sckj.utils.StringUtils;
 import com.sckj.utils.UUIDUtils;
-import com.sckj.utils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.sckj.model.dto.ContentAdvertisementDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
 * 描述：广告长图配置 服务实现层

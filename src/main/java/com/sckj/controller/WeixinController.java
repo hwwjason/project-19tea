@@ -1,22 +1,10 @@
 package com.sckj.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.sckj.common.ResultData;
 import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
-import com.sckj.model.UserList;
-import com.sckj.model.dto.ProductOrderDTO;
-import com.sckj.repository.UserListJpa;
-import com.sckj.service.IProductOrderService;
 import com.sckj.service.IWeiXinService;
-import com.sckj.utils.weixin.IpUtils;
-import com.sckj.utils.weixin.StringUtils;
-import com.sckj.utils.weixin.PayUtil;
-import com.sckj.utils.weixin.WxPayConfig;
-import com.sckj.utils.weixin.OAuthJsToken;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sckj.constant.MiniAppConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,19 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.weixin4j.WeixinException;
 import org.weixin4j.WeixinSupport;
-import org.weixin4j.http.HttpsClient;
-import org.weixin4j.http.Response;
 
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  *

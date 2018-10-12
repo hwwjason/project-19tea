@@ -1,27 +1,31 @@
 package com.sckj.service.imp;
+
 import com.sckj.enums.OrderEnums.CouponInvalidTypeEnums;
 import com.sckj.enums.OrderEnums.CouponTimeTypeEnums;
 import com.sckj.exception.BusinessException;
 import com.sckj.model.Coupon;
 import com.sckj.model.CouponUser;
 import com.sckj.model.UserList;
+import com.sckj.model.dto.CouponUserDTO;
 import com.sckj.repository.CouponRepository;
 import com.sckj.repository.CouponUserRepository;
 import com.sckj.repository.UserListJpa;
 import com.sckj.repository.mybatis.CouponDAO;
-import com.sckj.service.ICouponUserService;
 import com.sckj.repository.mybatis.CouponUserDAO;
+import com.sckj.service.ICouponUserService;
+import com.sckj.utils.BeanUtils;
 import com.sckj.utils.DateTimeUtils;
 import com.sckj.utils.UUIDUtils;
-import com.sckj.utils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.sckj.model.dto.CouponUserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**

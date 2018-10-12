@@ -3,32 +3,23 @@ package com.sckj.service.imp;
 import com.alibaba.fastjson.JSONObject;
 import com.sckj.constant.GJPApiConstants;
 import com.sckj.helper.GJPHelp;
-import com.sckj.model.GJP.GJPProductinfoModel;
 import com.sckj.model.GJP.GJPRequest.GJPBaseRequest;
-import com.sckj.model.GJP.GJPRequest.GJPProductinfoRequest;
-import com.sckj.model.GJP.GJPSelfbuiltmalleshoporder;
 import com.sckj.model.GJP.GJPSelfbuiltmallproduct;
 import com.sckj.model.GJP.GJPSelfbuiltmallproductsku;
 import com.sckj.model.ProductList;
 import com.sckj.model.ProductOrder;
 import com.sckj.model.ProductSonOrder;
 import com.sckj.model.UserList;
-import com.sckj.model.dto.ProductListDTO;
 import com.sckj.service.IGJPService;
 import com.sckj.utils.DateTimeUtils;
 import com.sckj.utils.JsonUtils;
-import net.sf.json.util.JSONUtils;
-import org.apache.commons.collections.MapUtils;
-import org.omg.PortableInterceptor.ServerRequestInfo;
 import org.springframework.stereotype.Service;
 
-import javax.json.Json;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class GJPServiceImp implements IGJPService {

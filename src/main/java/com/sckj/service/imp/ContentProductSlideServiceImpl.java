@@ -1,22 +1,24 @@
 package com.sckj.service.imp;
+
 import com.sckj.model.ContentProductSlide;
+import com.sckj.model.dto.ContentProductSlideDTO;
 import com.sckj.repository.ContentProductSlideRepository;
-import com.sckj.service.IContentProductSlideService;
 import com.sckj.repository.mybatis.ContentProductSlideDAO;
+import com.sckj.service.IContentProductSlideService;
+import com.sckj.utils.BeanUtils;
 import com.sckj.utils.DateTimeUtils;
 import com.sckj.utils.StringUtils;
 import com.sckj.utils.UUIDUtils;
-import com.sckj.utils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import com.sckj.model.dto.ContentProductSlideDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
 * 描述：商品滑动配置 服务实现层

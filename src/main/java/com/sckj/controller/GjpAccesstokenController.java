@@ -1,24 +1,18 @@
 package com.sckj.controller;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.sckj.common.Query;
+import com.sckj.common.ResultData;
 import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
-import com.sckj.model.dto.CouponDTO;
-import com.sckj.service.IGjpAccesstokenService;
-import com.sckj.model.GjpAccesstoken;
 import com.sckj.model.dto.GjpAccesstokenDTO;
+import com.sckj.service.IGjpAccesstokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.http.MediaType;
-import com.sckj.common.ResultData;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
 * 描述：管家婆token控制层

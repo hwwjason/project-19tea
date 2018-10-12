@@ -1,14 +1,9 @@
 package com.sckj.bak.controller;
- 
-import com.alibaba.fastjson.JSONObject;
+
 import com.sckj.common.ResultData;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.model.model.UploadDownloadModel;
 import com.sckj.service.IUploadDownloadService;
-import com.sckj.utils.DateTimeUtils;
-import com.sckj.utils.FileUtils;
-import com.sckj.utils.HttpUtils;
-import com.sckj.utils.UUIDUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +18,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,7 +56,6 @@ public class UploadDownloadController {
     @RequestMapping(value="showImg")
     public void showImg(HttpServletRequest request,HttpServletResponse response) throws IOException{
         String imgFile = request.getParameter("imgFile"); //文件名
-        //String path= "/Users/hww/Documents/IMAGE/";//这里是存放图片的文件夹地址
         String path= uploadDir;//这里是存放图片的文件夹地址
         FileInputStream fileIs=null;
         try {

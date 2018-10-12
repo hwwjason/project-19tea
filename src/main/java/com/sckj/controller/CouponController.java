@@ -8,7 +8,6 @@ import com.sckj.constant.MessageConstants;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
 import com.sckj.model.dto.CouponDTO;
-import com.sckj.model.dto.CouponUserDTO;
 import com.sckj.service.ICouponService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

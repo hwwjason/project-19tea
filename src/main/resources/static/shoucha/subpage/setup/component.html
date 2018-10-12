@@ -64,7 +64,10 @@
                     <td>{{item.price}}</td>
                     <td>{{item.status==0?"未启用":"使用中"}}</td>
                     <td>
-                        <button class="layui-btn layui-btn-small" :status="item.status" :productid="item.id" onclick="update(this)">
+                        <button v-if="item.status==1" class="layui-btn layui-btn-small layui-btn-warm" :status="item.status" :productid="item.id" onclick="update(this)">
+                            <i class="layui-icon">&#xe63c;</i>{{item.status==0?"启用":"暂停"}}
+                        </button>
+                        <button v-if="item.status==0" class="layui-btn layui-btn-small" :status="item.status" :productid="item.id" onclick="update(this)">
                             <i class="layui-icon">&#xe63c;</i>{{item.status==0?"启用":"暂停"}}
                         </button>
                         <a class="layui-btn layui-btn-normal layui-btn-small" :href="'../../subpage/setup/componentList.html?id='+item.id">

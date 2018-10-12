@@ -35,6 +35,7 @@
     <div id="vueDiv">
         <p class="layui-elem-quote">添加优惠券</p>
         <form class="layui-form couponInfo" action="">
+            <input type="hidden" name="id" class="couponId">
             <div class="layui-form-item">
                 <label class="layui-form-label">优惠券名</label>
                 <div class="layui-input-block">
@@ -291,6 +292,7 @@
             getCouponInfo: function() {
                 var that = this;
                 if (GetRequest().id != undefined) {
+                    $(".couponId").val(GetRequest().id);
                     var idobj = {
                         id: GetRequest().id
                     };

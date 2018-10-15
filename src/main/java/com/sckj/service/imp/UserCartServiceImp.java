@@ -67,8 +67,9 @@ public class UserCartServiceImp implements IUserCartService {
         if(count<0 && userCart.getNum()<=1){
             throw new BusinessException("无法继续减少数量");
         }
+        int userCartNum = userCart !=null ? userCart.getNum() : 0;
         //查询库存是否充足
-        if( count > 0 && (productList.getStock() == null || (count + userCart.getNum()) > productList.getStock())){
+        if( count > 0 && (productList.getStock() == null || (count + userCartNum) > productList.getStock())){
             throw new BusinessException("库存不足");
         }
 

@@ -33,7 +33,8 @@ public class ShoppingController {
            throw e;
         } catch (Exception e){
             logger.error(e.getMessage());
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+//            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
         }
     }
 
@@ -46,7 +47,7 @@ public class ShoppingController {
         }catch (BusinessException e){
             throw e;
         } catch (Exception e){
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
         }
     }
 
@@ -60,7 +61,7 @@ public class ShoppingController {
         }catch (BusinessException e){
             throw e;
         } catch (Exception e){
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
         }
     }
 
@@ -73,7 +74,7 @@ public class ShoppingController {
         }catch (BusinessException e){
             throw e;
         } catch (Exception e){
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
         }
     }
 }

@@ -61,6 +61,9 @@ public class ProductServiceImp implements IProductService{
             product.setId(UUIDUtils.generate());
             product.setAddtime(DateTimeUtils.getCurrentDate());
             product.setUpdatetime(DateTimeUtils.getCurrentDate());
+            if(product.getStock()==null){
+                product.setStock(0);
+            }
             productListJpa.saveAndFlush(product);
 
             //上传商品到管家婆

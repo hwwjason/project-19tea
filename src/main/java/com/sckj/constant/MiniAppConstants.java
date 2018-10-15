@@ -24,4 +24,9 @@ public class MiniAppConstants {
     public static final String URL = "192.168.0.180";
 
 
+    /**
+     * 申请退款
+     */
+    public static final String  APPLY_REFUND = "https://api.mch.weixin.qq.com/secapi/pay/refund";
+
 }

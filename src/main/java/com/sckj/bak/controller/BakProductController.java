@@ -77,20 +77,24 @@ public class BakProductController {
 
     @RequestMapping(value = "/getProductList", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData getProductList(@RequestBody Query query){
+        logger.info("查询商品列表begin===》》》");
         ResultData resultData = new ResultData();
         PageHelper.startPage(query.getPageNum(),query.getPageSize());
         Map<String,Object> map = (Map<String, Object>) query.getCondition();
         List<ProductListDTO> sckjUserList = productService.getProductList(map);
         PageInfo<ProductListDTO> pageInfo = new PageInfo<ProductListDTO>(sckjUserList);
         resultData.setData(pageInfo);
+        logger.info("查询商品列表end===《《《");
         return resultData;
     }
 
     @RequestMapping(value = "/getProductById", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData getProductById(@RequestParam("id") String id){
+        logger.info("通过ID查询商品详情begin===》》》");
         ResultData resultData = new ResultData();
         ProductListDTO productList = productService.getProductDTOById(id);
         resultData.setData(productList);
+        logger.info("通过ID查询商品详情end===《《《");
         return resultData;
     }
 
@@ -113,7 +117,6 @@ public class BakProductController {
             logger.error("匹配商品出错/n", e);
             return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
         }
-
     }
 
     @RequestMapping(value = "/synchStock", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)

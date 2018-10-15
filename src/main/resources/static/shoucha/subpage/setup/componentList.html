@@ -396,7 +396,7 @@
         <!-- 分割线设置结束 -->
         <!-- 商品通栏设置开始 -->
         <div class="layui-tab peizhi product-set" lay-allowClose="true" lay-filter="product">
-            <a class="layui-btn addComponent site-product-active" lay-submit lay-filter="productComponent" data-type="productAdd">
+            <a class="layui-btn addComponent site-product-active" lay-submit lay-filter="productComponent" data-type="productAdd" onclick="productComponent()">
                 <i class="fa fa-plus"></i> 添加
             </a>
             <ul class="layui-tab-title">
@@ -695,6 +695,26 @@
                 $(".bannerTab" + data.index).find('.product-show').hide();
                 $(".bannerTab" + data.index).find('.url-show').show();
             }
+            if ($(".bannerTab" + data.index).find('.dateBegin').val() == "") {
+                var elem = ".bannerTab" + data.index + " .dateBegin";
+                laydate.render({
+                    elem: elem,
+                    type: 'datetime',
+                    done: function(value, date, endDate) {
+
+                    }
+                });
+            }
+            if ($(".bannerTab" + data.index).find('.dateEnd').val() == "") {
+                var elem2 = ".bannerTab" + data.index + " .dateEnd";
+                laydate.render({
+                    elem: elem2,
+                    type: 'datetime',
+                    done: function(value, date, endDate) {
+
+                    }
+                });
+            }
         });
         element.on('tab(product-switch)', function(data) {
             if (productSwitchVm.productVmObj[data.index].timeType == 1) {
@@ -702,20 +722,67 @@
             } else {
                 $(".productSwitchTab" + data.index).find('.timeShow').hide();
             }
+            if ($(".productSwitchTab" + data.index).find('.dateBegin').val() == "") {
+                var elem = ".productSwitchTab" + data.index + " .dateBegin";
+                laydate.render({
+                    elem: elem,
+                    type: 'datetime',
+                    done: function(value, date, endDate) {
+
+                    }
+                });
+            }
+            if ($(".productSwitchTab" + data.index).find('.dateEnd').val() == "") {
+                var elem2 = ".productSwitchTab" + data.index + " .dateEnd";
+                laydate.render({
+                    elem: elem2,
+                    type: 'datetime',
+                    done: function(value, date, endDate) {
+
+                    }
+                });
+            }
+
+        });
+        element.on('tab(product)', function(data) {
+            if (productVm.productVmObj[data.index].timeType == 1) {
+                $(".productTab" + data.index).find('.timeShow').show();
+            } else {
+                $(".productTab" + data.index).find('.timeShow').hide();
+            }
+            if ($(".productTab" + data.index).find('.dateBegin').val() == "") {
+                var elem = ".productTab" + data.index + " .dateBegin";
+                laydate.render({
+                    elem: elem,
+                    type: 'datetime',
+                    done: function(value, date, endDate) {
+
+                    }
+                });
+            }
+            if ($(".productTab" + data.index).find('.dateEnd').val() == "") {
+                var elem2 = ".productTab" + data.index + " .dateEnd";
+                laydate.render({
+                    elem: elem2,
+                    type: 'datetime',
+                    done: function(value, date, endDate) {
+
+                    }
+                });
+            }
         });
         //商品通栏的tab新增
         var productName = "";
-        var productHtml = $(".product-content").html();
-        var productactive = {
-            productAdd: function(e) {
-                //新增一个Tab项
-                productVm.productVmObj.push({ name: "商品2", timeType: 0 });
-                setTimeout(function() {
-                    element.init();
-                    form.render();
-                }, 0)
-            }
-        };
+        // var productactive = {
+        //     productAdd: function(e) {
+        //         //新增一个Tab项
+        //         productVm.productVmObj.push({ name: "商品2", timeType: 0 });
+        //         setTimeout(function() {
+        //             element.init();
+        //             form.render();
+        //         }, 0)
+        //     }
+        // };
         //右侧tab删除的请求
         $(".layui-tab").on("click", function(e) {
             if ($(e.target).is(".layui-tab-close")) {
@@ -745,13 +812,13 @@
                 type = othis.data('type');
             active[type] ? active[type].call(this, othis) : '';
         });
-        $('.site-product-active').on('click', function() {
-            var length = $(".product-set .layui-tab-title li").length + 1;
-            productName = "商品" + length;
-            var othis = $(this),
-                type = othis.data('type');
-            productactive[type] ? productactive[type].call(this, othis) : '';
-        });
+        // $('.site-product-active').on('click', function() {
+        //     var length = $(".product-set .layui-tab-title li").length + 1;
+        //     productName = "商品" + length;
+        //     var othis = $(this),
+        //         type = othis.data('type');
+        //     productactive[type] ? productactive[type].call(this, othis) : '';
+        // });
         // 跳转地址类型切换
         form.on('radio(urlType1)', function(data) {
             if (data.value == "1") {
@@ -800,26 +867,21 @@
                 $(".timeShow4").show();
             }
         });
-        //时间范围
-        // laydate.render({
-        //     elem: '.dateBegin',
-        //     type: 'datetime',
-        //     done: function(value, date, endDate) {
 
-        //     }
-        // });
-        // laydate.render({
-        //     elem: '.dateEnd',
-        //     type: 'datetime',
-        //     done: function(value, date, endDate) {
-
-        //     }
-        // });
     });
 
     function ppAdd(argument) {
         // body...
-        productSwitchVm.productVmObj.push({ name: "商品2", timeType: 0 });
+        productSwitchVm.productVmObj.push({ name: "商品滑动栏", timeType: 0 });
+        setTimeout(function() {
+            element.init();
+            form.render();
+        }, 0)
+    }
+
+    function productComponent(argument) {
+        // body...
+        productVm.productVmObj.push({ name: "商品通栏", timeType: 1 });
         setTimeout(function() {
             element.init();
             form.render();
@@ -929,8 +991,6 @@
         }
         if (type == 3) {
             //广告长图
-            console.log(initObj)
-
             if (initObj == "") {
 
             } else {
@@ -960,8 +1020,26 @@
                             $(".advertisement-set").find('.url-show').show();
                         }
                         setTimeout(function() {
+                            $(".advertisement-set .dateBegin").each(function(index, elem) {
+                                laydate.render({
+                                    elem: elem,
+                                    type: 'datetime',
+                                    done: function(value, date, endDate) {
+
+                                    }
+                                });
+                            })
+                            $(".advertisement-set .dateEnd").each(function(index, elem) {
+                                laydate.render({
+                                    elem: elem,
+                                    type: 'datetime',
+                                    done: function(value, date, endDate) {
+
+                                    }
+                                });
+                            })
                             form.render();
-                            dateInit();
+                            //dateInit();
                         }, 0)
                     } else {
                         advertisementVm.advertisementVmObj = {
@@ -1007,7 +1085,25 @@
                     setTimeout(function() {
                         element.init();
                         form.render();
-                        dateInit();
+                        $(".banner-set .dateBegin").each(function(index, elem) {
+                            laydate.render({
+                                elem: elem,
+                                type: 'datetime',
+                                done: function(value, date, endDate) {
+
+                                }
+                            });
+                        })
+                        $(".banner-set .dateEnd").each(function(index, elem) {
+                            laydate.render({
+                                elem: elem,
+                                type: 'datetime',
+                                done: function(value, date, endDate) {
+
+                                }
+                            });
+                        })
+                        //dateInit();
                     }, 0)
                 } else {
                     layer.msg(res.message)
@@ -1038,7 +1134,25 @@
                     setTimeout(function() {
                         element.init();
                         form.render();
-                        dateInit();
+                        $(".product-set .dateBegin").each(function(index, elem) {
+                            laydate.render({
+                                elem: elem,
+                                type: 'datetime',
+                                done: function(value, date, endDate) {
+
+                                }
+                            });
+                        })
+                        $(".product-set .dateEnd").each(function(index, elem) {
+                            laydate.render({
+                                elem: elem,
+                                type: 'datetime',
+                                done: function(value, date, endDate) {
+
+                                }
+                            });
+                        })
+                        //dateInit();
                     }, 0)
                 } else {
                     layer.msg(res.message)
@@ -1068,7 +1182,25 @@
                     setTimeout(function() {
                         element.init();
                         form.render();
-                        dateInit();
+                        $(".product-switch-set .dateBegin").each(function(index, elem) {
+                            laydate.render({
+                                elem: elem,
+                                type: 'datetime',
+                                done: function(value, date, endDate) {
+
+                                }
+                            });
+                        })
+                        $(".product-switch-set .dateEnd").each(function(index, elem) {
+                            laydate.render({
+                                elem: elem,
+                                type: 'datetime',
+                                done: function(value, date, endDate) {
+
+                                }
+                            });
+                        })
+                        //dateInit();
                     }, 0)
                 } else {
                     layer.msg(res.message)

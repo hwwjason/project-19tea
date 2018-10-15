@@ -20,13 +20,19 @@
     .applyType-div,
     .discount,
     .moneyHide,
-    .productdiv {
+    .productdiv,
+    .couponType {
         display: none;
     }
 
     .red-div {
         color: red;
         line-height: 38px;
+    }
+
+    .showHide,
+    .moneyHide {
+        display: block;
     }
     </style>
 </head>
@@ -94,6 +100,9 @@
                 <div class="layui-input-inline">
                     <input type="text" name="stock" placeholder="请输入配置数量" :value="couponInfo.stock" class="layui-input">
                 </div>
+                <div class="layui-input-inline red-div">
+                    配置数量为0时表示不限量； *
+                </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">有效类型</label>
@@ -131,32 +140,6 @@
                     <input type="radio" lay-filter="applyType" class="applyType1" name="applyType" value="1" title="扫码购">
                 </div>
             </div>
-            <!-- <div class="applyType-div">
-                <div class="layui-form-item productType">
-                    <label class="layui-form-label">商品分类</label>
-                    <div class="layui-input-block">
-                        <input type="checkbox" name="like1[write]" lay-skin="primary" title="茉莉花茶" checked="">
-                        <input type="checkbox" name="like1[read]" lay-skin="primary" title="花草茶">
-                        <input type="checkbox" name="like1[game]" lay-skin="primary" title="功能茶">
-                        <input type="checkbox" name="like1[game]" lay-skin="primary" title="原叶茶">
-                    </div>
-                </div>
-                <div class="layui-form-item product">
-                    <label class="layui-form-label">商品</label>
-                    <div class="layui-input-block">
-                        <input type="text" class="layui-input" value="" placeholder="">
-                    </div>
-                </div>
-                <div class="layui-form-item channel">
-                    <label class="layui-form-label">频道</label>
-                    <div class="layui-input-block">
-                        <input type="checkbox" name="like1[write]" lay-skin="primary" title="新用户福利" checked="">
-                        <input type="checkbox" name="like1[read]" lay-skin="primary" title="激情世界杯">
-                        <input type="checkbox" name="like1[game]" lay-skin="primary" title="限量版商品">
-                        <input type="checkbox" name="like1[game]" lay-skin="primary" title="世界杯茉莉龙珠">
-                    </div>
-                </div>
-            </div> -->
             <div class="layui-form-item">
                 <div class="layui-form-item channel">
                     <label class="layui-form-label">跳转地址</label>
@@ -174,7 +157,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">注：</label>
                 <div class="layui-input-block">
-                    <div class="red-div">跳转地址留空则为默认跳转至首页；配置数量为0时表示不限量； *</div>
+                    <div class="red-div">跳转地址留空则为默认跳转至首页；*</div>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -198,16 +181,19 @@
     var vm = new Vue({
         el: '.couponInfo',
         data: {
-            couponInfo: ""
+            couponInfo: {
+                stock: 0
+            }
         },
         mounted: function() {
             this.getCouponInfo();
         },
         methods: {
             layuiInit: function() {
-                layui.use(['jquery', 'form', 'laydate'], function() {
+                layui.use(['jquery', 'form', 'laydate', 'layer'], function() {
                     var form = layui.form;
                     var laydate = layui.laydate;
+                    var layer = layui.layer;
                     var $ = layui.jquery;
                     // 优惠券类型切换
                     form.on('radio(couponType)', function(data) {
@@ -256,19 +242,70 @@
                             $(".channel").show();
                         }
                     });
+
                     laydate.render({
-                        elem: '#beginTime', //指定元素
-                        type: 'datetime'
-                    });
+                            elem: '#beginTime', //指定元素
+                            type: 'datetime'
+                        });
                     laydate.render({
                         elem: '#endTime', //指定元素
                         type: 'datetime'
                     });
+
                     form.on('submit(formsub)', function(data) {
                         data.field.starttime = data.field.starttime.replace(" ", "T");
                         data.field.endtime = data.field.endtime.replace(" ", "T");
                         var dataJson = JSON.stringify(data.field);
                         var url = baseURL + "bak/coupon/create";
+
+                        if (data.field.title == "") {
+                            layer.msg("请输入优惠券名");
+                            return false;
+                        }
+                        if (data.field.describes == "") {
+                            layer.msg("请输入优惠券描述");
+                            return false;
+                        }
+                        if (data.field.fullMoney == "" && data.field.couponType == "0") {
+                            layer.msg("请输入满金额");
+                            return false;
+                        }
+                        if (data.field.reduceMoney == "" && data.field.couponType == "0") {
+                            layer.msg("请输入减金额");
+                            return false;
+                        }
+                        if (data.field.reduceMoney >= data.field.fullMoney && data.field.couponType == "0") {
+                            layer.msg("减金额不能大于满金额");
+                            return false;
+                        }
+                        if (data.field.reduceMoney == "" && data.field.couponType == "1") {
+                            layer.msg("请输入金额");
+                            return false;
+                        }
+                        if (data.field.discount == "" && data.field.couponType == "2") {
+                            layer.msg("请输入折扣");
+                            return false;
+                        }
+                        if (data.field.productcode == "" && data.field.couponType == "3") {
+                            layer.msg("请输入商品编码");
+                            return false;
+                        }
+                        if (data.field.starttime == "" && data.field.timeType == "0") {
+                            layer.msg("请选择开始时间");
+                            return false;
+                        }
+                        if (data.field.endtime == "" && data.field.timeType == "0") {
+                            layer.msg("请选择结束时间");
+                            return false;
+                        }
+                        var a = new Date(data.field.starttime) 
+                            a = a.getTime();
+                        var b = new Date(data.field.endtime) 
+                            b = b.getTime(); 
+                            if(a>=b){
+                                layer.msg("开始时间不能大于结束时间");
+                                return false;
+                            }
                         $.ajax({
                             url: url,
                             type: 'POST',
@@ -300,7 +337,7 @@
                             var timeType = resdata.timeType;
                             var applyType = resdata.applyType;
                             var jumpType = resdata.jumpType;
-                            $(".couponType").hide();
+
                             if (couponType == "0") {
                                 $(".showHide").show();
                                 $(".moneyHide").show();

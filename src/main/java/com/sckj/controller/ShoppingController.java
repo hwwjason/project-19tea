@@ -6,6 +6,8 @@ import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
 import com.sckj.model.dto.UserCartDTO;
 import com.sckj.service.IUserCartService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,8 @@ public class ShoppingController {
     @Autowired
     private IUserCartService userCartService;
 
+    private static final Logger logger = LoggerFactory.getLogger(ContentBannerController.class);
+
     @RequestMapping(value = "/changeGoods", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResultData changeGoods(@RequestParam(value = "productId") String productId, @RequestParam(value = "userId")String userId , @RequestParam(value = "cartType") String cartType,@RequestParam(value = "count") int count){
         try{
@@ -28,6 +32,7 @@ public class ShoppingController {
         }catch (BusinessException e){
            throw e;
         } catch (Exception e){
+            logger.error(e.getMessage());
             return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
         }
     }

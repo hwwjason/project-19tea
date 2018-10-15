@@ -23,6 +23,9 @@ public class UploadDownloadServiceImp implements IUploadDownloadService{
     @Value("${uploadDir}")
     private String uploadDir;
 
+    @Value("${visitUrl}")
+    private String visitUrl;
+
     @Override
     public UploadDownloadModel uploadImage(MultipartFile file, HttpServletRequest request) throws Exception {
         if (file==null || file.isEmpty()) {
@@ -53,11 +56,7 @@ public class UploadDownloadServiceImp implements IUploadDownloadService{
         String url = "";
         try {
             file.transferTo(dest);// ???
-            if(HttpUtils.getEn0().equals("172.19.60.150")){
-                url = "https://sowtea.com:2433/bak/image/showImg?imgFile=" + fileName;
-            }else{
-                url = "https://"+HttpUtils.getEn0()+"/bak/image/showImg?imgFile=" +fileName;
-            }
+            url = visitUrl +"/bak/image/showImg?imgFile=" +fileName;
             uploadDownloadModel.setUrlWithoutIp("bak/image/showImg?imgFile=" + fileName);
             uploadDownloadModel.setUrl(url);
             logger.info("图片访问路径:"+url);

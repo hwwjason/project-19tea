@@ -27,8 +27,7 @@ pagehelper:
   params: count=countSql
 #上传位置
 uploadDir: D:/19tea/image/
-#uploadDir: /Users/hww/Documents/IMAGE/
-localurl: https://localhost/
+visitUrl: https://sowtea.com:2433
 
 weixin4j:
   #微信开发配置

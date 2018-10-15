@@ -193,6 +193,10 @@
             <div class="layui-tab-content">
                 <div v-for="(bitem,index) in bannerObj" class="layui-tab-item  banner-content" :class="[index==0?'layui-show':'','bannerTab'+index]">
                     <div class="layui-form-item">
+                        <div class="layui-form-item">
+                        <label class="layui-form-label"> </label>
+                        <div  class="layui-inline">幻灯片组件尺寸：750*468px </div>
+                        </div>
                         <form class="uploadForm" enctype="multipart/form-data" method="post" action="">
                             <label class="layui-form-label">图片</label>
                             <div class="layui-input-inline">
@@ -289,6 +293,10 @@
         <div class="peizhi advertisement-set" lay-filter="advertisement">
             <div class="layui-tab-item layui-show">
                 <div class="layui-form-item">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label"> </label>
+                        <div  class="layui-inline">幻灯片组件尺寸：750*468px </div>
+                        </div>
                     <form class="uploadForm" enctype="multipart/form-data" method="post" action="">
                         <label class="layui-form-label">图片</label>
                         <div class="layui-input-inline">

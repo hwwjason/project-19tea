@@ -274,6 +274,10 @@
                             layer.msg("请输入减金额");
                             return false;
                         }
+                        if (data.field.reduceMoney >= data.field.fullMoney && data.field.couponType == "0") {
+                            layer.msg("减金额不能大于满金额");
+                            return false;
+                        }
                         if (data.field.reduceMoney == "" && data.field.couponType == "1") {
                             layer.msg("请输入金额");
                             return false;

@@ -194,8 +194,8 @@
                 <div v-for="(bitem,index) in bannerObj" class="layui-tab-item  banner-content" :class="[index==0?'layui-show':'','bannerTab'+index]">
                     <div class="layui-form-item">
                         <div class="layui-form-item">
-                        <label class="layui-form-label"> </label>
-                        <div  class="layui-inline">幻灯片组件尺寸：750*468px </div>
+                            <label class="layui-form-label"> </label>
+                            <div class="layui-inline">幻灯片组件尺寸：750*468px </div>
                         </div>
                         <form class="uploadForm" enctype="multipart/form-data" method="post" action="">
                             <label class="layui-form-label">图片</label>
@@ -295,8 +295,8 @@
                 <div class="layui-form-item">
                     <div class="layui-form-item">
                         <label class="layui-form-label"> </label>
-                        <div  class="layui-inline">幻灯片组件尺寸：750*468px </div>
-                        </div>
+                        <div class="layui-inline">幻灯片组件尺寸：750*468px </div>
+                    </div>
                     <form class="uploadForm" enctype="multipart/form-data" method="post" action="">
                         <label class="layui-form-label">图片</label>
                         <div class="layui-input-inline">
@@ -684,12 +684,12 @@
         var active = {
             tabAdd: function(e) {
                 var length = bannerVm.bannerObj.length;
-                var name = "banner"+(length+1);
+                var name = "banner" + (length + 1);
                 bannerVm.bannerObj.push({ name: name, timeType: 0, jumpType: 0 });
-                var layuiid = "banner"+length;
+                var layuiid = "banner" + length;
                 setTimeout(function() {
                     element.init();
-                    element.tabChange('banner', layuiid); 
+                    element.tabChange('banner', layuiid);
                     form.render();
                 }, 0)
             }
@@ -797,23 +797,36 @@
         // };
         //右侧tab删除的请求
         $(".layui-tab").on("click", function(e) {
+            var that = this;
+            console.log(this);
             if ($(e.target).is(".layui-tab-close")) {
                 var thisid = $(e.target).parent().attr("thisid");
+                if($(that).find(".layui-tab-title").find("li").length==0){
+                    $(".ul2-li").each(function(index, el) {
+                        $(el).addClass('no-after');
+                    });
+                    window.location.reload();
+                }
                 var data = { ids: thisid }
-                var thetype = "";
-                // layer.confirm('您是确定删除吗？', {
-                //   btn: ['确定','取消'] //按钮
-                // }, function(){
-
-                // }, function(){
-
-                // });
+                var thetype = $(e.target).parents(".peizhi").attr("thetype");
+                var index = $(e.target).parent().attr("index");
                 var url = baseURL + "contentForm/deleteByIds";
-                $.post(url, data, function(res) {
-                    if (res.status == "1") {
+                if (thetype == 3) {
+                    advertisementVm.advertisementVmObj.splice(index, 1);
+                }
+                if (thetype == 0) {
+                    bannerVm.bannerObj.splice(index, 1);
+                }
+                if (thetype == 4) {
+                    productVm.productVmObj.splice(index, 1);
+                }
+                if (thisid) {
+                    $.post(url, data, function(res) {
+                        if (res.status == "1") {
 
-                    }
-                }, "json");
+                        }
+                    }, "json");
+                }
             }
         })
 
@@ -885,12 +898,12 @@
     function ppAdd(argument) {
         // body...
         var length = productSwitchVm.productVmObj.length;
-        var name = "商品滑动栏"+(length+1);
+        var name = "商品滑动栏" + (length + 1);
         productSwitchVm.productVmObj.push({ name: name, timeType: 0 });
-        var layuiid = "productSwitch"+length;
+        var layuiid = "productSwitch" + length;
         setTimeout(function() {
             element.init();
-            element.tabChange('product-switch', layuiid); 
+            element.tabChange('product-switch', layuiid);
             form.render();
         }, 0)
     }
@@ -898,12 +911,12 @@
     function productComponent(argument) {
         // body...
         var length = productVm.productVmObj.length;
-        var name = "商品通栏"+(length+1);
+        var name = "商品通栏" + (length + 1);
         productVm.productVmObj.push({ name: name, timeType: 1 });
-        var layuiid = "product"+length;
+        var layuiid = "product" + length;
         setTimeout(function() {
             element.init();
-            element.tabChange('product', layuiid); 
+            element.tabChange('product', layuiid);
             form.render();
         }, 0)
     }
@@ -1181,12 +1194,12 @@
         }
         if (type == 1) {
             //商品滑动通栏设置
-            
+
             $.post(baseURL + "contentForm/findByParentid", { parentid: id }, function(res) {
                 if (res.status == "1") {
                     if (res.data.length != 0) {
                         productSwitchVm.productVmObj = res.data;
-                        
+
                         for (var i = 0; i < productSwitchVm.productVmObj.length; i++) {
                             if (productSwitchVm.productVmObj[i].timeType == "1") {
                                 $(".productSwitchTab" + i).find('.timeShow').show();
@@ -1203,7 +1216,7 @@
                     }
                     setTimeout(function() {
                         element.init();
-                        element.tabChange('product-switch', 'productSwitch0'); 
+                        element.tabChange('product-switch', 'productSwitch0');
                         form.render();
                         $(".product-switch-set .dateBegin").each(function(index, elem) {
                             laydate.render({
@@ -1637,9 +1650,9 @@
     function closeTab(dom) {
         var theid = $(dom).parents(".peizhi").attr("theid");
         $(".ul2-li").each(function(index, el) {
-            if (theid == $(el).attr("theid")) {
+            //if (theid == $(el).attr("theid")) {
                 $(el).addClass('no-after');
-            }
+            //}
         });
         $(dom).parents(".peizhi").hide();
     }

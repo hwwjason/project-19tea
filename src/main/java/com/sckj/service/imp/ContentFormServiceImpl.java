@@ -120,7 +120,23 @@ public class ContentFormServiceImpl implements IContentFormService {
             }
         }
 
-        if("2".equals(contentForm.getLevel()) && ( FormTypeEnum.CONTENT_PRODUCT_CLOUMN.toString().equals(contentForm.getFormType()) || FormTypeEnum.CONTENT_PRODUCT_SLIDE.toString().equals(contentForm.getFormType()))){
+        //第一层级 广告成都 可能为 商品，需要设置商品id
+        if("1".equals(contentForm.getLevel()) && (FormTypeEnum.CONTENT_ADVER.toString().equals(contentForm.getFormType()) && "1".equals(contentForm.getJumpType()))){
+            ProductList productList = productService.getProductByCode(contentForm.getProductCode());
+            if(productList != null){
+                contentForm.setProductid(productList.getId());
+                if(contentForm.getImgUrl()==null){
+                    contentForm.setImgUrl(productList.getImg());
+                }
+            }
+        }
+
+        //第二层级
+        if("2".equals(contentForm.getLevel()) && (
+                FormTypeEnum.CONTENT_PRODUCT_CLOUMN.toString().equals(contentForm.getFormType())
+                || FormTypeEnum.CONTENT_PRODUCT_SLIDE.toString().equals(contentForm.getFormType())
+                || (FormTypeEnum.CONTENT_BANNER.toString().equals(contentForm.getFormType()) && "1".equals(contentForm.getJumpType()))
+                )){
             ProductList productList = productService.getProductByCode(contentForm.getProductCode());
             if(productList != null){
                 contentForm.setImgUrl(productList.getImg());

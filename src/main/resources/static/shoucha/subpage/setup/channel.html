@@ -28,7 +28,7 @@
         <div class="layui-card-header layuiadmin-card-header-auto">
             <div class="layui-form-item">
                 <div class="layui-inline">
-                    <a class="layui-btn layuiadmin-btn-list" href="../../subpage/setup/channelSet.html">
+                    <a class="layui-btn layuiadmin-btn-list" lay-submit lay-filter="addComponent">
                         <i class="fa fa-plus"></i> 添加
                     </a>
                     <button class="layui-btn layuiadmin-btn-list" onclick="window.location.reload()">
@@ -48,48 +48,307 @@
             </thead>
             <tbody class="orderList">
                 <tr v-for="(item,index) in orderList" v-key="orderList">
-                    <td>{{item.id}}</td>
-                    <td>{{item.num}}</td>
-                    <td>{{item.postage}}</td>
+                    <td>{{item.name}}</td>
+                    <td>/pages/channel/channel?id={{item.id}}</td>
+                    <td>{{item.createTime}}</td>
                     <td>
                         <button class="layui-btn layui-btn-warm layui-btn-small" lay-event="edit">
                             <i class="layui-icon">&#xe63c;</i>预览
                         </button>
-                        <a class="layui-btn layui-btn-normal layui-btn-small" href="../../subpage/setup/componentDetailList.html">
+                        <a class="layui-btn layui-btn-normal layui-btn-small" :href="'../../subpage/setup/channeldetail.html?id='+item.id" >
                             <i class="layui-icon">&#xe642;</i>内容配置
                         </a>
-                        <a class="layui-btn layui-btn-danger layui-btn-small" :index="index" lay-event="del" onclick="deleteChannel(this)">
+                        <a class="layui-btn layui-btn-danger layui-btn-small" :productid="item.id" onclick="deleteProduct(this)">
                             <i class="layui-icon">&#xe640;</i>删除
                         </a>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <div id="pagelist"></div>
+        <div class="alert-div layui-form">
+            <div class="layui-form-item">
+                <div class="layui-inline">
+                    <label class="layui-form-label">频道名称</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input zujian-name">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <script type="text/javascript" src="../../frame/static/js/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="../../frame/layui/layui.js"></script>
     <script type="text/javascript" src="../../frame/static/js/vue.min.js"></script>
     <script type="text/javascript">
-    $(function() {
-        // $.post("", {}, function(res) {
-
-        // }, "json");
-    })
-    var data = {
-        orderList: [{ id: 'xcx_chakarma_038', num: '冷泡水果茶（16袋装）', price: '/pages/product_detail/product_detail?id=P1529988351626', postage: 10, payprice: '亳州市', vipprice: '上架', coupon: '是', actualPrice: 110, state: 1, expressNo: 10000000, info: 'sasdadds' }, { id: 10086, num: 1, price: 100, postage: 10, payprice: 100, vipprice: 7, coupon: 10, actualPrice: 110, state: 1, expressNo: 10000000, info: 'sasdadds' }]
-    }
+        var orderList = "",
+        layer = "",
+        form = "",
+        laypage = "",
+        count = 0,
+        pageNum = 1,
+        pageSize = 10,
+        pagecurr = 1,
+        getListData = {
+            "pageNum": pageNum,
+            "pageSize": pageSize,
+            "condition": {
+                type:'1'
+            }
+        };
     var vm = new Vue({
         el: "#vueDiv",
-        data: data
+        data: {
+            orderList: ""
+        },
+        mounted: function() {
+            this.getMakerList(getListData);
+        },
+        methods: {
+            layuiInit: function() {
+                layui.use(['form', 'layedit', 'laypage', 'jquery', 'laydate', 'layer'], function() {
+                    laypage = layui.laypage;
+                    form = layui.form;
+                    layer = layui.layer;
+                    var laydate = layui.laydate;
+                    var $ = layui.jquery;
+                    form.on("submit(addComponent)", function(e) {
+                        layer.open({
+                            type: 1,
+                            area: ['400px', '180px'],
+                            shadeClose: true,
+                            btn: ['确定', '取消'],
+                            content: $(".alert-div"),
+                            yes: function(index) {
+                                var obj = {
+                                    name: $(".zujian-name").val(),
+                                    type:'1',
+                                    status:0,
+                                }
+                                if($(".zujian-name").val()==""){
+                                    layer.msg("请输入组件名");
+                                    return false;
+                                }
+                                $.ajax({
+                                    url: baseURL + "/content/createOrUpdate",
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    contentType: "application/json;charset=UTF-8",
+                                    data: JSON.stringify(obj),
+                                }).done(function(res) {
+                                    if (res.status == "1") {
+                                        window.location.href="../../subpage/setup/channeldetail.html?id="+res.data.id;
+                                    }
+                                }).fail(function() {
+                                    console.log("error");
+                                })
+
+                            }
+                        });
+                    })
+                    // 监听checkbox选中事件，全选
+                    form.on('checkbox(checkall)', function(data) {
+                        ///data.elem.checked单选框是否选中
+                        $(".orderList input[type='checkbox']").each(function(index, el) {
+                            el.checked = data.elem.checked;
+                        });
+                        form.render('checkbox');
+                    });
+                    //单个checkbox选中事件
+                    form.on('checkbox(childCheck)', function(event) {
+                        var checkNum = 0;
+                        $(".orderList input[type='checkbox']").each(function(index, el) {
+                            if (el.checked == false) {
+                                checkNum++
+                                $("#checkall").prop("checked", false);
+                            }
+                        });
+                        if (checkNum == 0) {
+                            $("#checkall").prop("checked", true);
+                        }
+                        form.render('checkbox');
+                        /* Act on the event */
+                    });
+
+                    //分页
+                    laypage.render({
+                        elem: 'pagelist',
+                        count: count,
+                        limit: pageSize,
+                        layout: ['count', 'prev', 'page', 'next', 'refresh', 'skip'],
+                        jump: function(obj, first) {
+                            if (!first) {
+                                pagecurr = obj.curr
+                                $.ajax({
+                                    url: baseURL + "content/getContentList",
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    contentType: "application/json;charset=UTF-8",
+                                    data: JSON.stringify({ "pageNum": obj.curr, "pageSize": pageSize }),
+                                }).done(function(res) {
+                                    if (res.status == "1") {
+                                        orderList = res.data.list;
+                                        vm.orderList = orderList;
+                                        $(".orderList .childCheck").each(function(index, el) {
+                                            $(el).prop("checked", false)
+                                        });
+                                        $("#checkall").prop("checked", false);
+                                        setTimeout(function() {
+                                            form.render();
+                                        }, 0)
+                                    }
+                                }).fail(function() {
+                                    console.log("error");
+                                })
+                            }
+                        }
+                    });
+                    setTimeout(function() {
+                        form.render();
+                    }, 0)
+                })
+            },
+            getMakerList: function(obj) {
+                var that = this;
+                $.ajax({
+                    url: baseURL + "content/getContentList",
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: "application/json;charset=UTF-8",
+                    data: JSON.stringify(obj),
+                }).done(function(res) {
+                    if (res.status == "1") {
+                        orderList = res.data.list;
+                        that.orderList = orderList;
+                        count = res.data.total
+                        that.layuiInit();
+                    }
+                }).fail(function() {
+                    console.log("error");
+                })
+            },
+            watch: function() {
+                this.layuiInit();
+            }
+
+        }
     })
-    layui.use(['form', 'layedit', 'laypage', 'jquery', 'laydate'], function() {
-        var laypage = layui.laypage;
-        var form = layui.form;
-        var $ = layui.jquery;
-    });
-    function deleteChannel(obj){
-        var index = $(obj).attr("index");
-        data.orderList.splice(index,1);
+
+
+    function deleteProduct(argument) {
+        //删除商品
+        if (argument == "all") {
+            // 批量删除
+            var checkId = [];
+            $(".orderList .childCheck").each(function(index, el) {
+                var elchecked = $(el).prop("checked");
+                var productId = $(el).attr("productid");
+                if (elchecked == true) {
+                    checkId.push(productId)
+                }
+            });
+
+            if (checkId.length == 0) {
+                layer.msg("请勾选要删除的组件");
+                return false;
+            }
+        } else {
+            //单个删除
+            var checkId = [];
+            checkId.push($(argument).attr("productid"));
+        }
+        layer.confirm('确定删除？', {
+            btn: ['确定', '取消'] //按钮
+        }, function(index) {
+            layer.close(index);
+            var url = baseURL + "content/deleteByIds";
+            var data = checkId.toString();
+            $.post(url, { ids: data }, function(res) {
+                if (res.status == 1) {
+                    //window.location.reload();
+                    for (var i = 0; i < checkId.length; i++) {
+                        for (var j = 0; j < vm.orderList.length; j++) {
+                            if (checkId[i] == vm.orderList[j].id) {
+                                vm.orderList.splice(j, 1)
+                                count = count - 1;
+                            }
+                        }
+                    }
+                    laypage.render({
+                        elem: 'pagelist',
+                        count: count,
+                        limit: pageSize,
+                        curr: pagecurr,
+                        layout: ['count', 'prev', 'page', 'next', 'refresh', 'skip'],
+                        jump: function(obj, first) {
+                            if (!first) {
+                                $.ajax({
+                                    url: baseURL + "content/getContentList",
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    contentType: "application/json;charset=UTF-8",
+                                    data: JSON.stringify({ "pageNum": obj.curr, "pageSize": pageSize }),
+                                }).done(function(res) {
+                                    if (res.status == "1") {
+                                        orderList = res.data.list;
+                                        vm.orderList = orderList;
+                                        $(".orderList .childCheck").each(function(index, el) {
+                                            $(el).prop("checked", false)
+                                        });
+                                        $("#checkall").prop("checked", false);
+                                        setTimeout(function() {
+                                            form.render();
+                                        }, 0)
+                                    }
+                                }).fail(function() {
+                                    console.log("error");
+                                })
+                            }
+                        }
+                    });
+                    setTimeout(function() {
+                        $(".orderList .childCheck").each(function(index, el) {
+                            $(el).prop("checked", false)
+                        });
+                        form.render();
+                    }, 0)
+                    checkId = [];
+                }
+            }, "json")
+        }, function() {
+            console.log("取消")
+        });
+
+    }
+    //查询商品
+    function search() {
+        var isshelves = $(".isshelves").val();
+        var input_code = $(".input_code").val();
+        var input_title = $(".input_title").val();
+        getListData.condition.title = input_title;
+        getListData.condition.isshelves = isshelves;
+        getListData.condition.code = input_code;
+        vm.getMakerList(getListData);
+    }
+
+    function update(dom) {
+        var id = $(dom).attr("productid");
+        var status = $(dom).attr("status");
+        if (status == 0) {
+            status = 1
+        } else {
+            status = 0
+        }
+        var obj = {
+            id: id,
+            status: status
+        }
+        $.post(baseURL + "content/startOrStop", obj, function(res) {
+            if (res.status == "1") {
+                window.location.reload();
+            }
+        }, "json")
+
     }
     </script>
 </body>

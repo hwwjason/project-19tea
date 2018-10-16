@@ -108,7 +108,7 @@
             "pageNum": pageNum,
             "pageSize": pageSize,
             "condition": {
-
+                type:'0'
             }
         };
     var vm = new Vue({
@@ -137,6 +137,8 @@
                             yes: function(index) {
                                 var obj = {
                                     name: $(".zujian-name").val(),
+                                    type:'0',
+                                    status:0,
                                 }
                                 if($(".zujian-name").val()==""){
                                     layer.msg("请输入组件名");

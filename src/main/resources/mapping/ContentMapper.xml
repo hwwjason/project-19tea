@@ -44,7 +44,7 @@
         select * from sckj_content as temp
         <where>
             <if test="null != type and  '' neq type">
-                and  UPPER(temp.type) LIKE CONCAT('%',UPPER (#{type}),'%')
+                and  temp.type = #{type}
             </if>
         </where>
         ORDER BY temp.create_time DESC

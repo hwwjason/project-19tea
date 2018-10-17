@@ -1732,11 +1732,11 @@
             if (res.status == 1) {
                 layer.msg("匹配成功");
                 $(obj).parents(".advertisement-set").find(".productName").val(res.data.title);
-                var str = "";
-                str += "<img class='preview-img' src='" + res.data.img + "'/>";
-                str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
-                $(obj).parents(".advertisement-set").find(".input-file").after(str);
-                $(obj).parents(".advertisement-set").find('.img-hidden').val(res.data.img);
+                // var str = "";
+                // str += "<img class='preview-img' src='" + res.data.img + "'/>";
+                // str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
+                // $(obj).parents(".advertisement-set").find(".input-file").after(str);
+                // $(obj).parents(".advertisement-set").find('.img-hidden').val(res.data.img);
             } else {
                 layer.msg(res.message);
             }
@@ -1762,11 +1762,11 @@
             if (res.status == 1) {
                 layer.msg("匹配成功");
                 $(obj).parents(".banner-content").find(".productName").val(res.data.title);
-                var str = "";
-                str += "<img class='preview-img' src='" + res.data.img + "'/>";
-                str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
-                $(obj).parents(".banner-content").find(".input-file").after(str);
-                $(obj).parents(".banner-content").find('.img-hidden').val(res.data.img);
+                // var str = "";
+                // str += "<img class='preview-img' src='" + res.data.img + "'/>";
+                // str += '<span class="del-span" onclick="delimg(this)"><i class="layui-icon layui-icon-close-fill">&#x1007;</i></span>';
+                // $(obj).parents(".banner-content").find(".input-file").after(str);
+                // $(obj).parents(".banner-content").find('.img-hidden').val(res.data.img);
             } else {
                 layer.msg(res.message);
             }

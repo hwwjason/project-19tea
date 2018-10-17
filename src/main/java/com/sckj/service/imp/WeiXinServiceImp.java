@@ -30,10 +30,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -114,140 +111,84 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
      * @return
      */
     public  Map<String, Object> wxPay(String buyuserId, String cartType, String couponUserid, String userRemark,HttpServletRequest request)  throws Exception{
+        //生成临时订单
         ProductOrderDTO productOrderDTO = new ProductOrderDTO();
         productOrderDTO.setBuyuserId(buyuserId);
         productOrderDTO.setCartType(cartType);
         productOrderDTO.setCouponUserid(couponUserid);
         productOrderDTO.setUserRemark(userRemark);
-//        try {
         productOrderDTO = productOrderService.createTempProductOrder(productOrderDTO);
-//        } catch (Exception e) {
-//            throw new BusinessException("创建订单失败，请联系管理员");
-//        }
 
-        List<UserList> userLists = userListJpa.findByUserId(buyuserId);
-        String openid = userLists.get(0).getOpenid();
+        //生成的随机字符串
+        String nonce_str = StringUtils.getRandomStringByLength(32);
+        //组装xml
+        String xml = packageWxpayXml(buyuserId,productOrderDTO.getId(),nonce_str,request);
+        //调用统一下单接口，并接受返回的结果
+        String result = PayUtil.httpRequest(WxPayConfig.pay_url, "POST", xml);
 
-//        try{
-            //生成的随机字符串
-            String nonce_str = StringUtils.getRandomStringByLength(32);
-            //商品名称
-            String body = "19Tea茶研社订单-"+productOrderDTO.getId();
-            //获取本机的ip地址
-            String spbill_create_ip = IpUtils.getIpAddr(request);
+        logger.info("调试模式_统一下单接口 返回XML数据：" + result);
 
-            String orderNo = productOrderDTO.getId();
-            String money = "1";//支付金额，单位：分，这边需要转成字符串类型，否则后面的签名会失败
+        //将解析结果存储在HashMap中
+        Map map = PayUtil.doXMLParse(result);
 
-            Map<String, String> packageParams = new HashMap<String, String>();
-            packageParams.put("appid", WxPayConfig.appid);
-            packageParams.put("mch_id", WxPayConfig.mch_id);
-            packageParams.put("nonce_str", nonce_str);
-            packageParams.put("body", body);
-            packageParams.put("out_trade_no", orderNo);//商户订单号
-            packageParams.put("total_fee", money);//支付金额，这边需要转成字符串类型，否则后面的签名会失败
-            packageParams.put("spbill_create_ip", spbill_create_ip);
-            packageParams.put("notify_url", WxPayConfig.notify_url);
-            packageParams.put("trade_type", WxPayConfig.TRADETYPE);
-            packageParams.put("openid", openid);
+        String return_code = (String) map.get("return_code");//返回状态码
 
-            // 除去数组中的空值和签名参数
-            packageParams = PayUtil.paraFilter(packageParams);
-            String prestr = PayUtil.createLinkString(packageParams); // 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
+        //返回给移动端需要的参数
+        Map<String, Object> response = new HashMap<String, Object>();
+        if(return_code == "SUCCESS" || return_code.equals(return_code)){
+            // 业务结果
+            String prepay_id = (String) map.get("prepay_id");//返回的预付单信息
+            productOrderDTO.setPrepayId(prepay_id);
+            response.put("nonceStr", nonce_str);
+            response.put("package", "prepay_id=" + prepay_id);
+            Long timeStamp = System.currentTimeMillis() / 1000;
+            response.put("timeStamp", timeStamp + "");//这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误
 
-            //MD5运算生成签名，这里是第一次签名，用于调用统一下单接口
-            String mysign = PayUtil.sign(prestr, WxPayConfig.key, "utf-8").toUpperCase();
-            logger.info("=======================第一次签名：" + mysign + "=====================");
+            String stringSignTemp = "appId=" + WxPayConfig.appid + "&nonceStr=" + nonce_str + "&package=prepay_id=" + prepay_id+ "&signType=" + WxPayConfig.SIGNTYPE + "&timeStamp=" + timeStamp;
+            //再次签名，这个签名用于小程序端调用wx.requesetPayment方法
+            String paySign = PayUtil.sign(stringSignTemp, WxPayConfig.key, "utf-8").toUpperCase();
+            logger.info("=======================第二次签名：" + paySign + "=====================");
 
-            //拼接统一下单接口使用的xml数据，要将上一步生成的签名一起拼接进去
-            String xml = "<xml>" + "<appid>" + WxPayConfig.appid + "</appid>"
-                    + "<body><![CDATA[" + body + "]]></body>"
-                    + "<mch_id>" + WxPayConfig.mch_id + "</mch_id>"
-                    + "<nonce_str>" + nonce_str + "</nonce_str>"
-                    + "<notify_url>" + WxPayConfig.notify_url + "</notify_url>"
-                    + "<openid>" + openid + "</openid>"
-                    + "<out_trade_no>" + orderNo + "</out_trade_no>"
-                    + "<spbill_create_ip>" + spbill_create_ip + "</spbill_create_ip>"
-                    + "<total_fee>" + money + "</total_fee>"
-                    + "<trade_type>" + WxPayConfig.TRADETYPE + "</trade_type>"
-                    + "<sign>" + mysign + "</sign>"
-                    + "</xml>";
+            response.put("paySign", paySign);
 
-            System.out.println("调试模式_统一下单接口 请求XML数据：" + xml);
+            //发起支付成功之后
+            afterWxpay(productOrderDTO,"1");
+        }
 
-            //调用统一下单接口，并接受返回的结果
-            String result = PayUtil.httpRequest(WxPayConfig.pay_url, "POST", xml);
+        response.put("appid", WxPayConfig.appid);
 
-            System.out.println("调试模式_统一下单接口 返回XML数据：" + result);
-
-            // 将解析结果存储在HashMap中
-            Map map = PayUtil.doXMLParse(result);
-
-            String return_code = (String) map.get("return_code");//返回状态码
-
-            //返回给移动端需要的参数
-            Map<String, Object> response = new HashMap<String, Object>();
-            if(return_code == "SUCCESS" || return_code.equals(return_code)){
-                // 业务结果
-                String prepay_id = (String) map.get("prepay_id");//返回的预付单信息
-                response.put("nonceStr", nonce_str);
-                response.put("package", "prepay_id=" + prepay_id);
-                Long timeStamp = System.currentTimeMillis() / 1000;
-                response.put("timeStamp", timeStamp + "");//这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误
-
-                String stringSignTemp = "appId=" + WxPayConfig.appid + "&nonceStr=" + nonce_str + "&package=prepay_id=" + prepay_id+ "&signType=" + WxPayConfig.SIGNTYPE + "&timeStamp=" + timeStamp;
-                //再次签名，这个签名用于小程序端调用wx.requesetPayment方法
-                String paySign = PayUtil.sign(stringSignTemp, WxPayConfig.key, "utf-8").toUpperCase();
-                logger.info("=======================第二次签名：" + paySign + "=====================");
-
-                response.put("paySign", paySign);
-
-                //保存订单和子订单的
-                ProductOrder productOrder = new ProductOrder();
-                BeanUtils.copyProperties(productOrder,productOrderDTO);
-                productOrder.setOrderStatus(OrderStatusEnums.NO_PAY.toString());
-                productOrderRepository.saveAndFlush(productOrder);
-                List<ProductSonOrder> productSonOrders = productOrderDTO.getProductSonOrder();
-                productSonOrderRepository.saveAll(productSonOrders);
-                //扣除库存
-                Map<String, ProductList> productListMap = productOrderDTO.getProductListMap();
-                List<ProductList> productLists = new ArrayList<>();
-                for (ProductSonOrder sonOrder : productSonOrders) {
-                    ProductList productList = productListMap.get(sonOrder.getProductid());
-                    int sellNum = productList.getSellNum() == null ? 0 : productList.getSellNum();
-                    int stock = productList.getStock()==null? 0 : productList.getStock();
-                    int buyNum = sonOrder.getBuynum();
-                    if(stock - buyNum < 0){
-                        throw new BusinessException("商品:"+productList.getTitle()+"："+productList.getCode()+",库存不足，请联系管理员");
-                    }
-                    productList.setSellNum(sellNum + buyNum);
-                    productList.setStock(stock - buyNum);
-                }
-                //同步订单到管家婆 (ProductOrder productOrder, List<ProductSonOrder> productSonOrders, UserList userList
-                gjpService.uploadsaleorders(productOrder,productSonOrders,null);
-
-                //改变优惠券状态
-                String couPonUserid = productOrderDTO.getCouponUserid();
-                if(com.sckj.utils.StringUtils.isNotEmpty(couponUserid)){
-                    CouponUser couponUser = couponUserService.findById(couPonUserid);
-                    couponUser.setIsuse("1");
-                    couponUserService.saveAndFlush(couponUser);
-                }
-                //移除购物车商品
-                List<UserCartDTO> userCarts = productOrderDTO.getUserCarts();
-                List<String> ids = userCarts.stream().map(e->e.getId()).collect(Collectors.toList());
-                userCartService.deleteByIds(ids);
-            }
-
-            response.put("appid", WxPayConfig.appid);
-
-            //resultData.setData(response);
-            return response;
-//        }catch(Exception e){
-//            e.printStackTrace();
-//            throw new BusinessException("发起支付失败,请联系管理员:"+e);
-//        }
+        return response;
     }
+
+    public  Map<String, Object> wxToPay(String orderId)  throws Exception{
+        ProductOrderDTO productOrderDTO = productOrderService.findDTOById(orderId);
+        //生成的随机字符串
+        String nonce_str = StringUtils.getRandomStringByLength(32);
+        String prepay_id = productOrderDTO.getPrepayId();
+        //返回给移动端需要的参数
+        Map<String, Object> response = new HashMap<String, Object>();
+        // 业务结果
+        response.put("nonceStr", nonce_str);
+        response.put("package", "prepay_id=" + prepay_id);
+        Long timeStamp = System.currentTimeMillis() / 1000;
+        response.put("timeStamp", timeStamp + "");//这边要将返回的时间戳转化成字符串，不然小程序端调用wx.requestPayment方法会报签名错误
+
+        String stringSignTemp = "appId=" + WxPayConfig.appid + "&nonceStr=" + nonce_str + "&package=prepay_id=" + prepay_id+ "&signType=" + WxPayConfig.SIGNTYPE + "&timeStamp=" + timeStamp;
+        //再次签名，这个签名用于小程序端调用wx.requesetPayment方法
+        String paySign = PayUtil.sign(stringSignTemp, WxPayConfig.key, "utf-8").toUpperCase();
+        logger.info("=======================第二次签名：" + paySign + "=====================");
+
+        response.put("paySign", paySign);
+
+        //支付之后
+        afterWxpay(productOrderDTO,"2");
+
+        response.put("appid", WxPayConfig.appid);
+
+        return response;
+    }
+
+
 
     /**
      * 微信支付(回调)
@@ -299,5 +240,114 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
         out.write(resXml.getBytes());
         out.flush();
         out.close();
+    }
+
+    /**
+     * 微信退款
+     * @param buyuserId
+     * @param orderId
+     * @param request
+     */
+    public void wxApplyRefund(String buyuserId,String orderId,HttpServletRequest request){
+
+    }
+
+    private String packageWxpayXml(String buyuserId,String orderId,String nonce_str,HttpServletRequest request){
+        List<UserList> userLists = userListJpa.findByUserId(buyuserId);
+        String openid = userLists.get(0).getOpenid();
+
+        //商品名称
+        String body = "19Tea茶研社订单-"+orderId;
+        //获取本机的ip地址
+        String spbill_create_ip = IpUtils.getIpAddr(request);
+
+        String orderNo = orderId;
+        String money = "1";//支付金额，单位：分，这边需要转成字符串类型，否则后面的签名会失败
+
+        Map<String, String> packageParams = new HashMap<String, String>();
+        packageParams.put("appid", WxPayConfig.appid);
+        packageParams.put("mch_id", WxPayConfig.mch_id);
+        packageParams.put("nonce_str", nonce_str);
+        packageParams.put("body", body);
+        packageParams.put("out_trade_no", orderNo);//商户订单号
+        packageParams.put("total_fee", money);//支付金额，这边需要转成字符串类型，否则后面的签名会失败
+        packageParams.put("spbill_create_ip", spbill_create_ip);
+        packageParams.put("notify_url", WxPayConfig.notify_url);
+        packageParams.put("trade_type", WxPayConfig.TRADETYPE);
+        packageParams.put("openid", openid);
+
+        // 除去数组中的空值和签名参数
+        packageParams = PayUtil.paraFilter(packageParams);
+        String prestr = PayUtil.createLinkString(packageParams); // 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
+
+        //MD5运算生成签名，这里是第一次签名，用于调用统一下单接口
+        String mysign = PayUtil.sign(prestr, WxPayConfig.key, "utf-8").toUpperCase();
+        logger.info("=======================第一次签名：" + mysign + "=====================");
+
+        //拼接统一下单接口使用的xml数据，要将上一步生成的签名一起拼接进去
+        String xml = "<xml>" + "<appid>" + WxPayConfig.appid + "</appid>"
+                + "<body><![CDATA[" + body + "]]></body>"
+                + "<mch_id>" + WxPayConfig.mch_id + "</mch_id>"
+                + "<nonce_str>" + nonce_str + "</nonce_str>"
+                + "<notify_url>" + WxPayConfig.notify_url + "</notify_url>"
+                + "<openid>" + openid + "</openid>"
+                + "<out_trade_no>" + orderNo + "</out_trade_no>"
+                + "<spbill_create_ip>" + spbill_create_ip + "</spbill_create_ip>"
+                + "<total_fee>" + money + "</total_fee>"
+                + "<trade_type>" + WxPayConfig.TRADETYPE + "</trade_type>"
+                + "<sign>" + mysign + "</sign>"
+                + "</xml>";
+
+        System.out.println("调试模式_统一下单接口 请求XML数据：" + xml);
+        return xml;
+    }
+
+    private void afterWxpay(ProductOrderDTO productOrderDTO,String temp) throws Exception{
+        //保存订单和子订单的
+        ProductOrder productOrder = new ProductOrder();
+        BeanUtils.copyProperties(productOrder,productOrderDTO);
+        productOrder.setOrderStatus(OrderStatusEnums.NO_PAY.toString());
+        if("2".equals(temp)){
+            productOrder.setOrderStatus(OrderStatusEnums.WAITE_DELIVER.toString());
+        }
+        productOrderRepository.saveAndFlush(productOrder);
+        List<ProductSonOrder> productSonOrders = productOrderDTO.getProductSonOrder();
+        if("2".equals(temp)){
+            return;
+        }
+        productSonOrderRepository.saveAll(productSonOrders);
+        //扣除库存
+        Map<String, ProductList> productListMap = productOrderDTO.getProductListMap();
+        List<ProductList> productLists = new ArrayList<>();
+        for (ProductSonOrder sonOrder : productSonOrders) {
+            ProductList productList = productListMap.get(sonOrder.getProductid());
+            int sellNum = productList.getSellNum() == null ? 0 : productList.getSellNum();
+            int stock = productList.getStock()==null? 0 : productList.getStock();
+            int buyNum = sonOrder.getBuynum();
+            if(stock - buyNum < 0){
+                throw new BusinessException("商品:"+productList.getTitle()+"："+productList.getCode()+",库存不足，请联系管理员");
+            }
+            productList.setSellNum(sellNum + buyNum);
+            productList.setStock(stock - buyNum);
+        }
+
+        //同步订单到管家婆
+        gjpService.uploadsaleorders(productOrder,productSonOrders,null);
+
+        //改变优惠券状态
+        String couPonUserid = productOrderDTO.getCouponUserid();
+        if(com.sckj.utils.StringUtils.isNotEmpty(couPonUserid)){
+            CouponUser couponUser = couponUserService.findById(couPonUserid);
+            couponUser.setIsuse("1");
+            couponUserService.saveAndFlush(couponUser);
+        }
+        //移除购物车商品
+        List<UserCartDTO> userCarts = productOrderDTO.getUserCarts();
+        List<String> ids = userCarts.stream().map(e->e.getId()).collect(Collectors.toList());
+        userCartService.deleteByIds(ids);
+    }
+
+    private String packageRefundXml(String buyuserId,String orderId,String nonce_str,HttpServletRequest request){
+        return "";
     }
 }

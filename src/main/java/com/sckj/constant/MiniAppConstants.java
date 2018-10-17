@@ -21,9 +21,6 @@ public class MiniAppConstants {
     public static final String STRING_A ="appid=%s&body=%s&device_info=%s&mch_id=%s&nonce_str=%s";
     //微信支付相关常量 end
 
-    public static final String URL = "192.168.0.180";
-
-
     /**
      * 申请退款
      */

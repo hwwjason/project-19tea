@@ -54,6 +54,26 @@ public class WeixinController extends WeixinSupport{
 
     /**
      * @Description: 发起微信支付
+     * @param orderId
+     * @return
+     */
+    @RequestMapping("/wxToPay")
+    public ResultData wxToPay(String orderId) throws Exception {
+        try {
+            ResultData resultData = new ResultData();
+            resultData.setData( weiXinService.wxToPay(orderId));
+            return resultData;
+        }catch (BusinessException e){
+            logger.error(e.getMessage());
+            throw e;
+        } catch (Exception e){
+            logger.error("Error 发起微信支付失败", e);
+            throw e;
+        }
+    }
+
+    /**
+     * @Description: 发起微信支付
      * @param buyuserId
      * @param cartType
      * @param couponUserid
@@ -86,6 +106,25 @@ public class WeixinController extends WeixinSupport{
     public void wxNotify(HttpServletRequest request,HttpServletResponse response) throws Exception{
         try {
             weiXinService.wxNotify(request,response);
+        }catch (BusinessException e){
+            throw e;
+        }catch (Exception e){
+            logger.error("Error 微信支付失败", e);
+        }
+    }
+
+    /**
+     * @Description:退款
+     * @return
+     * @author dzg
+     * @throws Exception
+     * @throws WeixinException
+     * @date 2016年12月2日
+     */
+    @RequestMapping(value="/wxRefund")
+    public void wxApplyRefund(String buyuserId, String orderId ,HttpServletRequest request)  {
+        try {
+            weiXinService.wxApplyRefund(buyuserId,orderId,request);
         }catch (BusinessException e){
             throw e;
         }catch (Exception e){

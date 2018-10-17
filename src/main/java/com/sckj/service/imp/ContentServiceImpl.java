@@ -120,6 +120,8 @@ public class ContentServiceImpl implements IContentService {
     @Override
     public ContentDTO findByContentidAndIsContainSecond(String contentid,boolean isContainSecondLevel)throws Exception{
         Content content = null;
+//        contentid = "525f99171959401c99fb2dd3a78aeb6f";
+//        isContainSecondLevel = true;
         if(contentid==null){
             isContainSecondLevel = true;
             content = this.findByStatus("1");

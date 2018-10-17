@@ -115,7 +115,7 @@ public class BakProductController {
             throw e;
         } catch (Exception e){
             logger.error("匹配商品出错/n", e);
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
         }
     }
 

@@ -49,7 +49,7 @@ public class ${table_name}Controller {
             throw e;
         } catch (Exception e){
             logger.error("Error 查询失败", e);
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
         }
     }
 
@@ -67,7 +67,7 @@ public class ${table_name}Controller {
             throw e;
         } catch (Exception e){
             logger.error("Error 创建或更新失败", e);
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
         }
     }
 
@@ -85,7 +85,7 @@ public class ${table_name}Controller {
             throw e;
         } catch (Exception e){
             logger.error("Error 删除失败", e);
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
         }
     }
 

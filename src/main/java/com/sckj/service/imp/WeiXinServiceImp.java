@@ -13,7 +13,9 @@ import com.sckj.repository.ProductSonOrderRepository;
 import com.sckj.repository.UserListJpa;
 import com.sckj.service.*;
 import com.sckj.utils.BeanUtils;
+import com.sckj.utils.DateTimeUtils;
 import com.sckj.utils.weixin.*;
+import org.aspectj.bridge.MessageUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +32,8 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -248,7 +252,79 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
      * @param orderId
      * @param request
      */
-    public void wxApplyRefund(String buyuserId,String orderId,HttpServletRequest request){
+    public void wxRefund(String buyuserId,String orderId,HttpServletRequest request) throws Exception{
+        ProductOrderDTO productOrderDTO = productOrderService.findDTOById(orderId);
+
+        Map<String,Object> result = new HashMap<String,Object>();
+        String nonceStr = StringUtils.getRandomStringByLength(32);
+        String outRefundNo = orderId;//商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。
+        String outTradeNo = orderId;//商户系统内部的退款单号，商户系统内部唯一，只能是数字、大小写字母_-|*@ ，同一退款单号多次请求只退一笔。
+
+        BigDecimal totalPrice = productOrderDTO.getTotalPrice();
+        String totalPriceStr = totalPrice+"00";
+        Map<String, String> packageParams = new TreeMap<String, String>();
+        packageParams.put("appid", WxPayConfig.appid);
+        packageParams.put("mch_id", WxPayConfig.mch_id);//微信支付分配的商户号
+        packageParams.put("nonce_str", nonceStr);//随机字符串，不长于32位
+//        packageParams.put("op_user_id", mchId);//操作员帐号, 默认为商户号
+        //out_refund_no只能含有数字、字母和字符_-|*@
+        packageParams.put("out_refund_no", outRefundNo);//商户系统内部的退款单号，商户系统内部唯一，同一退款单号多次请求只退一笔
+        packageParams.put("out_trade_no", outTradeNo);//商户侧传给微信的订单号32位
+        packageParams.put("refund_fee", totalPriceStr);
+        packageParams.put("total_fee", totalPriceStr);
+        packageParams.put("transaction_id", productOrderDTO.getPrepayId());//微信生成的订单号，在支付通知中有返回
+
+        // 除去数组中的空值和签名参数
+        packageParams = PayUtil.paraFilter(packageParams);
+        String prestr = PayUtil.createLinkString(packageParams); // 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
+        String sign = PayUtil.sign(prestr, WxPayConfig.key, "utf-8").toUpperCase();
+
+        String refundUrl = WxPayConfig.refund_url;
+        String xmlParam="<xml>"+
+                "<appid>"+WxPayConfig.appid+"</appid>"+
+                "<mch_id>"+WxPayConfig.mch_id+"</mch_id>"+
+                "<nonce_str>"+nonceStr+"</nonce_str>"+
+                "<out_refund_no>"+outRefundNo+"</out_refund_no>"+
+                "<out_trade_no>"+outTradeNo+"</out_trade_no>"+
+                "<refund_fee>"+totalPriceStr+"</refund_fee>"+
+                "<total_fee>"+totalPriceStr+"</total_fee>"+
+                "<transaction_id>"+productOrderDTO.getPrepayId()+"</transaction_id>"+
+                "<sign>"+sign+"</sign>"+
+                "</xml>";
+
+
+//        String resultStr = PayUtils.post(refundUrl, xmlParam);
+//        //解析结果
+//        try {
+//            Map map =  PayUtils.doXMLParse(resultStr);
+//            String returnCode = map.get("return_code").toString();
+//            if(returnCode.equals("SUCCESS")){
+//                String resultCode = map.get("result_code").toString();
+//                if(resultCode.equals("SUCCESS")){
+//                    ProfPayLog profPayLog = new ProfPayLog();
+//                    profPayLog.setCreatedAt(new Date());
+//                    profPayLog.setSource(payLog.getSource());
+//                    profPayLog.setTotalFee(payLog.getTotalFee());
+//                    profPayLog.setTradeNo(payLog.getTradeNo());
+//                    profPayLog.setTransactionId(map.get("refund_id").toString());
+//                    profPayLog.setUserId(user);
+//                    profPayLog.setType(ProfPayLog.Type.Refund);
+//                    profPayLog = wxappOrderService.save(profPayLog);
+//                    result.put("status", "success");
+//                }else{
+//                    result.put("status", "fail");
+//                }
+//            }else{
+//                result.put("status", "fail");
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            result.put("status", "fail");
+//        }
+//        return result;
+    }
+
+    public void wxRefund2(String buyuserId,String orderId,HttpServletRequest request){
 
     }
 
@@ -307,9 +383,6 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
         ProductOrder productOrder = new ProductOrder();
         BeanUtils.copyProperties(productOrder,productOrderDTO);
         productOrder.setOrderStatus(OrderStatusEnums.NO_PAY.toString());
-        if("2".equals(temp)){
-            productOrder.setOrderStatus(OrderStatusEnums.WAITE_DELIVER.toString());
-        }
         productOrderRepository.saveAndFlush(productOrder);
         List<ProductSonOrder> productSonOrders = productOrderDTO.getProductSonOrder();
         if("2".equals(temp)){

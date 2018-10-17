@@ -122,9 +122,9 @@ public class WeixinController extends WeixinSupport{
      * @date 2016年12月2日
      */
     @RequestMapping(value="/wxRefund")
-    public void wxApplyRefund(String buyuserId, String orderId ,HttpServletRequest request)  {
+    public void wxRefund(String buyuserId, String orderId ,HttpServletRequest request)  {
         try {
-            weiXinService.wxApplyRefund(buyuserId,orderId,request);
+            weiXinService.wxRefund(buyuserId,orderId,request);
         }catch (BusinessException e){
             throw e;
         }catch (Exception e){

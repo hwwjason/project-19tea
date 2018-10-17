@@ -38,7 +38,7 @@
     .product-info-2 .title{
         color: #FF5722;
         padding-top: 4px;
-        width: 300px;
+        width: 200px;
         overflow: hidden;white-space: nowrap;text-overflow: ellipsis;
     }
     .product-info-3{
@@ -54,7 +54,7 @@
         padding: 9px 15px;
     }
     .product-td{
-        width: 514px;box-sizing: border-box;
+        width: 414px;box-sizing: border-box;
     }
     </style>
 </head>
@@ -128,7 +128,7 @@
                         <input type="checkbox" lay-filter="checkall" id="checkall" name="checkall" lay-skin="primary" >
                     </th>
                     <th class="th-class">商品信息 <div>数量</div></th>
-                    <th>邮费</th>
+                    <th>优惠金额</th>
                     <th>应付金额</th>
                     <th>实付金额</th>
                     <th>订单状态</th>
@@ -153,16 +153,43 @@
                             <div class="product-info-3">× {{childItem.buynum}}</div>
                         </div>
                     </td>
-                    <td>{{item.expressPrice}}</td>
+                    <td>{{item.couponPrice}}</td>
                     <td>{{item.productPrice}}</td>
                     <td>{{item.totalPrice}}</td>
-                    <td>{{item.orderStatus}}</td>
+                    <td v-if="item.orderStatus=='0'">待支付</td>
+                    <td v-if="item.orderStatus=='1'">待发货</td>
+                    <td v-if="item.orderStatus=='2'">已发货</td>
+                    <td v-if="item.orderStatus=='3'">已收货</td>
+                    <td v-if="item.orderStatus=='4'">已评价</td>
+                    <td v-if="item.orderStatus=='5'">申请退款</td>
+                    <td v-if="item.orderStatus=='6'">退货中</td>
+                    <td v-if="item.orderStatus=='7'">已退货</td>
+                    <td v-if="item.orderStatus=='8'">已退款</td>
+                    <td v-if="item.orderStatus=='9'">订单取消</td>
                     <td>{{item.expressCode}}</td>
                     <td>{{item.buyuserTel}}</td>
                     <td>{{item.orderType==0?"线上":"扫码购"}}</td>
                     <td>
-                        <button class="layui-btn layui-btn-normal layui-btn-small" lay-event="edit">
-                            <i class="layui-icon">&#xe642;</i>编辑
+                        <button v-if="item.orderStatus=='1'||item.orderStatus=='2'||item.orderStatus=='5'||item.orderStatus=='6'||item.orderStatus=='7'" class="layui-btn layui-btn-normal layui-btn-small">
+                            <i class="layui-icon">&#xe642;</i>退款
+                        </button>
+                        <button v-if="item.orderStatus=='1'" class="layui-btn layui-btn-normal layui-btn-small" >
+                            <i class="layui-icon">&#xe642;</i>发货
+                        </button>
+                        <button v-if="item.orderStatus=='2'" class="layui-btn layui-btn-normal layui-btn-small" >
+                            <i class="layui-icon">&#xe642;</i>修改物流
+                        </button>
+                        <button v-if="item.orderStatus=='5'" class="layui-btn layui-btn-normal layui-btn-small" >
+                            <i class="layui-icon">&#xe642;</i>拒绝退款
+                        </button>
+                        <button v-if="item.orderStatus=='5'" class="layui-btn layui-btn-normal layui-btn-small" >
+                            <i class="layui-icon">&#xe642;</i>拒绝退款
+                        </button>
+                        <button v-if="item.orderStatus=='6'||item.orderStatus=='7'||item.orderStatus=='5'" class="layui-btn layui-btn-normal layui-btn-small" >
+                            <i class="layui-icon">&#xe642;</i>拒绝申请
+                        </button>
+                        <button v-if="item.orderStatus=='6'||item.orderStatus=='7'||item.orderStatus=='5'" class="layui-btn layui-btn-normal layui-btn-small" >
+                            <i class="layui-icon">&#xe642;</i>同意申请
                         </button>
                     </td>
                 </tr>
@@ -177,6 +204,9 @@
                     <td>下单时间：{{item.createtime}}</td>
                     <td>用户备注</td>
                     <td colspan="7">{{item.userRemark}}</td>
+                </tr>
+                <tr>
+                    <td style="height: 1px;background: rgb(26, 161, 148)" colspan="10"></td>
                 </tr>
             </tbody>
         </table>

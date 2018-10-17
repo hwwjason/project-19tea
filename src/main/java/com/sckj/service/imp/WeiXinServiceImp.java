@@ -212,9 +212,13 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
         //sb为微信返回的xml
         String notityXml = sb.toString();
         String resXml = "";
-        System.out.println("接收到的报文：" + notityXml);
+        logger.info("接收到的报文：" + notityXml);
 
         Map map = PayUtil.doXMLParse(notityXml);
+
+        if(map == null){
+            throw new BusinessException("微信回调返回值为空");
+        }
 
         String returnCode = (String) map.get("return_code");
         if("SUCCESS".equals(returnCode)){
@@ -222,6 +226,12 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
             if(PayUtil.verify(PayUtil.createLinkString(map), (String)map.get("sign"), WxPayConfig.key, "utf-8")){
                 /**此处添加自己的业务逻辑代码start**/
                 //修改订单状态
+
+                String out_trade_no = (String) map.get("out_trade_no");//获取订单号
+                String time_end = (String) map.get("time_end");//支付完成时间
+                ProductOrder productOrder = productOrderRepository.getOne(out_trade_no);
+                productOrder.setOrderStatus(OrderStatusEnums.REFUNDED.toString());
+
 
                 /**此处添加自己的业务逻辑代码end**/
                 logger.info("支付成功");
@@ -252,8 +262,9 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
      * @param orderId
      * @param request
      */
-    public void wxRefund(String buyuserId,String orderId,HttpServletRequest request) throws Exception{
+    public String wxRefund(String buyuserId,String orderId,HttpServletRequest request) throws Exception{
         ProductOrderDTO productOrderDTO = productOrderService.findDTOById(orderId);
+        productOrderService.findDTOById(orderId);
 
         Map<String,Object> result = new HashMap<String,Object>();
         String nonceStr = StringUtils.getRandomStringByLength(32);
@@ -279,7 +290,6 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
         String prestr = PayUtil.createLinkString(packageParams); // 把数组所有元素，按照“参数=参数值”的模式用“&”字符拼接成字符串
         String sign = PayUtil.sign(prestr, WxPayConfig.key, "utf-8").toUpperCase();
 
-        String refundUrl = WxPayConfig.refund_url;
         String xmlParam="<xml>"+
                 "<appid>"+WxPayConfig.appid+"</appid>"+
                 "<mch_id>"+WxPayConfig.mch_id+"</mch_id>"+
@@ -293,35 +303,28 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
                 "</xml>";
 
 
-//        String resultStr = PayUtils.post(refundUrl, xmlParam);
-//        //解析结果
-//        try {
-//            Map map =  PayUtils.doXMLParse(resultStr);
-//            String returnCode = map.get("return_code").toString();
-//            if(returnCode.equals("SUCCESS")){
-//                String resultCode = map.get("result_code").toString();
-//                if(resultCode.equals("SUCCESS")){
-//                    ProfPayLog profPayLog = new ProfPayLog();
-//                    profPayLog.setCreatedAt(new Date());
-//                    profPayLog.setSource(payLog.getSource());
-//                    profPayLog.setTotalFee(payLog.getTotalFee());
-//                    profPayLog.setTradeNo(payLog.getTradeNo());
-//                    profPayLog.setTransactionId(map.get("refund_id").toString());
-//                    profPayLog.setUserId(user);
-//                    profPayLog.setType(ProfPayLog.Type.Refund);
-//                    profPayLog = wxappOrderService.save(profPayLog);
-//                    result.put("status", "success");
-//                }else{
-//                    result.put("status", "fail");
-//                }
-//            }else{
-//                result.put("status", "fail");
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            result.put("status", "fail");
-//        }
-//        return result;
+        String resultStr = PayUtil.httpRequest(WxPayConfig.refund_url, "POST", xmlParam);
+        //解析结果
+        try {
+            Map map =  PayUtil.doXMLParse(resultStr);
+            String returnCode = map.get("return_code").toString();
+            if(returnCode.equals("SUCCESS")){
+                String resultCode = map.get("result_code").toString();
+                if(resultCode.equals("SUCCESS")){
+                    productOrderDTO.setOrderStatus(OrderStatusEnums.REFUNDED.toString());
+                    productOrderRepository.saveAndFlush(productOrderDTO);
+                    result.put("status", "success");
+                }else{
+                    result.put("status", "fail");
+                }
+            }else{
+                result.put("status", "fail");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("status", "fail");
+        }
+        return result.toString();
     }
 
     public void wxRefund2(String buyuserId,String orderId,HttpServletRequest request){

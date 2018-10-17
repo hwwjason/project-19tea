@@ -266,6 +266,13 @@ public class UserListServiceImp implements IUserListService {
     }
 
 
-
+    @Override
+    public boolean isLogin(String userId) throws Exception{
+        List<UserList> userLists = userListJpa.findByUserId(userId);
+        if(userLists!=null && userLists.size()>0){
+            return true;
+        }
+        return false;
+    }
 
 }

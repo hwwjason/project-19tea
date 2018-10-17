@@ -43,5 +43,5 @@ public interface IWeiXinService {
      * @param orderId
      * @param request
      */
-    void wxRefund(String buyuserId,String orderId,HttpServletRequest request) throws Exception;
+    String wxRefund(String buyuserId,String orderId,HttpServletRequest request) throws Exception;
 }

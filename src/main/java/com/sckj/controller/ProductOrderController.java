@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.sckj.common.Query;
 import com.sckj.common.ResultData;
 import com.sckj.constant.MessageConstants;
+import com.sckj.enums.OrderEnums.OrderStatusEnums;
 import com.sckj.enums.ResultStatusEnum;
 import com.sckj.exception.BusinessException;
 import com.sckj.model.dto.ProductOrderDTO;
@@ -47,7 +48,7 @@ public class ProductOrderController {
             throw e;
         }catch (Exception e){
             logger.error("Error", e);
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
         }
     }
 
@@ -66,7 +67,7 @@ public class ProductOrderController {
             throw e;
         } catch (Exception e){
             logger.error("Error", e);
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
         }
     }
 
@@ -76,7 +77,7 @@ public class ProductOrderController {
      * @return
      */
     @RequestMapping(value = "/getProductOrder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResultData getProductOrder(@RequestBody Query query){
+    public ResultData getProductOrder(@RequestBody Query query) throws Exception{
         try{
             ResultData resultData = new ResultData();
             PageHelper.startPage(query.getPageNum(),query.getPageSize());
@@ -90,7 +91,7 @@ public class ProductOrderController {
             throw e;
         } catch (Exception e){
             logger.error("Error", e);
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
         }
 
     }
@@ -110,7 +111,7 @@ public class ProductOrderController {
             throw e;
         } catch (Exception e){
             logger.error("Error", e);
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
         }
     }
 
@@ -128,7 +129,7 @@ public class ProductOrderController {
             throw e;
         } catch (Exception e){
             logger.error("Error", e);
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
         }
     }
 
@@ -146,7 +147,25 @@ public class ProductOrderController {
             throw e;
         } catch (Exception e){
             logger.error("Error", e);
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
+        }
+    }
+
+    /**
+     * 描述：申请退款
+     *
+     */
+    @RequestMapping(value = "/applyRefund", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData applyRefund(@RequestParam String id,@RequestParam String userId) throws Exception {
+        try {
+            ResultData resultData = new ResultData();
+            productOrderService.updateOrderStatus(id,userId, OrderStatusEnums.APPLY_REFUND.toString());
+            return resultData;
+        }catch (BusinessException e){
+            throw e;
+        } catch (Exception e){
+            logger.error("Error", e);
+            throw e;
         }
     }
 

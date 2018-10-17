@@ -20,6 +20,7 @@ import com.sckj.repository.mybatis.ProductSonOrderDAO;
 import com.sckj.service.IProductOrderService;
 import com.sckj.service.IProductSonOrderService;
 import com.sckj.service.IUserCartService;
+import com.sckj.service.IUserListService;
 import com.sckj.utils.BeanUtils;
 import com.sckj.utils.DateTimeUtils;
 import com.sckj.utils.StringUtils;
@@ -83,6 +84,9 @@ public class ProductOrderServiceImpl implements IProductOrderService {
 
     @Autowired
     private CouponUserDAO couponUserDAO;
+
+    @Autowired
+    private IUserListService userListService;
 
     @Override
     public ProductOrderDTO findDTOById(String id) throws Exception {
@@ -463,6 +467,16 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         BeanUtils.copyPropertiesWithoutNull(productOrder,productOrderDTO);
         productOrder = productOrderRepository.saveAndFlush(productOrder);
         return this.findDTOById(productOrder.getId());
+    }
+
+    public void updateOrderStatus(String orderId, String userId,String orderStarus) throws Exception{
+        if(!userListService.isLogin(userId)){
+            logger.warn("请登录后退款,用户id为空或不存在");
+            throw new BusinessException("请登录后退款");
+        }
+        ProductOrder productOrder = productOrderRepository.getOne(orderId);
+        productOrder.setOrderStatus(orderStarus);
+        productOrderRepository.saveAndFlush(productOrder);
     }
 
     /**

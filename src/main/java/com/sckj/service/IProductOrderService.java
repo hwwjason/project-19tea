@@ -54,6 +54,8 @@ public interface IProductOrderService  {
 
     ProductOrderDTO updateProductOrder(ProductOrderDTO productOrderDTO) throws Exception;
 
+    void updateOrderStatus(String orderId, String userId,String orderStatus) throws Exception;
+
     Page<ProductOrderDTO> findProductOrderPage(ProductOrderDTO productOrderDTO, Pageable page) throws Exception;
 
 }

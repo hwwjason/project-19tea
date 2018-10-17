@@ -81,7 +81,7 @@ public class WeixinController extends WeixinSupport{
      * @return
      */
     @RequestMapping("/wxPay")
-    public ResultData wxPay(String buyuserId, String cartType, String couponUserid, String userRemark ,HttpServletRequest request)  {
+    public ResultData wxPay(String buyuserId, String cartType, String couponUserid, String userRemark ,HttpServletRequest request) throws Exception{
         try {
             ResultData resultData = new ResultData();
             resultData.setData( weiXinService.wxPay(buyuserId,cartType,couponUserid,userRemark,request));
@@ -90,7 +90,7 @@ public class WeixinController extends WeixinSupport{
             throw e;
         } catch (Exception e){
             logger.error("Error 发起微信支付失败", e);
-            return new ResultData(null, ResultStatusEnum.FAIL.toString(), MessageConstants.SERVERS_BUSINESS);
+            throw e;
         }
     }
 
@@ -103,13 +103,16 @@ public class WeixinController extends WeixinSupport{
      * @date 2016年12月2日
      */
     @RequestMapping(value="/wxNotify")
-    public void wxNotify(HttpServletRequest request,HttpServletResponse response) throws Exception{
+    public ResultData wxNotify(HttpServletRequest request,HttpServletResponse response) throws Exception{
         try {
+            ResultData resultData = new ResultData();
             weiXinService.wxNotify(request,response);
+            return resultData;
         }catch (BusinessException e){
             throw e;
         }catch (Exception e){
             logger.error("Error 微信支付失败", e);
+            throw e;
         }
     }
 
@@ -122,13 +125,14 @@ public class WeixinController extends WeixinSupport{
      * @date 2016年12月2日
      */
     @RequestMapping(value="/wxRefund")
-    public void wxRefund(String buyuserId, String orderId ,HttpServletRequest request)  {
+    public void wxRefund(String userId, String orderId ,HttpServletRequest request)  throws Exception{
         try {
-            weiXinService.wxRefund(buyuserId,orderId,request);
+            weiXinService.wxRefund(userId,orderId,request);
         }catch (BusinessException e){
             throw e;
         }catch (Exception e){
-            logger.error("Error 微信支付失败", e);
+            logger.error("Error 退款失败", e);
+            throw e;
         }
     }
 }

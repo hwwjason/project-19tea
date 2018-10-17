@@ -52,9 +52,9 @@
                     <td>/pages/channel/channel?id={{item.id}}</td>
                     <td>{{item.createTime}}</td>
                     <td>
-                        <button class="layui-btn layui-btn-warm layui-btn-small" lay-event="edit">
+                        <a class="layui-btn layui-btn-warm layui-btn-small" :href="'../../subpage/setup/preview.html?id='+item.id">
                             <i class="layui-icon">&#xe63c;</i>预览
-                        </button>
+                        </a>
                         <a class="layui-btn layui-btn-normal layui-btn-small" :href="'../../subpage/setup/channeldetail.html?id='+item.id" >
                             <i class="layui-icon">&#xe642;</i>内容配置
                         </a>

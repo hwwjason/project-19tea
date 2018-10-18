@@ -226,22 +226,25 @@ public class WeiXinServiceImp extends WeixinSupport implements IWeiXinService{
             if(PayUtil.verify(PayUtil.createLinkString(map), (String)map.get("sign"), WxPayConfig.key, "utf-8")){
                 /**此处添加自己的业务逻辑代码start**/
                 //修改订单状态
-
                 String out_trade_no = (String) map.get("out_trade_no");//获取订单号
                 String time_end = (String) map.get("time_end");//支付完成时间
                 ProductOrder productOrder = productOrderRepository.getOne(out_trade_no);
                 productOrder.setOrderStatus(OrderStatusEnums.REFUNDED.toString());
-
-
                 /**此处添加自己的业务逻辑代码end**/
                 logger.info("支付成功");
 
                 //通知微信服务器已经支付成功
                 resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"
                         + "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
+            }else {
+                throw new BusinessException("签名失败");
             }
-
         }else{
+            //修改订单状态
+            String out_trade_no = (String) map.get("out_trade_no");//获取订单号
+            ProductOrder productOrder = productOrderRepository.getOne(out_trade_no);
+            productOrder.setOrderStatus(OrderStatusEnums.REFUNDED.toString());
+
             resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"
                     + "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
             logger.info("支付成功");

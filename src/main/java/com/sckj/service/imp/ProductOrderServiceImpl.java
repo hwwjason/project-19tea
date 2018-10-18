@@ -469,13 +469,24 @@ public class ProductOrderServiceImpl implements IProductOrderService {
         return this.findDTOById(productOrder.getId());
     }
 
-    public void updateOrderStatus(String orderId, String userId,String orderStarus) throws Exception{
+    public void updateOrderStatus(String orderId, String userId,String orderStatus) throws Exception{
         if(!userListService.isLogin(userId)){
             logger.warn("请登录后退款,用户id为空或不存在");
             throw new BusinessException("请登录后退款");
         }
         ProductOrder productOrder = productOrderRepository.getOne(orderId);
-        productOrder.setOrderStatus(orderStarus);
+        productOrder.setOrderStatus(orderStatus);
+        productOrderRepository.saveAndFlush(productOrder);
+    }
+
+    public void deliverProduct(String orderId) throws Exception{
+        ProductOrder productOrder = productOrderRepository.getOne(orderId);
+        if(OrderStatusEnums.WAITE_DELIVER.toString().equals(productOrder.getOrderStatus())){
+
+        }else {
+            throw new BusinessException(OrderStatusEnums.WAITE_DELIVER.getName()+"状态，不允许发货");
+        }
+        productOrder.setOrderStatus(OrderStatusEnums.DELIVERED.toString());
         productOrderRepository.saveAndFlush(productOrder);
     }
 

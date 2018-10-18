@@ -169,4 +169,25 @@ public class ProductOrderController {
         }
     }
 
+    /**
+     * 发货
+     * 描述：deliverProduct
+     *
+     */
+    @RequestMapping(value = "/deliverProduct", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResultData deliverProduct(@RequestParam String id) throws Exception {
+        try {
+            ResultData resultData = new ResultData();
+            productOrderService.deliverProduct(id);
+            return resultData;
+        }catch (BusinessException e){
+            throw e;
+        } catch (Exception e){
+            logger.error("Error", e);
+            throw e;
+        }
+    }
+
+
+
 }

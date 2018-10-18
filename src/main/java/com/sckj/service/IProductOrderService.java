@@ -54,7 +54,23 @@ public interface IProductOrderService  {
 
     ProductOrderDTO updateProductOrder(ProductOrderDTO productOrderDTO) throws Exception;
 
+    /**
+     * 更新单号状态
+     * @param orderId
+     * @param userId
+     * @param orderStatus
+     * @throws Exception
+     */
     void updateOrderStatus(String orderId, String userId,String orderStatus) throws Exception;
+
+    /**
+     * 发货
+     * @param orderId
+     * @throws Exception
+     */
+    void deliverProduct(String orderId) throws Exception;
+
+
 
     Page<ProductOrderDTO> findProductOrderPage(ProductOrderDTO productOrderDTO, Pageable page) throws Exception;
 
